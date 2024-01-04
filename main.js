@@ -1,46 +1,32 @@
 import { Vect2D, vect2d, dist } from "./modules/vect2D.mjs";
 import { Ball } from "./modules/ball.mjs";
+import { LineSegment } from "./modules/lineSegment.mjs";
+import { Collision } from "./modules/collisions.mjs";
 
 const epsilon = 1e-8;
+
 
 // elements
 const canvas = document.getElementById("board");
 const ctx = canvas.getContext("2d");
 
+let mousePos = null;
+let targetPos = null;
 
 let balls = [new Ball(100, 250, "white")];
 let ball = balls[0];
 
+// walls
+let lines = [new LineSegment(10, 10, canvas.width-10, 10, "brown"), 
+             new LineSegment(10, 10, 10, canvas.height-10, "brown"),
+             new LineSegment(canvas.width-10, 10, canvas.width-10, canvas.height-10, "brown"),
+             new LineSegment(10, canvas.height-10, canvas.width-10, canvas.height-10, "brown")];
 
-// examine edge cases
+lines.push(new LineSegment(600, 100, 700, 300, "brown")); // for fun
 
-// Case 1
-// balls[0].pos = vect2d(76.71094956688371, 252.92236640132177);
-// balls[0].vel = vect2d(0.24981693911407152, -4.793494706050241);
-// balls[1].pos = vect2d(46.36193775646933,  228.04033460205426);
-// balls[1].vel = vect2d(0.27819812986954195,-1.2283956705196668);
 
-// Case 2
-// balls[0].pos = vect2d(168.380452299559661, 179.61326903329226);
-// balls[1].pos = vect2d(148.54772393911512,  144.8762155344588);
-
-// Case 3
-// balls[1].pos = vect2d(220, 100);
-// balls.push(new Ball(180, 100, "blue"));
-// balls.push(new Ball(140, 100, "yellow"));
-// balls[1].vel = vect2d(20, 0);
-
-// Break
+// Break Orientation of 15 balls
 let offset = vect2d(300, 250);
-// for (let i = 0; i < 5; i++) {
-//     for (let j = i%2; j <= i; j += 2) {
-//         let p1 = vect2d(i*Math.sqrt(3), j).scale(Ball.RADIUS).add(offset);
-//         let p2 = vect2d(i*Math.sqrt(3), -j).scale(Ball.RADIUS).add(offset);
-
-//         balls.push(new Ball(p1.x, p1.y, "red"));
-//         balls.push(new Ball(p2.x, p2.y, "red"));
-//     }
-// }
 for (let i = 4; i >= 0; i--) {
     for (let j = i%2; j <= i; j += 2) {
         let p1 = vect2d(i*Math.sqrt(3), j).scale(Ball.RADIUS).add(offset);
@@ -55,8 +41,8 @@ for (let i = 4; i >= 0; i--) {
         }
     }
 }
-// balls[0].vel = vect2d(9.7276179, 0);
-// balls[0].vel = vect2d(10.12312, 0);
+
+
 
 
 function draw() {
@@ -66,8 +52,29 @@ function draw() {
         balls[i].draw(ctx);
     }
 
+    // velocity vectors
     for (let i = 0; i < balls.length; i++) {
         balls[i].drawVelocity(ctx, 10);
+    }
+
+    for (let i = 0; i < lines.length; i++) {
+        lines[i].draw(ctx);
+    }
+
+    // line for aimer
+    if (mousePos != null) {
+        ctx.strokeStyle="white";
+        ctx.beginPath();
+        ctx.moveTo(ball.pos.x, ball.pos.y);
+        ctx.lineTo(mousePos.x, mousePos.y);
+        ctx.stroke();
+        ctx.closePath();
+    }
+    if (targetPos != null) {
+        // console.log(targetPos);
+        ctx.beginPath();
+        ctx.arc(targetPos.x, targetPos.y, Ball.RADIUS, 0, 2 * Math.PI);
+        ctx.stroke();
     }
 }
 
@@ -77,124 +84,45 @@ function move(dt = 1) {
     }
 }
 
-function checkCollisionWalls() {
+function checkCollisionLines() {
     for (let i = 0; i < balls.length; i++) {
-        let ball = balls[i];
-        if (ball.pos.x - Ball.RADIUS < 0 && ball.vel.x < 0) {
-            return true;
-        }
-        if (ball.pos.x + Ball.RADIUS > canvas.width && ball.vel.x > 0) {
-            return true;
-        }
-        if (ball.pos.y - Ball.RADIUS < 0 && ball.vel.y < 0) {
-            return true;
-        }
-        if (ball.pos.y + Ball.RADIUS > canvas.height && ball.vel.y > 0) {
-            return true;
+        for (let j = 0; j < lines.length; j++) {
+            if (Collision.checkBallToLineCollision(balls[i], lines[j])) {
+                return true;
+            }
         }
     }
     return false;
 }
+
+function computeCollisionLines() {
+    for (let i = 0; i < balls.length; i++) {
+        for (let j = 0; j < lines.length; j++) {
+            Collision.computeBallToLineCollision(balls[i], lines[j]);
+        }
+    }
+}
+
 
 function checkCollisionBalls() {
     for (let i = 0; i < balls.length - 1; i++) {
         for (let j = i + 1; j < balls.length; j++) {
             let a = balls[i];
             let b = balls[j];
-            let ab = b.pos.subtract(a.pos);
-            let d = ab.getMagnitude();
 
-            // collision
-            if (d > 2 * Ball.RADIUS) {
-                continue;
-            }
-
-            // check velocity directions
-            let va_rel = a.vel.subtract(b.vel);
-            if (va_rel.dot(ab) > 0) {
+            if (Collision.checkBallCollision(a, b)) {
                 return true;
             }
-
         }   
     }
     return false;
 }
 
-function computeCollisionWalls() {
-    for (let i = 0; i < balls.length; i++) {
-        // collision with walls
-        let ball = balls[i];
-        if (ball.pos.x - Ball.RADIUS < 0 && ball.vel.x < 0) {
-            ball.vel.x *= -1;
-            ball.setAcceleration();
-        }
-        if (ball.pos.x + Ball.RADIUS > canvas.width && ball.vel.x > 0) {
-            ball.vel.x *= -1;
-            ball.setAcceleration();
-        }
-        if (ball.pos.y - Ball.RADIUS < 0 && ball.vel.y < 0) {
-            ball.vel.y *= -1;
-            ball.setAcceleration();
-        }
-        if (ball.pos.y + Ball.RADIUS > canvas.height && ball.vel.y > 0) {
-            ball.vel.y *= -1;
-            ball.setAcceleration();
-        }
-    }
-}
-
 function computeCollisionBalls() {
     for (let i = 0; i < balls.length - 1; i++) {
         for (let j = i + 1; j < balls.length; j++) {
-            let a = balls[i];
-            let b = balls[j];
-            let ab = b.pos.subtract(a.pos);
-            let d = ab.getMagnitude();
-
-            // collision
-            if (d > 2 * Ball.RADIUS) {
-                continue;
-            }
-
-            // correct position overlap
-            // console.log("BEFORE OVERLAP", ab.getMagnitude(), a.pos, b.pos, a.vel, b.vel);
-
-            let correct = ab.getUnitVector().scale(2 * Ball.RADIUS - d)
-
-            if (correct.getMagnitude() > epsilon) {
-                a.pos = a.pos.subtract(correct.scale(0.5));
-                b.pos = b.pos.add(correct.scale(0.5));
-                ab = b.pos.subtract(a.pos);
-            }
-
-            // console.log("AFTER OVERLAP", ab.getMagnitude(), a.pos, b.pos, a.vel, b.vel);
-
-            // check velocity directions
-            let va_rel = a.vel.subtract(b.vel);
-            if (va_rel.dot(ab) <= 0) {
-                continue;
-            }
-
-
-            // console.log("COLLISION", a.pos, b.pos, a.vel, b.vel, ab);
-
-            let normal = ab.getUnitVector();
-            let v_a = a.vel.proj(normal);
-            let v_b = b.vel.proj(normal);
-
-            // console.log("PROJECTIONS", v_a, v_b, v_a.getMagnitude(), v_b.getMagnitude());
-
-            // completetly elastic
-            a.vel = a.vel.subtract(v_a).add(v_b);
-            b.vel = b.vel.subtract(v_b).add(v_a);
-
-            a.setAcceleration();
-            b.setAcceleration();
-
-            // console.log("VEL A", a.vel.getMagnitude(), a.vel.getDirection() * 180 / 2 * Math.PI);
-            // console.log("VEL B", b.vel.getMagnitude(), b.vel.getDirection() * 180 / 2 * Math.PI);
-
-            // console.log("AFTER", a.vel, b.vel);
+            computeCollisionLines(); 
+            Collision.computeBallCollision(balls[i], balls[j]);
         }   
     }
 }
@@ -219,10 +147,13 @@ function animate() {
     // if (checkCollisionBalls()) pause = true;
 
     for (let i = 0; i < n; i++) {
-        while(checkCollisionBalls() || checkCollisionWalls()) {
-            computeCollisionWalls();
+        if (checkCollisionLines()) {
+            computeCollisionLines();
+        }
+        while(checkCollisionBalls()) {
             computeCollisionBalls();
         }
+
         // draw();
         move(dt);
         // if (!pause) {
@@ -236,17 +167,87 @@ function animate() {
 
 function mouseDown(e) {
     let vel = vect2d(e.offsetX - ball.pos.x, e.offsetY - ball.pos.y).getUnitVector().scale(10);
-    console.log("MOUSE", vel);
     ball.vel = vel;
     ball.setAcceleration();
+
+    targetPos = null;
 }
 
-// function mouseMove(e) {
-//     let mousePos = coord(e.offsetX, e.offsetY).subtract(offset).toCartesian().scale(1/tileSize).toInt();
-//     hoverTile(mousePos.y, mousePos.x);
-// }
+function mouseMove(e) {
+    mousePos = vect2d(e.offsetX, e.offsetY);
+
+    // closest touching ball
+    let direction = ball.pos.to(mousePos); // line
+    let closest = -1;
+    let min = 0;
+
+    for (let i = 1; i < balls.length; i++) {
+        let cur = balls[i];
+        cur.col = "red";
+        if (cur.pos.distToLine(ball.pos, direction) > 2 * Ball.RADIUS) {
+            continue;
+        }
+        // ignore balls on the opposite direction of where the mouse is
+        if (ball.pos.to(cur.pos).dot(ball.pos.to(mousePos)) < 0) {
+            continue;
+        }
+
+        // solve a quadratic for where the cueball would be right before collision
+        let rb = ball.pos.to(balls[i].pos);
+        let a = direction.getMagnitude();
+        let b = rb.dot(direction);
+        let c = Math.pow(rb.getMagnitude(), 2) - 4 * Ball.RADIUS * Ball.RADIUS;
+        
+        // take the minimal value of t;
+        let discr = Math.sqrt(b*b - a*a*c);
+        let t = (b - discr)/(a*a);
+        if (t < 0) {
+            t = (b + discr)/(a*a);
+        }
+
+        if (closest == -1) {
+            closest = i;
+            min = t;
+        }
+        else if (t < min) {
+            closest = i;
+            min = t;
+        }
+    }
+
+    if (closest != -1) {
+
+        targetPos = ball.pos.add(direction.scale(min));
+
+        balls[closest].col = "yellow";
+    }
+    else {
+        targetPos = null;
+    }
+}
 
 canvas.addEventListener('mousedown', mouseDown);
-// canvas.addEventListener('mousemove', mouseMove);
+canvas.addEventListener('mousemove', mouseMove);
 
 animate();
+
+
+
+
+
+
+window.printBalls = function() {
+    let out = "";
+    for (let i = 0; i < balls.length; i++) {
+        out += `balls[${i}].pos = vect2d(${balls[i].pos.x}, ${balls[i].pos.y})\n`;
+    }
+    console.log(out);
+}
+
+window.printBallVelocities = function() {
+    let out = "";
+    for (let i = 0; i < balls.length; i++) {
+        out += `balls[${i}].vel = vect2d(${balls[i].vel.x}, ${balls[i].vel.y})\n`;
+    }
+    console.log(out);
+}

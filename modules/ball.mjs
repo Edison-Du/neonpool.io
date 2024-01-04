@@ -1,4 +1,4 @@
-import { Vect2D, vect2d } from "./vect2D.mjs";
+import { vect2d } from "./vect2D.mjs";
 
 export class Ball {
 
@@ -12,7 +12,7 @@ export class Ball {
     col = null;
 
     // Acceleration should act opposite to the velocity at all times.
-    constructor(x, y, col) {
+    constructor(x, y, col=null) {
         this.pos = vect2d(x, y);
         this.vel = vect2d(0, 0);
         this.accel = vect2d(0, 0);
@@ -21,6 +21,7 @@ export class Ball {
     
     move(dt = 1) {
         // console.log(this.pos);
+        this.setAcceleration();
         this.vel = this.vel.add(this.accel.scale(dt));
         if (this.vel.getMagnitude() <= this.accel.getMagnitude()) {
             this.vel = vect2d(0, 0);

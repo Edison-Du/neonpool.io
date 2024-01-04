@@ -39,8 +39,12 @@ export class Vect2D {
         }
         return this.scale(1/this.getMagnitude());
     }
-    toInt() {
-        return vect2d(Math.floor(this.x), Math.floor(this.y));
+    // returns v where this + v = other
+    to(other) {
+        return other.subtract(this);
+    }
+    dist(other) {
+        return this.to(other).getMagnitude();
     }
     dot(other) {
         return (other.x * this.x) + (other.y * this.y);
@@ -50,6 +54,15 @@ export class Vect2D {
         // let res = other.getUnitVector().scale(this.dot(other)/other.getMagnitude());
         // console.log("Project", this, other, res, this.dot(other), other.dot(this));
         return other.getUnitVector().scale(this.dot(other)/other.getMagnitude());
+    }
+    // component of this perpendicular to other
+    perp(other) {
+        return this.subtract(this.proj(other));
+    }
+    // distance to a line in r2
+    distToLine(point, direction) {
+        let rp = point.to(this);
+        return rp.perp(direction).getMagnitude();
     }
 }
 
