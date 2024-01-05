@@ -4,6 +4,8 @@
 // balls[1].pos = vect2d(46.36193775646933,  228.04033460205426);
 // balls[1].vel = vect2d(0.27819812986954195,-1.2283956705196668);
 
+import { LineSegment } from "./modules/lineSegment.mjs";
+
 // Case 2 (touching)
 // balls[0].pos = vect2d(168.380452299559661, 179.61326903329226);
 // balls[1].pos = vect2d(148.54772393911512,  144.8762155344588);
@@ -79,3 +81,31 @@ balls.push(new Ball(180, 100, "blue"));
 // balls.push(new Ball(140, 100, "yellow"));
 
 lines.push(new LineSegment(vect2d(200, 50), vect2d(200, 350), "brown"));
+
+
+
+// two walls very close
+lines.push(new LineSegment(600, 100, 700, 300, "brown")); 
+lines.push(new LineSegment(601, 100, 701, 300, "brown")); 
+
+
+// wall aimer touching edge of wall
+lines.push(new LineSegment(600, 100, 700, 300, "brown"));
+balls[0].pos = vect2d(896.4189667694121, 241.3458000040911)
+
+
+lines.push(new LineSegment(600, 100, 700, 300, "brown"));
+balls[0].pos = vect2d(847.2092660164719, 422.28821858011946)
+
+
+// endpoint prioritization for wall aimer (closest one should be prioritized)
+lines.push(new LineSegment(600, 100, 700, 300, "brown"));
+balls[0].pos = vect2d(773.2425534583451, 450.7731407102569)
+
+
+// parallel lines wall aimer
+lines.push(new LineSegment(500, 100, 600, 100, "brown"));
+balls[0].pos = vect2d(100, 100);
+balls[0].pos = vect2d(100, 90);
+
+
