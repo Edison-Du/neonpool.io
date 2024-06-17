@@ -1,42 +1,44 @@
-import { Vect2D, vect2d, dist } from "./modules/vect2D.mjs";
-import { Ball } from "./modules/ball.mjs";
-import { LineSegment } from "./modules/lineSegment.mjs";
-import { Collision } from "./modules/collisions.mjs";
+import { Vector2D } from "./modules/util/vector2D.mjs";
+import { Ball } from "./modules/game_objects/ball.mjs";
+import { LineSegment } from "./modules/game_objects/lineSegment.mjs";
+import { Hole } from "./modules/game_objects/hole.mjs";
+import { CollisionUtil } from "./modules/util/collisionUtil.mjs";
 import { Consts } from "./modules/consts.mjs";
-
-const epsilon = 1e-8;
-
+import { CanvasUtil } from "./modules/util/canvasUtil.mjs";
+import { MathUtil } from "./modules/util/mathUtil.mjs";
 
 // elements
 const canvas = document.getElementById("board");
 const ctx = canvas.getContext("2d");
 
 let mousePos = null;
-let targetPos = null;
+let ballsAreMoving = false;
 
+// balls
 let balls = [new Ball(100, 250, "white")];
 let ball = balls[0];
-balls[0].pos = vect2d(773.2425534583451, 450.7731407102569)
 
 // walls
-let lines = [new LineSegment(10, 10, canvas.width-10, 10, "brown"), 
-             new LineSegment(10, 10, 10, canvas.height-10, "brown"),
-             new LineSegment(canvas.width-10, 10, canvas.width-10, canvas.height-10, "brown"),
-             new LineSegment(10, canvas.height-10, canvas.width-10, canvas.height-10, "brown")];
+let lines = [new LineSegment(10, 10, canvas.width-10, 10, "black"), 
+             new LineSegment(10, 10, 10, canvas.height-10, "black"),
+             new LineSegment(canvas.width-10, 10, canvas.width-10, canvas.height-10, "black"),
+             new LineSegment(10, canvas.height-10, canvas.width-10, canvas.height-10, "black")];
 
-lines.push(new LineSegment(600, 100, 700, 300, "brown")); // for fun
+lines.push(new LineSegment(600, 100, 700, 300, "black")); // for fun
+lines.push(new LineSegment(500, 100, 600, 100, "black"));
 
-lines.push(new LineSegment(500, 100, 600, 100, "brown"));
-balls[0].pos = vect2d(100, 90);
+balls[0].pos = new Vector2D(100, 90);
 
+// holes
+let holes = [new Hole(50, 50), new Hole(100, 200), new Hole(700, 100)];
 
 
 // Break Orientation of 15 balls
-let offset = vect2d(300, 250);
-for (let i = 4; i >= 0; i--) {
+let offset = new Vector2D(300, 250);
+for (let i = 5; i >= 0; i--) {
     for (let j = i%2; j <= i; j += 2) {
-        let p1 = vect2d(i*Math.sqrt(3), j).scale(Ball.RADIUS).add(offset);
-        let p2 = vect2d(i*Math.sqrt(3), -j).scale(Ball.RADIUS).add(offset);
+        let p1 = new Vector2D(i*Math.sqrt(3), j).scale(Ball.RADIUS).add(offset);
+        let p2 = new Vector2D(i*Math.sqrt(3), -j).scale(Ball.RADIUS).add(offset);
 
         if (j != 0) {
             balls.push(new Ball(p2.x, p2.y, "red"));
@@ -49,51 +51,130 @@ for (let i = 4; i >= 0; i--) {
 }
 
 
+function drawAimAssist(mousePos) {
+    // closest touching ball
+    let direction = ball.pos.to(mousePos); // line
+    let closestBall = targetClosestBall(direction);
+    let closestLine = targetClosestLine(direction);
 
+    let m1 = closestBall.min;
+    let m2 = closestLine.min;
+    let min = m1;
+    let closestIsBall = closestBall.index != -1;
+    let closestIsLine = false;
+
+    // checks if closest is a line
+    if (m1 == null || (m2 != null && m2 < m1)) {
+        min = m2;
+        closestIsBall = false;
+        closestIsLine = true;
+    }
+
+    if (min == null) {
+        return;
+    }
+
+    let targetPos = ball.pos.add(direction.scale(min)); // projected location of ball before collision
+    let dir_norm = direction.getUnitVector();
+    let dir_rad = dir_norm.scale(Ball.RADIUS);
+    let pos_target = targetPos.subtract(dir_rad);
+
+    // draws pointer and projected ball location before collision
+    CanvasUtil.drawLine(ctx, ball.pos, pos_target, 2, "white");
+    CanvasUtil.drawCircle(ctx, targetPos, Ball.RADIUS - 1, 2, "white", null);
+    
+    // draws resultant velocity of ball-ball collision
+    if (closestIsBall) {
+        let closest = balls[closestBall.index];
+        let ab = targetPos.to(closest.pos);
+        let v_cueball = dir_norm.perp(ab).scale(4*Ball.RADIUS);
+        let v_other = dir_norm.proj(ab).scale(4*Ball.RADIUS);
+
+        let pos_v1 = targetPos.add(v_cueball);
+
+        // let pos_v2i = targetPos.add(v_other.getUnitVector().scale(Ball.RADIUS));
+        let pos_v2i = closest.pos;
+        let pos_v2f = pos_v2i.add(v_other);
+
+        CanvasUtil.drawLine(ctx, targetPos, pos_v1, 2, "white");
+        CanvasUtil.drawLine(ctx, pos_v2i, pos_v2f, 2, "white");
+    }
+    // draws resultant velocity of ball-wall collision
+    else if (closestIsLine) {
+        let closest = lines[closestLine.index];
+        let line_dir = closest.getDirectionVector();
+        // ball hits corner of line segment
+        if (targetPos.distToLine(closest.p1, line_dir) < Ball.RADIUS - Consts.epsilon) {
+            let point = closest.p1;
+            if (MathUtil.dist(point, targetPos) > MathUtil.dist(closest.p2, targetPos)) {
+                point = closest.p2;
+            }
+            let v_before = ball.pos.to(targetPos).getUnitVector();
+            let v_deflect = point.to(targetPos).getUnitVector();
+            let v_sub = v_before.proj(v_deflect);
+            let v_cueball = v_before.subtract(v_sub).subtract(v_sub);
+            let pos_v = targetPos.add(v_cueball.scale(4*Ball.RADIUS));
+
+            CanvasUtil.drawLine(ctx, targetPos, pos_v, 2, "white");
+        }
+        // ball hits side of line segment
+        else {
+            let dir_proj_line = dir_norm.proj(line_dir);
+            let v_cueball = dir_norm.subtract(dir_proj_line.scale(2)).scale(-1);
+            let pos_v = targetPos.add(v_cueball.scale(4*Ball.RADIUS));
+            CanvasUtil.drawLine(ctx, targetPos, pos_v, 2, "white");
+        }
+    }
+}
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    // holes
+    for (let i = 0; i < holes.length; i++) {
+        holes[i].draw(ctx);
+    }
+
+    // balls
     for (let i = 0; i < balls.length; i++) {
         balls[i].draw(ctx);
     }
 
-    // velocity vectors
+    // velocity vectors on balls
     for (let i = 0; i < balls.length; i++) {
-        balls[i].drawVelocity(ctx, 10);
+        balls[i].drawVelocity(ctx, Ball.RADIUS/2);
     }
 
+    // line segments
     for (let i = 0; i < lines.length; i++) {
         lines[i].draw(ctx);
     }
 
-    // line for aimer
-    if (mousePos != null) {
-        ctx.strokeStyle="white";
-        ctx.beginPath();
-        ctx.moveTo(ball.pos.x, ball.pos.y);
-        ctx.lineTo(mousePos.x, mousePos.y);
-        ctx.stroke();
-        ctx.closePath();
-    }
-    if (targetPos != null) {
-        // console.log(targetPos);
-        ctx.beginPath();
-        ctx.arc(targetPos.x, targetPos.y, Ball.RADIUS, 0, 2 * Math.PI);
-        ctx.stroke();
+    // line for aim assist
+    if (mousePos != null && !ballsAreMoving) {
+        drawAimAssist(mousePos);
     }
 }
 
 function move(dt = 1) {
+    let moving = false; // nothing is moving
     for (let i = 0; i < balls.length; i++) {
         balls[i].move(dt); 
+        if (balls[i].isFading && balls[i].opacity < Consts.epsilon) {
+            continue;
+        }
+        if (balls[i].vel.x != 0 || balls[i].vel.y != 0) {
+            moving = true;
+        }
     }
+    return moving;
 }
 
 function checkCollisionLines() {
     for (let i = 0; i < balls.length; i++) {
         for (let j = 0; j < lines.length; j++) {
-            if (Collision.checkBallToLineCollision(balls[i], lines[j])) {
+            if (balls[i].state == Ball.state.FALLING) continue;
+            if (CollisionUtil.checkBallToLineCollision(balls[i], lines[j])) {
                 return true;
             }
         }
@@ -104,18 +185,26 @@ function checkCollisionLines() {
 function computeCollisionLines() {
     for (let i = 0; i < balls.length; i++) {
         for (let j = 0; j < lines.length; j++) {
-            Collision.computeBallToLineCollision(balls[i], lines[j]);
+            if (balls[i].state == Ball.state.FALLING) continue;
+            CollisionUtil.computeBallToLineCollision(balls[i], lines[j]);
         }
     }
 }
 
 function checkCollisionBalls() {
+    /**
+     * More efficient checking algorithm O(n^2) -> O(n)
+     * Divide the grid into cells of size k * Ball.RADIUS (k > 2, something like k = 2.5 sounds good)
+     * Each ball is located in one of these cells.
+     * Only balls in the neighbouring 8 cells need to be checked for collision.
+     */
     for (let i = 0; i < balls.length - 1; i++) {
         for (let j = i + 1; j < balls.length; j++) {
             let a = balls[i];
             let b = balls[j];
-
-            if (Collision.checkBallCollision(a, b)) {
+            if (a.state == Ball.state.FALLING || b.state == Ball.state.FALLING) 
+                continue;
+            if (CollisionUtil.checkBallCollision(a, b)) {
                 return true;
             }
         }   
@@ -126,69 +215,84 @@ function checkCollisionBalls() {
 function computeCollisionBalls() {
     for (let i = 0; i < balls.length - 1; i++) {
         for (let j = i + 1; j < balls.length; j++) {
-            computeCollisionLines(); 
-            Collision.computeBallCollision(balls[i], balls[j]);
+            let a = balls[i];
+            let b = balls[j];
+            if (a.state == Ball.state.FALLING || b.state == Ball.state.FALLING) 
+                continue;
+            computeCollisionLines(); // this needs to be done for weird cases such as balls hitting other balls through walls.
+            CollisionUtil.computeBallCollision(a, b);
         }   
     }
 }
 
+function computeCollisionHoles() {
+    for (let i = 0; i < balls.length; i++) {
+        for (let j = 0; j < holes.length; j++) {
+            if (CollisionUtil.checkBallInHole(balls[i], holes[j])) {
+                balls[i].state = Ball.state.FALLING;
+                CollisionUtil.computeBallToHoleCollision(balls[i], holes[j]);
+                if (MathUtil.dist(balls[i].pos, holes[j].pos) < Hole.RADIUS - Ball.RADIUS) {
+                    balls[i].isFading = true;
+                }
+            }
+        }
+    }
+}
+
+
 
 // let slow = 0;
-// let pause = false;
-
+// let ticks = 30; // 60
 function animate() {
 
     // slow++;
-    // if (slow % 60 != 0) {
+    // if (slow % ticks != 0) {
     //     requestAnimationFrame(animate);
     //     return;
     // }
-
     
     // check collision
     let n = 10;
     let dt = 1/n;
 
-    // if (checkCollisionBalls()) pause = true;
-
     for (let i = 0; i < n; i++) {
+        computeCollisionHoles();
         if (checkCollisionLines()) {
             computeCollisionLines();
         }
-        while(checkCollisionBalls()) {
+        let safe = 30;
+        while(checkCollisionBalls() && safe > 0) {
             computeCollisionBalls();
+            safe--;
         }
-
-        // draw();
-        move(dt);
-        // if (!pause) {
-        //     move();
-        // }
+        ballsAreMoving = move(dt);
     }
     draw();
     requestAnimationFrame(animate);
 }
 
-
-function mouseDown(e) {
-    let vel = vect2d(e.offsetX - ball.pos.x, e.offsetY - ball.pos.y).getUnitVector().scale(10);
-    ball.vel = vel;
-    ball.setAcceleration();
-
-    targetPos = null;
-}
-
 /**
- * Returns the minimum non-negative scalar t such that the point 
- * "ball.pos + t * direction" is the center of a ball that just touches
- * a ball in "balls" that isn't the cueball 
+ * Returns {min, index} where
+ *  min is the minimum non-negative scalar such that the point 
+ * "ball.pos + min * direction" is the center of a ball that just touches
+ * a ball in "balls" that isn't the cue ball. The index of the ball it touches
+ * in "balls" is also returned.
  * */ 
 function targetClosestBall(direction) {
     let closest = -1;
     let min = -1;
-    for (let i = 1; i < balls.length; i++) {
+    for (let i = 0; i < balls.length; i++) {
         let cur = balls[i];
-        cur.col = "red";
+        
+        // check ball isn't cue ball
+        if (cur == ball) {
+            continue;
+        }
+
+        // check ball isn't in hole
+        if (cur.state == Ball.state.FALLING) {
+            continue;
+        }
 
         if (cur.pos.distToLine(ball.pos, direction) > 2 * Ball.RADIUS) {
             continue;
@@ -221,17 +325,15 @@ function targetClosestBall(direction) {
         }
 
     }
-    if (closest != -1) {
-        balls[closest].col = "yellow";
-    }
-
-    return min == -1? null : min;
+    return {min: min == -1? null : min, index: closest};
 }
 
 /**
- * Returns the minimum non-negative scalar t such that the point 
- * "point + t * direction" is the center of a ball that just touches
- * a line segment in "lines" 
+ * Returns {min, index} where
+ *  min is the minimum non-negative scalar such that the point 
+ * "ball.pos + min * direction" is the center of a ball that just touches
+ * a line segment in "lines". The index of the line segment it touches
+ * in "lines" is also returned.
  * */ 
 // This is the most disgusting code i've ever written lol.
 function targetClosestLine(direction) {
@@ -251,7 +353,7 @@ function targetClosestLine(direction) {
         // prioritize the closer endpoint
         let p1 = line.p1;
         let p2 = line.p2;
-        if (dist(p2, ball.pos) < dist(p1, ball.pos)) {
+        if (MathUtil.dist(p2, ball.pos) < MathUtil.dist(p1, ball.pos)) {
             p1 = line.p2;
             p2 = line.p1;
         }
@@ -273,11 +375,6 @@ function targetClosestLine(direction) {
             t = (b - discr)/(a*a);
             if (t < 0) {
                 t = (b + discr)/(a*a);
-            }
-            if (i == 5) {
-                console.log("parallel ", t);
-            }
-            if (t < 0) {
                 continue;
             }
         }
@@ -345,10 +442,10 @@ function targetClosestLine(direction) {
             let b1 = new Ball(b1_pos.x, b1_pos.y);
             let b2 = new Ball(b2_pos.x, b2_pos.y);
             
-            if (!Collision.checkBallToLineOverlap(b1, line)) {
+            if (!CollisionUtil.checkBallToLineOverlap(b1, line)) {
                 t1 = null;
             }
-            if (!Collision.checkBallToLineOverlap(b2, line)) {
+            if (!CollisionUtil.checkBallToLineOverlap(b2, line)) {
                 t2 = null;
             }
             // take minimal t
@@ -374,31 +471,45 @@ function targetClosestLine(direction) {
         }
     }
 
-    return min == -1? null : min;
+    return {min: min == -1? null : min, index: closest};
+}
+
+/**
+ * Returns {min, index} where
+ *  min is the minimum non-negative scalar such that the point 
+ * "ball.pos + min * direction" is the center of a ball that just enters
+ * a hole in "holes". The index of the hole it touches
+ * in "holes" is also returned.
+ * */ 
+function targetClosestHole(direction) {
+    let closest = -1;
+    let min = -1;
+
+    for (let i = 0; i < holes.length; i++) {
+
+        // check distance from line to hole is < hole.radius
+        // make sure direction.to(hole.pos) dotted with direction > 0
+        // solve a quadratic to place the ball :()
+
+    }
+
+    return {min: min == -1? null : min, index: closest};
+}
+
+
+function mouseDown(e) {
+    if (ballsAreMoving) {
+        return;
+    }
+    let vel = new Vector2D(e.offsetX - ball.pos.x, e.offsetY - ball.pos.y).getUnitVector().scale(20);
+    ball.vel = vel;
+
+    console.log(ball.pos, ball.vel);
+    printBalls();
 }
 
 function mouseMove(e) {
-    mousePos = vect2d(e.offsetX, e.offsetY);
-
-    // closest touching ball
-    let direction = ball.pos.to(mousePos); // line
-    let m1 = targetClosestBall(direction);
-    let m2 = targetClosestLine(direction);
-    let min = m1;
-
-    if (m1 != null && m2 != null) {
-        min = Math.min(m1, m2);
-    }
-    else if (m2 != null) {
-        min = m2;
-    }
-
-    if (min != null) {
-        targetPos = ball.pos.add(direction.scale(min));
-    }
-    else {
-        targetPos = null;
-    }
+    mousePos = new Vector2D(e.offsetX, e.offsetY);
 }
 
 canvas.addEventListener('mousedown', mouseDown);
@@ -408,13 +519,10 @@ animate();
 
 
 
-
-
-
 window.printBalls = function() {
     let out = "";
     for (let i = 0; i < balls.length; i++) {
-        out += `balls[${i}].pos = vect2d(${balls[i].pos.x}, ${balls[i].pos.y})\n`;
+        out += `balls[${i}].pos = new Vector2D(${balls[i].pos.x}, ${balls[i].pos.y})\n`;
     }
     console.log(out);
 }
@@ -422,7 +530,7 @@ window.printBalls = function() {
 window.printBallVelocities = function() {
     let out = "";
     for (let i = 0; i < balls.length; i++) {
-        out += `balls[${i}].vel = vect2d(${balls[i].vel.x}, ${balls[i].vel.y})\n`;
+        out += `balls[${i}].vel = new Vector2D(${balls[i].vel.x}, ${balls[i].vel.y})\n`;
     }
     console.log(out);
 }
