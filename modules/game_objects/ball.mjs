@@ -4,8 +4,8 @@ import { Consts } from "../consts.mjs";
 
 export class Ball {
 
-    static FRICTION = 0.025;
-    static RADIUS = 15;
+    static FRICTION = 0.03; // 0.025
+    static RADIUS = 13; // 15
 
     pos = null;
     vel = null;
