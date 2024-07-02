@@ -27,9 +27,13 @@ export class Ball {
         this.vel = new Vector2D(0, 0);
         this.accel = new Vector2D(0, 0);
         this.colour = colour;
+        this.resetState();
+    }
+
+    resetState() {
+        this.state = Ball.state.ACTIVE;
         this.opacity = 1;
         this.isFading = false;
-        this.state = Ball.state.ACTIVE;
     }
     
     move(dt = 1) {
@@ -72,6 +76,6 @@ export class Ball {
     drawVelocity(ctx, scale=1, offset=null) {
         let c1 = this.pos.add(offset);
         let c2 = this.pos.add(this.vel.scale(scale)).add(offset);
-        CanvasUtil.drawLine(ctx, c1, c2, 2, "blue");
+        CanvasUtil.drawLine(ctx, c1, c2, 2, "white");
     }
 }

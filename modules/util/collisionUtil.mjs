@@ -17,6 +17,10 @@ export class CollisionUtil {
     static numBallLineHeadonCollision = 0;
     static numBallLineCornerCollision = 0;
 
+    static checkBallOverlap(a, b) {
+        return MathUtil.dist(a.pos, b.pos) <= 2 * Ball.RADIUS;
+    }
+
     // checks collision between two balls a and b
     static checkBallCollision(a, b) {
         let ab = a.pos.to(b.pos);
@@ -36,14 +40,17 @@ export class CollisionUtil {
     }
 
 
-    // collision between two balls a and b, mutates a and b
+    /**
+     * collision between two balls a and b, mutates a and b
+     * return: whether or not a collision between a and b was computed.
+     */
     static computeBallCollision(a, b) {
         let ab = b.pos.subtract(a.pos);
         let d = ab.getMagnitude();
 
         // collision
         if (d > 2 * Ball.RADIUS) {
-            return;
+            return false;
         }
 
         // correct position overlap
@@ -62,7 +69,7 @@ export class CollisionUtil {
         // check velocity directions
         let va_rel = a.vel.subtract(b.vel);
         if (va_rel.dot(ab) <= 0) {
-            return;
+            return false;
         }
 
         // Billiard Simulation: https://www.youtube.com/watch?v=ThhdlMbGT5g 
@@ -75,6 +82,7 @@ export class CollisionUtil {
         // completetly elastic
         a.vel = a.vel.subtract(v_a).add(v_b);
         b.vel = b.vel.subtract(v_b).add(v_a);
+        return true;
     } 
 
 
@@ -145,7 +153,7 @@ export class CollisionUtil {
     // collision between ball a and line l, mutates a
     static computeBallToLineCollision(ball, line) {
         if (!CollisionUtil.checkBallToLineOverlap(ball, line)) {
-            return;
+            return false;
         }
         // collides with endpoints of line
         let point = null;
@@ -163,15 +171,14 @@ export class CollisionUtil {
 
             let v_reflect = ball.vel.proj(p_perp);
             if (v_reflect.dot(p_perp) <= 0) {
-                return;
+                return false;
             }
             ball.vel = ball.vel.subtract(v_reflect).subtract(v_reflect);
 
             this.totalBallLineCornerCorrection += correct.getMagnitude();
             this.numBallLineCornerCollision++;
             // console.log("Average Correction Ball-Line Corner: ", this.totalBallLineCornerCorrection/this.numBallLineCornerCollision, this.numBallLineCornerCollision);
-
-            return;
+            return true;
         }
 
         // collides normally (not on endpoints)
@@ -192,11 +199,12 @@ export class CollisionUtil {
          * we will consider which side the center of the ball is on to be the side the ball is on.
          * */ 
         if (pos_perp.dot(v_perp) <= 0) {
-            return;
+            return false;
         }
 
         // subtract perpendicular velocity twice
         ball.vel = ball.vel.subtract(v_perp).subtract(v_perp).scale(Consts.elasticity);
+        return true;
     }
 
     static checkBallInHole(ball, hole) {
@@ -205,7 +213,7 @@ export class CollisionUtil {
     
     // ball inside hole collides with edges of the hole, mutates the ball
     static computeBallToHoleCollision(ball, hole) {
-        if (!this.checkBallInHole(ball, hole)) return;
+        if (!this.checkBallInHole(ball, hole)) return false;
         let ball_to_hole = ball.pos.to(hole.pos);
 
         // correct position.
@@ -233,5 +241,7 @@ export class CollisionUtil {
             let change = ball_to_hole.getUnitVector().scale(mag); 
             ball.vel = ball.vel.scale(0.95).add(change.scale(0.05));
         }
+
+        return true;
     }
 }

@@ -210,7 +210,10 @@ balls[0].vel = new Vector2D(15.879609977038012, 12.158864543087681);
 
 
 // weird aimer accuracy issue with perpendicular-ish collision (shoot ball at top)
+// There is evidence to suggest it is a double collision, as in the cueball bounces off the wall and hits the ball again,
+// but it happens so fast that it looks like one collision
 
+// Case 1
 balls[0].pos = new Vector2D(640.3614061340904, 141.40705803776507)
 balls[1].pos = new Vector2D(679.8741803179529, 277.8878024963153)
 balls[2].pos = new Vector2D(642.380063075623, 172.17795511484627)
@@ -227,3 +230,22 @@ balls[12].pos = new Vector2D(502.55455178115267, 381.0017778080927)
 balls[13].pos = new Vector2D(407.3409126190954, 331.4637868149021)
 balls[14].pos = new Vector2D(652.2501589454832, 439.5277645683747)
 balls[15].pos = new Vector2D(515.6288447107848, 241.2289570362635)
+
+// Case 2
+balls[0].pos = new Vector2D(576.4996465479767, 96.08223905557128)
+balls[1].pos = new Vector2D(857.4733144562352, 424.3642320551454)
+balls[2].pos = new Vector2D(729.6134428425052, 188.81143408773377)
+balls[3].pos = new Vector2D(754.3613479702707, 395.36594535209923)
+balls[4].pos = new Vector2D(500.00000000000057, 469.9999999999997)
+balls[5].pos = new Vector2D(711.3732762969354, 401.7340818843784)
+balls[6].pos = new Vector2D(775.421056951154, 196.0124223091102)
+balls[7].pos = new Vector2D(799.6533746685301, 278.0992471924053)
+balls[8].pos = new Vector2D(703.4380477937771, 60.5565762448357)
+balls[9].pos = new Vector2D(827.8181444968161, 320.79597694349536)
+balls[10].pos = new Vector2D(721.5118555473305, 264.9433615009885)
+balls[11].pos = new Vector2D(661.4546700469742, 67.63049169648063)
+balls[12].pos = new Vector2D(799.2691625775319, 243.19878153370416)
+balls[13].pos = new Vector2D(435.43307803495446, 424.4368574584086)
+balls[14].pos = new Vector2D(658.0779283714038, 389.1433051172482)
+balls[15].pos = new Vector2D(763.6137187620445, 332.9875039674061)
+balls[0].vel = new Vector2D(-5.229685780924716, 14.944725861561942)

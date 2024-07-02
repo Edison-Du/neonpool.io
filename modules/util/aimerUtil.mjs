@@ -1,5 +1,6 @@
 import { Vector2D } from "./vector2D.mjs";
 import { Ball } from "../game_objects/ball.mjs";
+import { Hole } from "../game_objects/hole.mjs";
 import { CollisionUtil } from "./collisionUtil.mjs";
 import { Consts } from "../consts.mjs";
 import { CanvasUtil } from "./canvasUtil.mjs";
@@ -7,7 +8,8 @@ import { MathUtil } from "./mathUtil.mjs";
 
 export class AimerUtil {
 
-    static framesToFullStrength = 60;
+    static framesToFullStrength = 120;
+    static resultantVelocityLength = 4*Ball.RADIUS;
 
     /**
      * May want another param later on for whether or not to lower opacity, depending on who's aiming
@@ -21,31 +23,34 @@ export class AimerUtil {
         let cueBall = game.cueBall;
         let balls = game.balls;
         let lines = game.lines;
+        let holes = game.holes;
 
+        let direction = cueBall.pos.to(mousePos);
 
-        // closest touching ball
-        let direction = cueBall.pos.to(mousePos); // line
-        let closestBall = this.#targetClosestBall(cueBall, direction, balls);
-        let closestLine = this.#targetClosestLine(cueBall, direction, lines);
-    
-        let m1 = closestBall.min;
-        let m2 = closestLine.min;
-        let min = m1;
-        let closestIsBall = closestBall.index != -1;
-        let closestIsLine = false;
-    
-        // checks if closest is a line
-        if (m1 == null || (m2 != null && m2 < m1)) {
-            min = m2;
-            closestIsBall = false;
-            closestIsLine = true;
+        // for each type of game object (ball, line, etc), determine the closest one
+        let minObjects = [
+            this.#targetClosestBall(cueBall, direction, balls),
+            this.#targetClosestLine(cueBall, direction, lines),
+            this.#targetClosestHole(cueBall, direction, holes)
+        ];
+
+        // determine closest overall object
+        let minDist = -1;
+        let minIndex = -1;
+        for (let i = 0; i < minObjects.length; i++) {
+            let dist = minObjects[i].minDist;
+            if (dist == -1) continue;
+            if (dist <= minDist || minDist == -1) {
+                minDist = dist;
+                minIndex = i;
+            }
         }
-    
-        if (min == null) {
-            return;
-        }
-    
-        let targetPos = cueBall.pos.add(direction.scale(min)); // projected location of ball before collision
+
+        // no object in path of cue ball
+        if (minDist == -1) return;
+
+        // important vectors
+        let targetPos = cueBall.pos.add(direction.scale(minDist)); // projected location of ball before collision
         let dir_norm = direction.getUnitVector();
         let dir_rad = dir_norm.scale(Ball.RADIUS);
         let pos_target = targetPos.subtract(dir_rad);
@@ -53,49 +58,22 @@ export class AimerUtil {
         // draws pointer and projected ball location before collision
         CanvasUtil.drawLine(ctx, cueBall.pos, pos_target, 2, "white");
         CanvasUtil.drawCircle(ctx, targetPos, Ball.RADIUS - 1, 2, "white", null);
-        
-        // draws resultant velocity of ball-ball collision
-        if (closestIsBall) {
-            let closest = balls[closestBall.index];
-            let ab = targetPos.to(closest.pos);
-            let v_cueball = dir_norm.perp(ab).scale(4*Ball.RADIUS);
-            let v_other = dir_norm.proj(ab).scale(4*Ball.RADIUS);
-    
-            let pos_v1 = targetPos.add(v_cueball);
-    
-            // let pos_v2i = targetPos.add(v_other.getUnitVector().scale(Ball.RADIUS));
-            let pos_v2i = closest.pos;
-            let pos_v2f = pos_v2i.add(v_other);
-    
-            CanvasUtil.drawLine(ctx, targetPos, pos_v1, 2, "white");
-            CanvasUtil.drawLine(ctx, pos_v2i, pos_v2f, 2, "white");
-        }
-        // draws resultant velocity of ball-wall collision
-        else if (closestIsLine) {
-            let closest = lines[closestLine.index];
-            let line_dir = closest.getDirectionVector();
-            // ball hits corner of line segment
-            if (targetPos.distToLine(closest.p1, line_dir) < Ball.RADIUS - Consts.epsilon) {
-                let point = closest.p1;
-                if (MathUtil.dist(point, targetPos) > MathUtil.dist(closest.p2, targetPos)) {
-                    point = closest.p2;
+
+        // used to draw more specific features of the head of the aimer
+        let drawFunctions = [
+            (index) => {
+                if (game.checkBallInPlayerSet(balls[index])) {
+                    this.#drawAimAssistForHittableBall(ctx, dir_norm, targetPos, balls[index]);
                 }
-                let v_before = cueBall.pos.to(targetPos).getUnitVector();
-                let v_deflect = point.to(targetPos).getUnitVector();
-                let v_sub = v_before.proj(v_deflect);
-                let v_cueball = v_before.subtract(v_sub).subtract(v_sub);
-                let pos_v = targetPos.add(v_cueball.scale(4*Ball.RADIUS));
-    
-                CanvasUtil.drawLine(ctx, targetPos, pos_v, 2, "white");
-            }
-            // ball hits side of line segment
-            else {
-                let dir_proj_line = dir_norm.proj(line_dir);
-                let v_cueball = dir_norm.subtract(dir_proj_line.scale(2)).scale(-1);
-                let pos_v = targetPos.add(v_cueball.scale(4*Ball.RADIUS));
-                CanvasUtil.drawLine(ctx, targetPos, pos_v, 2, "white");
-            }
-        }
+                else {
+                    this.#drawAimAssistForUnhittableBall(ctx, dir_norm, targetPos, balls[index]);
+                }
+            }, // need to be more complex for diff balls
+            (index) => {this.#drawAimAssistForLine(ctx, dir_norm, targetPos, lines[index])},
+            (index) => {this.#drawAimAssistForHole(ctx, dir_norm, targetPos, holes[index])}
+        ];
+
+        drawFunctions[minIndex](minObjects[minIndex].index);
     }
 
     static drawStrengthBar(ctx, timeElapsed) {
@@ -106,25 +84,84 @@ export class AimerUtil {
 
         CanvasUtil.drawRectangle(ctx, pos, filled, null, null, "orange");
         CanvasUtil.drawRectangle(ctx, pos, dim, 2, "black", null);
+
+        // dividers
+        CanvasUtil.drawLine(ctx, pos.addXY(150, 0), pos.addXY(150, 20), 2, "black");
+        CanvasUtil.drawLine(ctx, pos.addXY(75, 0), pos.addXY(75, 20), 2, "black");
+        CanvasUtil.drawLine(ctx, pos.addXY(225, 0), pos.addXY(225, 20), 2, "black");
+    }
+
+    static drawPlaceBall(ctx, mousePos) {
+        ctx.globalAlpha = 0.5;
+        CanvasUtil.drawCircle(ctx, mousePos, Ball.RADIUS, null, null, "white");
+        ctx.globalAlpha = 1;
+    }
+
+    static drawCannotPlaceBall(ctx, mousePos) {
+        let diagonal = new Vector2D(1, -1);
+        diagonal = diagonal.getUnitVector().scale(Ball.RADIUS);
+
+        ctx.globalAlpha = 0.5;
+        CanvasUtil.drawCircle(ctx, mousePos, Ball.RADIUS-1, 2, "white", null);
+        CanvasUtil.drawLine(ctx, mousePos.add(diagonal), mousePos.subtract(diagonal), 2, "white");
+        ctx.globalAlpha = 1;
     }
 
     // Specific draw methods
-    static #drawAimAssistForBall(ctx, mousePos, ball) {
+    static #drawAimAssistForHittableBall(ctx, velNorm, targetPos, ball) {
+        let ab = targetPos.to(ball.pos);
+        let v_cueball = velNorm.perp(ab).scale(this.resultantVelocityLength);
+        let v_other = velNorm.proj(ab).scale(this.resultantVelocityLength);
 
+        let pos_v1 = targetPos.add(v_cueball);
+
+        let pos_v2i = ball.pos;
+        let pos_v2f = pos_v2i.add(v_other);
+
+        CanvasUtil.drawLine(ctx, targetPos, pos_v1, 2, "white");
+        CanvasUtil.drawLine(ctx, pos_v2i, pos_v2f, 2, "white");
     }
 
-    static #drawAimAssistForLine(ctx, mousePos, line) {
-
+    static #drawAimAssistForUnhittableBall(ctx, velNorm, targetPos, ball) {
+        let diagonal = new Vector2D(1, -1);
+        diagonal = diagonal.getUnitVector().scale(Ball.RADIUS);
+        CanvasUtil.drawLine(ctx, targetPos.add(diagonal), targetPos.subtract(diagonal), 2, "white");
     }
 
-    static #drawAimAssistForHole(ctx, mousePos, hole) {
+    static #drawAimAssistForLine(ctx, velNorm, targetPos, line) {
+        let line_dir = line.getDirectionVector();
+        // ball hits corner of line segment
+        if (targetPos.distToLine(line.p1, line_dir) < Ball.RADIUS - Consts.epsilon) {
+            let point = line.p1;
+            if (MathUtil.dist(point, targetPos) > MathUtil.dist(line.p2, targetPos)) {
+                point = line.p2;
+            }
+            let v_before = velNorm;
+            let v_deflect = point.to(targetPos).getUnitVector();
+            let v_sub = v_before.proj(v_deflect);
+            let v_cueball = v_before.subtract(v_sub).subtract(v_sub);
+            let pos_v = targetPos.add(v_cueball.scale(this.resultantVelocityLength));
 
+            CanvasUtil.drawLine(ctx, targetPos, pos_v, 2, "white");
+        }
+        // ball hits side of line segment
+        else {
+            let dir_proj_line = velNorm.proj(line_dir);
+            let v_cueball = velNorm.subtract(dir_proj_line.scale(2)).scale(-1);
+            let pos_v = targetPos.add(v_cueball.scale(this.resultantVelocityLength));
+            CanvasUtil.drawLine(ctx, targetPos, pos_v, 2, "white");
+        }
+    }
+
+    static #drawAimAssistForHole(ctx, velNorm, targetPos, hole) {
+        
     }
 
 
     /**
-     * Returns {min, obj}, where min is the distance the cue ball will travel before hitting the object,
-     * and direction is the direction the cue ball is travelling
+     * Returns {minDist, index}, where min is the distance the cue ball will travel before hitting an object,
+     * and direction is the direction the cue ball is travelling.
+     * minDist = -1 if no object obstructing path of cue ball
      * @param {Ball} cueBall 
      * @param {Vector2D} direction 
      */
@@ -144,6 +181,7 @@ export class AimerUtil {
                 continue;
             }
     
+            // not intersecting with cue ball's path
             if (cur.pos.distToLine(cueBall.pos, direction) > 2 * Ball.RADIUS) {
                 continue;
             }
@@ -165,17 +203,12 @@ export class AimerUtil {
                 t = (b + discr)/(a*a);
             }
     
-            if (closest == -1) {
+            if (closest == -1 || t < min) {
                 closest = i;
                 min = t;
             }
-            else if (t < min) {
-                closest = i;
-                min = t;
-            }
-    
         }
-        return {min: min == -1? null : min, index: closest};
+        return {minDist: min, index: closest};
     }
 
     static #targetClosestLine(cueBall, direction, lines) {
@@ -312,12 +345,44 @@ export class AimerUtil {
                 min = t;
             }
         }
-    
-        return {min: min == -1? null : min, index: closest};
+        return {minDist: min, index: closest};
     }
 
     static #targetClosestHole(cueBall, direction, holes) {
+        let closest = -1;
+        let min = -1;
+        for (let i = 0; i < holes.length; i++) {
+            let hole = holes[i];
 
+            // not intersecting with cue ball's path
+            if (hole.pos.distToLine(cueBall.pos, direction) > Hole.RADIUS) {
+                continue;
+            }
+            // ignore holes on the opposite direction of where the mouse is
+            if (cueBall.pos.to(hole.pos).dot(direction) < 0) {
+                continue;
+            }
+
+            // solve a quadratic, take closer answer
+            let m_d = direction.getMagnitude();
+            let m_a = cueBall.pos.getMagnitude();
+            let m_p = hole.pos.getMagnitude();
+
+            let ad = cueBall.pos.dot(direction);
+            let pd = hole.pos.dot(direction);
+            let ap = cueBall.pos.dot(hole.pos);
+
+            let a = m_d * m_d;
+            let b = 2*(ad-pd);
+            let c = m_a * m_a + m_p * m_p - Hole.RADIUS * Hole.RADIUS - 2 * ap;
+
+            let t = MathUtil.solveQuadratic(a, b, c).x1;
+
+            if (closest == -1 || t < min) {
+                closest = i;
+                min = t;
+            }
+        }
+        return {minDist: min, index: closest};
     }
-
 }

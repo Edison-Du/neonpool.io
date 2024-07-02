@@ -18,6 +18,9 @@ export class Vector2D {
         if (!other) return new Vector2D(this.x, this.y);
         return new Vector2D(this.x + other.x, this.y + other.y);
     }
+    addXY(x, y) {
+        return new Vector2D(this.x + x, this.y + y);
+    }
     // (x, y) - (a, b) => (x - a, y - b)
     // does not mutate this or other
     subtract(other) {
