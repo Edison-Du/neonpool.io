@@ -1,5 +1,7 @@
 import { Vector2D } from "./modules/util/vector2D.mjs";
 import { TwoPlayerGame } from "./modules/game/twoPlayerGame.mjs";
+import { ThreePlayerGame } from "./modules/game/threePlayerGame.mjs";
+import { FourPlayerGame } from "./modules/game/fourPlayerGame.mjs";
 import { AimerUtil } from "./modules/util/aimerUtil.mjs";
 import { MathUtil } from "./modules/util/mathUtil.mjs";
 import { Ball } from "./modules/game_objects/ball.mjs";
@@ -12,14 +14,16 @@ let mousePos = null;
 let isHoldingBall = false;
 let heldTime = -1;
 let seed = Math.floor(Math.random() * (1<<21));
-let game = new TwoPlayerGame(seed);
+// let game = new TwoPlayerGame(seed);
+let game = new FourPlayerGame(seed);
+// let game = new ThreePlayerGame(seed);
 
 console.log("SEED: ", seed);
 
 // helper
 function mouseOnCueBall() {
     if (!mousePos) return false;
-    if (game.cueBall.state == Ball.state.FALLING) return false;
+    if (game.cueBall.isFalling()) return false;
     return MathUtil.dist(mousePos, game.cueBall.pos) < Ball.RADIUS;
 }
 

@@ -7,8 +7,8 @@ export class Consts {
     static boardHeight = 500;
     static breakLine = 275; // 250
 
-    // colours
+    // colours,  https://www.w3schools.com/colors/colors_names.asp
     static cueBallColour = "white";
     static eightBallColour = "black";
-    static playerColours = ["red", "blue"];
+    static playerColours = ["red", "blue", "gold", "turquoise"];
 }

@@ -35,6 +35,18 @@ export class Ball {
         this.opacity = 1;
         this.isFading = false;
     }
+
+    isFalling() {
+        return this.state == Ball.state.FALLING;
+    }
+
+    isActive() {
+        return this.state == Ball.state.ACTIVE;
+    }
+
+    setFalling() {
+        this.state = Ball.state.FALLING;
+    }
     
     move(dt = 1) {
         // Euler's method

@@ -177,7 +177,7 @@ export class AimerUtil {
             }
     
             // check ball isn't in hole
-            if (cur.state == Ball.state.FALLING) {
+            if (cur.isFalling()) {
                 continue;
             }
     
