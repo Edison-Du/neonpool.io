@@ -64,6 +64,7 @@ import { LineSegment } from "./modules/lineSegment.mjs";
 
 
 
+// =======================================================================================
 // newton's cradle with wall
 ball.pos = new Vector2D(100, 100);
 balls.push(new Ball(220, 100, "red"));
@@ -71,7 +72,22 @@ balls.push(new Ball(180, 100, "blue"));
 // balls.push(new Ball(140, 100, "yellow"));
 lines.push(new LineSegment(new Vector2D(200, 50), new Vector2D(200, 350), "brown"));
 
+// for balls of radius 13
+function testCase() {
 
+    let balls = this.balls;
+    let lines = this.lines;
+
+    this.cueBall.pos = new Vector2D(100, 100);
+    balls.push(new Ball(213, 100, "red"));
+    balls.push(new Ball(187, 100, "blue"));
+    balls.push(new Ball(161, 100, "yellow"));
+    lines.push(new LineSegment(200, 50, 200, 350, "brown"));
+
+}
+
+
+// =======================================================================================
 // two walls very close
 lines.push(new LineSegment(600, 100, 700, 300, "brown")); 
 lines.push(new LineSegment(601, 100, 701, 300, "brown")); 
@@ -249,3 +265,13 @@ balls[13].pos = new Vector2D(435.43307803495446, 424.4368574584086)
 balls[14].pos = new Vector2D(658.0779283714038, 389.1433051172482)
 balls[15].pos = new Vector2D(763.6137187620445, 332.9875039674061)
 balls[0].vel = new Vector2D(-5.229685780924716, 14.944725861561942)
+
+
+
+// =============================================
+// Seed where break lags when line collision is checked during ball collision
+seed = 1447706; // aim straight at balls
+
+// another one 
+seed = 161011;
+this.cueBall.vel = new Vector2D(19.999634180172333, 0.12096552931555846)

@@ -133,7 +133,7 @@ function mouseUp(e) {
     heldTime = -1;
 
     // debugging
-    // console.log(`balls[0].vel = new Vector2D(${game.cueBall.vel.x}, ${game.cueBall.vel.y})\n`);
+    console.log(`balls[0].vel = new Vector2D(${game.cueBall.vel.x}, ${game.cueBall.vel.y})\n`);
     // printBalls();
 }
 

@@ -8,12 +8,6 @@ export class FourPlayerGame extends ClassicGame {
 
     constructor(seed=0) {
         super(seed);
-        // this.testCase();
-    }
-
-    testCase() {
-        let balls = this.balls;
-
     }
 
     initializeBalls() {

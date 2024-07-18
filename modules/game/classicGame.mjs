@@ -45,6 +45,12 @@ export class ClassicGame {
 
         this.initializePlayers();        
         this.#initializeGameObjects();
+
+        // this.testCase();
+    }
+
+    testCase() {
+        // this.cueBall.vel = new Vector2D(19.999634180172333, 0.12096552931555846)
     }
 
     // NOTE, we can create different functions for different test cases.
@@ -242,6 +248,7 @@ export class ClassicGame {
                 this.#computeCollisionBalls();
                 safe--;
             }
+            // console.log(safe);
             let isMoving = this.#move(dt);
             if (this.ballsAreMoving && !isMoving) {
                 this.#endTurn();
@@ -324,8 +331,16 @@ export class ClassicGame {
                 if (a.isFalling() || b.isFalling())  {
                     continue;
                 }
-                // this needs to be done for weird cases such as balls hitting other balls through walls.
-                this.#computeCollisionLines(); 
+
+                /**
+                 * Checking line collisions before ball collisions.
+                 * This needs to be done for weird cases such as balls hitting other balls through walls.
+                 */
+                for (let k = 0; k < this.lines.length; k++) {
+                    CollisionUtil.computeBallToLineCollision(a, this.lines[k]);
+                    CollisionUtil.computeBallToLineCollision(b, this.lines[k]);
+                }
+                
                 let collided = CollisionUtil.computeBallCollision(a, b);
 
                 // store the first ball that the cue ball hit

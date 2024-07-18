@@ -8,27 +8,6 @@ export class TwoPlayerGame extends ClassicGame {
 
     constructor(seed=0) {
         super(seed);
-        // this.testCase();
-    }
-
-    testCase() {
-        let balls = this.balls;
-        // balls[0].pos = new Vector2D(856.4322258916669, 338.89962440869635)
-        // balls[1].pos = new Vector2D(564.6481097526154, 323.2375361544168)
-        // balls[2].pos = new Vector2D(418.26044614330846, 365.75353435145223)
-        // balls[3].pos = new Vector2D(499.9507164612502, 367.6205428384135)
-        // balls[4].pos = new Vector2D(88.26784820869159, 160.39798568029465)
-        // balls[5].pos = new Vector2D(542.1262427693463, 389.7788168814025)
-        // balls[6].pos = new Vector2D(386.7673360739973, 214.60078715791204)
-        // balls[7].pos = new Vector2D(408.41804941443934, 271.58104680216877)
-        // balls[8].pos = new Vector2D(392.152574562932, 169.37519682068097)
-        // balls[9].pos = new Vector2D(404.0539428150367, 311.59692983538736)
-        // balls[10].pos = new Vector2D(366.30004839559103, 251.52228453173342)
-        // balls[11].pos = new Vector2D(353.6384815218505, 182.68405308936227)
-        // balls[12].pos = new Vector2D(367.60474039688637, 293.4957617092476)
-        // balls[13].pos = new Vector2D(274.5390799626864, 125.58204897578018)
-        // balls[14].pos = new Vector2D(320.1407690438606, 295.27063240580986)
-        // balls[15].pos = new Vector2D(287.5990077848266, 271.58561748357675)
     }
 
     initializeBalls() {
