@@ -2,6 +2,16 @@ import { Vector2D } from "./vector2D.mjs";
 
 export class CanvasUtil {
 
+    static scale = 1;
+
+    static setScale(scale) {
+        this.scale = scale;
+    }
+
+    static resetScale() {
+        this.scale = 1;
+    }
+
     /**
      * 
      * @param {*} ctx 
@@ -11,6 +21,11 @@ export class CanvasUtil {
      * @param {*} strokeColour 
      */
     static drawLine(ctx, start, end, strokeWidth, strokeColour) {
+        // scale position
+        start = start.scale(CanvasUtil.scale);
+        end = end.scale(CanvasUtil.scale);
+
+        // draw line
         ctx.beginPath();
 
         ctx.moveTo(start.x, start.y);
@@ -28,12 +43,17 @@ export class CanvasUtil {
      * 
      * @param {*} ctx 
      * @param {Vector2D} center 
-     * @param {*} radius 
+     * @param {number} radius 
      * @param {*} strokeWidth 
      * @param {*} strokeColour 
      * @param {*} fillColour 
      */
     static drawCircle(ctx, center, radius, strokeWidth, strokeColour, fillColour) {
+        // scale
+        center = center.scale(CanvasUtil.scale);
+        radius *= CanvasUtil.scale;
+
+        // draw circle
         ctx.beginPath();
 
         ctx.arc(center.x, center.y, radius, 0, 2 * Math.PI);
@@ -62,6 +82,11 @@ export class CanvasUtil {
      * @param {*} fillColour 
      */
     static drawRectangle(ctx, position, dimensions, strokeWidth, strokeColour, fillColour) {
+        // scale
+        position = position.scale(CanvasUtil.scale);
+        dimensions = dimensions.scale(CanvasUtil.scale);
+
+        // draw rect
         ctx.beginPath();
 
         ctx.moveTo(position.x               , position.y);

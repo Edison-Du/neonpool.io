@@ -5,6 +5,8 @@ import { FourPlayerGame } from "./modules/game/fourPlayerGame.mjs";
 import { AimerUtil } from "./modules/util/aimerUtil.mjs";
 import { MathUtil } from "./modules/util/mathUtil.mjs";
 import { Ball } from "./modules/game_objects/ball.mjs";
+import { CanvasUtil } from "./modules/util/canvasUtil.mjs";
+import { Consts } from "./modules/consts.mjs";
 
 // elements
 const canvas = document.getElementById("board");
@@ -31,7 +33,9 @@ function mouseOnCueBall() {
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    game.draw(ctx);
+    CanvasUtil.setScale(Consts.scale);
+
+    game.draw(ctx, null);
 
     AimerUtil.drawStrengthBar(ctx, Math.max(0, Math.min(heldTime, AimerUtil.framesToFullStrength)));
 
@@ -97,7 +101,8 @@ function mouseDown(e) {
 
     // place cue ball
     if (isHoldingBall || !game.ballIsPlaced) {
-        let position = new Vector2D(e.offsetX, e.offsetY);
+        mousePos = new Vector2D(e.offsetX, e.offsetY).scale(1/Consts.scale);
+        let position = new Vector2D(mousePos.x, mousePos.y);
         game.placeCueBall(position);
         isHoldingBall = false; // will reset the ball position if invalid placement is made
         return;
@@ -123,7 +128,7 @@ function mouseUp(e) {
 
     let strength = Math.min((heldTime/AimerUtil.framesToFullStrength), 1) * 20;
 
-    mousePos = new Vector2D(e.offsetX, e.offsetY);
+    mousePos = new Vector2D(e.offsetX, e.offsetY).scale(1/Consts.scale);
     game.shootCueBall(game.cueBall.pos.to(mousePos), strength);
     heldTime = -1;
 
@@ -133,7 +138,7 @@ function mouseUp(e) {
 }
 
 function mouseMove(e) {
-    mousePos = new Vector2D(e.offsetX, e.offsetY);
+    mousePos = new Vector2D(e.offsetX, e.offsetY).scale(1/Consts.scale);
 }
 
 // add listeners

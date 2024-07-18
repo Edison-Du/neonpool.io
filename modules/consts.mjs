@@ -6,6 +6,8 @@ export class Consts {
     static boardWidth = 1000;
     static boardHeight = 500;
     static breakLine = 275; // 250
+    
+    static scale = 0.75;
 
     // colours,  https://www.w3schools.com/colors/colors_names.asp
     static cueBallColour = "white";
