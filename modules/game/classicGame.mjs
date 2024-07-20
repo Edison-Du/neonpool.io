@@ -8,14 +8,18 @@ import { MathUtil } from "../util/mathUtil.mjs";
 import { RandomUtil } from "../util/randomUtil.mjs";
 import { Player } from "./player.mjs";
 import { CanvasUtil } from "../util/canvasUtil.mjs";
+import { TestUtil } from "../util/testUtil.mjs";
+import { Polygon } from "../game_objects/polygon.mjs";
 
 export class ClassicGame {
 
     // Game Objects
     cueBall;
     balls = []; // the cue ball should always be at index 0, eight-ball should be at index 1
-    lines = []; // might want to use polygons later
+    lines = []; // outer walls of the cushions, used for collision detection.
     holes = [];
+
+    polygons = []; // outer walls, used for drawing, not for collision.
 
     // Other variables
     players = [];
@@ -46,11 +50,7 @@ export class ClassicGame {
         this.initializePlayers();        
         this.#initializeGameObjects();
 
-        // this.testCase();
-    }
-
-    testCase() {
-        // this.cueBall.vel = new Vector2D(19.999634180172333, 0.12096552931555846)
+        // TestUtil.breakLagTestV2(this);
     }
 
     // NOTE, we can create different functions for different test cases.
@@ -63,14 +63,11 @@ export class ClassicGame {
         const ho = 40;
         const hm = 30;
 
-        const ri = new Vector2D(30, 63);
-        const ro = new Vector2D(46, 75); // 46, 79
-
         // Cueball
         this.balls.push(new Ball(Consts.breakLine, Consts.boardHeight/2, Consts.cueBallColour));
         this.cueBall = this.balls[0];
 
-        // Break orientation for balls
+        // Break orientation for balls, each type of game has different setup (2, 3, 4 player)
         this.initializeBalls();
         
         // shuffle the ball colours
@@ -98,32 +95,43 @@ export class ClassicGame {
         this.holes.push(new Hole( w/2,   hm));
         this.holes.push(new Hole( w/2, h-hm));
 
-        // Walls
-        const lineColour = "brown"
+        // Cushions
+        const cushionColour = "brown";
 
-        this.lines.push(new LineSegment(ri.x,   ri.y, ro.x,   ro.y, lineColour));
-        this.lines.push(new LineSegment(ri.x, h-ri.y, ro.x, h-ro.y, lineColour));
-        this.lines.push(new LineSegment(ro.x,   ro.y, ro.x, h-ro.y, lineColour));
+        const ri = new Vector2D(30, 63);
+        const ro = new Vector2D(46, 75); // 46, 79
 
-        this.lines.push(new LineSegment(w-ri.x,   ri.y, w-ro.x,   ro.y, lineColour));
-        this.lines.push(new LineSegment(w-ri.x, h-ri.y, w-ro.x, h-ro.y, lineColour));
-        this.lines.push(new LineSegment(w-ro.x,   ro.y, w-ro.x, h-ro.y, lineColour));
+        const h_axis = new LineSegment(0, h/2, w, h/2);
+        const v_axis = new LineSegment(w/2, 0, w/2, h);
 
-        this.lines.push(new LineSegment(         ri.y, ri.x,        ro.y, ro.x, lineColour));
-        this.lines.push(new LineSegment(w/2+ho-ri.y-2, ri.x, w/2+ho-ro.y, ro.x, lineColour));
-        this.lines.push(new LineSegment(         ro.y, ro.x, w/2+ho-ro.y, ro.x, lineColour));
+        const leftCushion = new Polygon([
+            ri, ro, 
+            new Vector2D(ro.x, h-ro.y), 
+            new Vector2D(ri.x, h-ri.y)
+        ], cushionColour);
 
-        this.lines.push(new LineSegment(         ri.y, h-ri.x,        ro.y, h-ro.x, lineColour));
-        this.lines.push(new LineSegment(w/2+ho-ri.y-2, h-ri.x, w/2+ho-ro.y, h-ro.x, lineColour));
-        this.lines.push(new LineSegment(         ro.y, h-ro.x, w/2+ho-ro.y, h-ro.x, lineColour));
+        const topLeftCushion = new Polygon([
+            new Vector2D(ri.y, ri.x),
+            new Vector2D(ro.y, ro.x),
+            new Vector2D(w/2+ho-ro.y, ro.x), 
+            new Vector2D(w/2+ho-ri.y-2, ri.x)
+        ], cushionColour);
 
-        this.lines.push(new LineSegment(w/2-ho+ri.y+2, ri.x, w/2-ho+ro.y, ro.x, lineColour));
-        this.lines.push(new LineSegment(       w-ri.y, ri.x,      w-ro.y, ro.x, lineColour));
-        this.lines.push(new LineSegment(       w-ro.y, ro.x, w/2-ho+ro.y, ro.x, lineColour));
+        this.polygons.push(leftCushion);
+        this.polygons.push(topLeftCushion);
+        this.polygons.push(leftCushion.getReflectedPolygon(v_axis));
+        this.polygons.push(topLeftCushion.getReflectedPolygon(v_axis));
+        this.polygons.push(topLeftCushion.getReflectedPolygon(h_axis));
+        this.polygons.push(topLeftCushion.getReflectedPolygon(h_axis).getReflectedPolygon(v_axis));
 
-        this.lines.push(new LineSegment(w/2-ho+ri.y+2, h-ri.x, w/2-ho+ro.y, h-ro.x, lineColour));
-        this.lines.push(new LineSegment(       w-ri.y, h-ri.x,      w-ro.y, h-ro.x, lineColour));
-        this.lines.push(new LineSegment(       w-ro.y, h-ro.x, w/2-ho+ro.y, h-ro.x, lineColour));
+        // Collision Line Segments for Cushions
+        this.polygons.forEach((polygon) => {
+            for (let i = 1; i < polygon.vertices.length; i++) {
+                let {x: x1, y: y1} = polygon.vertices[i-1];
+                let {x: x2, y: y2} = polygon.vertices[i]; 
+                this.lines.push(new LineSegment(x1, y1, x2, y2));
+            }
+        });
     }
 
     // abstract methods, public because you can't override private methods in JS.
@@ -133,6 +141,19 @@ export class ClassicGame {
 
     // Draw to Canvas
     draw(ctx, offset=null) {
+        // wall outside cushions
+        CanvasUtil.drawRectangle(ctx,
+            new Vector2D(0, 0),
+            new Vector2D(Consts.boardWidth, Consts.boardHeight),
+            null, null, "grey"
+        );
+
+        CanvasUtil.drawRectangle(ctx,
+            new Vector2D(30, 30),
+            new Vector2D(Consts.boardWidth-30*2, Consts.boardHeight-30*2),
+            null, null, "green"
+        )
+        
         // break line
         CanvasUtil.drawLine(ctx, 
             new Vector2D(Consts.breakLine, 46), 
@@ -156,8 +177,13 @@ export class ClassicGame {
         }
 
         // line segments
-        for (let i = 0; i < this.lines.length; i++) {
-            this.lines[i].draw(ctx, offset);
+        // for (let i = 0; i < this.lines.length; i++) {
+        //     this.lines[i].draw(ctx, offset);
+        // }
+
+        // cushions
+        for (let i = 0; i < this.polygons.length; i++) {
+            this.polygons[i].draw(ctx, offset);
         }
     }
 
@@ -335,12 +361,16 @@ export class ClassicGame {
                 /**
                  * Checking line collisions before ball collisions.
                  * This needs to be done for weird cases such as balls hitting other balls through walls.
+                 * 
+                 * In the current version of the game, this case will not arise since walls only exist on the boundary.
+                 * If we do choose to add "free form" walls, it may be wise to segregate them into a different array
+                 * to minimize computations (ie, we don't check the boundary walls, only free walls)
                  */
-                for (let k = 0; k < this.lines.length; k++) {
-                    CollisionUtil.computeBallToLineCollision(a, this.lines[k]);
-                    CollisionUtil.computeBallToLineCollision(b, this.lines[k]);
-                }
-                
+                // for (let k = 0; k < this.lines.length; k++) {
+                //     CollisionUtil.computeBallToLineCollision(a, this.lines[k]);
+                //     CollisionUtil.computeBallToLineCollision(b, this.lines[k]);
+                // }
+
                 let collided = CollisionUtil.computeBallCollision(a, b);
 
                 // store the first ball that the cue ball hit

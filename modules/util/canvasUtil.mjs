@@ -108,4 +108,38 @@ export class CanvasUtil {
 
         ctx.closePath();
     }
+
+    /**
+     * 
+     * @param {*} ctx 
+     * @param {Array<Vector2D>} points 
+     * @param {*} strokeWidth 
+     * @param {*} strokeColour 
+     * @param {*} fillColour 
+     */
+    static drawPolygon(ctx, points, strokeWidth, strokeColour, fillColour) {
+        // scale
+        points.map((point) => point.scale(CanvasUtil.scale));
+
+        ctx.beginPath();
+
+        ctx.lineTo(points[0].x, points[0].y);
+        for (let i = 1; i < points.length; i++) {
+            ctx.lineTo(points[i].x, points[i].y);
+        }
+        ctx.lineTo(points[0].x, points[0].y);
+
+        // appearance
+        ctx.lineWidth = strokeWidth;
+        ctx.strokeStyle = strokeColour;
+        ctx.fillStyle = fillColour;
+        if (strokeWidth != null) {
+            ctx.stroke();
+        }
+        if (fillColour != null) {
+            ctx.fill();
+        }
+
+        ctx.closePath();
+    }
 }

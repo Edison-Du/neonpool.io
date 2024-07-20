@@ -60,4 +60,9 @@ export class Vector2D {
         let rp = point.to(this);
         return rp.perp(direction).getMagnitude();
     }
+    // returns reflected point, does not mutate this
+    reflectOverLine(point, direction) {
+        let rp = this.to(point).perp(direction);
+        return this.add(rp).add(rp);
+    }
 }
