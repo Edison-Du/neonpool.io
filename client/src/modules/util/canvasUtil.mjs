@@ -119,7 +119,7 @@ export class CanvasUtil {
      */
     static drawPolygon(ctx, points, strokeWidth, strokeColour, fillColour) {
         // scale
-        points.map((point) => point.scale(CanvasUtil.scale));
+        points = points.map((point) => point.scale(CanvasUtil.scale));
 
         ctx.beginPath();
 

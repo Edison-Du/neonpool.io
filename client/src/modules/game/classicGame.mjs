@@ -32,10 +32,9 @@ export class ClassicGame {
     ballIsPlaced; // if cue ball is on table
 
     firstBallHit;
-    allPocketedBalls = [];
     ballsPocketedThisTurn = [];
     runningColourCount = {};
-   
+
     constructor(seed=0) {
         RandomUtil.seed(seed);
 
@@ -69,22 +68,14 @@ export class ClassicGame {
 
         // Break orientation for balls, each type of game has different setup (2, 3, 4 player)
         this.initializeBalls();
-        
-        // shuffle the ball colours
-        for (let i = this.balls.length-1; i > 2; i--) {
-            let index = Math.floor(RandomUtil.random()*(i-2))+2;
-            let temp = this.balls[index].colour;
-            this.balls[index].colour = this.balls[i].colour;
-            this.balls[i].colour = temp;
-        }
+        this.#initializeBallGlow();
 
-        // shuffle the balls themselves for unique collision upon break
-        // Note that the cue ball and eight-ball have fixed positions.
+        // Shuffle ball positions
         for (let i = this.balls.length-1; i > 2; i--) {
             let index = Math.floor(RandomUtil.random()*(i-2))+2;
-            let temp = this.balls[index];
-            this.balls[index] = this.balls[i];
-            this.balls[i] = temp;
+            let temp = this.balls[index].pos;
+            this.balls[index].pos = this.balls[i].pos;
+            this.balls[i].pos = temp;
         }
 
         // Holes
@@ -96,8 +87,6 @@ export class ClassicGame {
         this.holes.push(new Hole( w/2, h-hm));
 
         // Cushions
-        const cushionColour = "brown";
-
         const ri = new Vector2D(30, 63);
         const ro = new Vector2D(46, 75); // 46, 79
 
@@ -108,14 +97,14 @@ export class ClassicGame {
             ri, ro, 
             new Vector2D(ro.x, h-ro.y), 
             new Vector2D(ri.x, h-ri.y)
-        ], cushionColour);
+        ], Consts.cushionColour, Consts.cushionGlow);
 
         const topLeftCushion = new Polygon([
             new Vector2D(ri.y, ri.x),
             new Vector2D(ro.y, ro.x),
             new Vector2D(w/2+ho-ro.y, ro.x), 
             new Vector2D(w/2+ho-ri.y-2, ri.x)
-        ], cushionColour);
+        ], Consts.cushionColour, Consts.cushionGlow);
 
         this.polygons.push(leftCushion);
         this.polygons.push(topLeftCushion);
@@ -139,19 +128,34 @@ export class ClassicGame {
 
     initializePlayers() {}
 
+    #initializeBallGlow() {
+        this.balls[0].glow = Consts.cueBallGlow;
+        this.balls[1].glow = Consts.eightBallGlow;
+        for (let i = 2; i < this.balls.length; i++) {
+            Consts.playerColours.forEach((colour, index) => {
+                if (colour === this.balls[i].colour) {
+                    this.balls[i].glow = Consts.ballGlowColours[index];
+                    return;
+                }
+            });
+        }
+    }
+
     // Draw to Canvas
     draw(ctx, offset=null) {
+
         // wall outside cushions
         CanvasUtil.drawRectangle(ctx,
             new Vector2D(0, 0),
             new Vector2D(Consts.boardWidth, Consts.boardHeight),
-            null, null, "grey"
+            null, null, "#302352"
         );
 
+        // table colour
         CanvasUtil.drawRectangle(ctx,
             new Vector2D(30, 30),
             new Vector2D(Consts.boardWidth-30*2, Consts.boardHeight-30*2),
-            null, null, "green"
+            null, null, "#483c7d"
         )
         
         // break line
@@ -166,15 +170,25 @@ export class ClassicGame {
             this.holes[i].draw(ctx, offset);
         }
 
+        // ball glow
+        for (let i = 0; i < this.balls.length; i++) {
+            this.balls[i].drawGlow(ctx, offset);
+        }
+
+        // cushion glow
+        for (let i = 0; i < this.polygons.length; i++) {
+            this.polygons[i].drawGlow(ctx, offset);
+        }
+
         // balls
         for (let i = 0; i < this.balls.length; i++) {
             this.balls[i].draw(ctx, offset);
         }
 
         // velocity vectors on balls
-        for (let i = 0; i < this.balls.length; i++) {
-            this.balls[i].drawVelocity(ctx, Ball.RADIUS/2, offset);
-        }
+        // for (let i = 0; i < this.balls.length; i++) {
+        //     this.balls[i].drawVelocity(ctx, Ball.RADIUS/2, offset);
+        // }
 
         // line segments
         // for (let i = 0; i < this.lines.length; i++) {
@@ -204,7 +218,7 @@ export class ClassicGame {
     }
 
     // check if ball overlaps with any obstacles.
-    isValidBallPlacement(position) {
+    isValidBallPlacement(position, ignoreCueBall=false) {
         // check boundary 
         const border = 46 + Ball.RADIUS;
         if (position.x < border || position.y < border || 
@@ -227,6 +241,9 @@ export class ClassicGame {
         for (let i = 0; i < arrToCheck.length; i++) {
             let arr = arrToCheck[i];
             for (let j = 0; j < arr.length; j++) {
+                if (ignoreCueBall && arr[j] === this.cueBall) {
+                    continue;
+                }
                 if (checkFunctions[i](arr[j])) {
                     return false;
                 }
@@ -246,7 +263,7 @@ export class ClassicGame {
             return false;
         }
 
-        return this.isValidBallPlacement(position);
+        return this.isValidBallPlacement(position, true);
     }
 
     placeCueBall(position) {
@@ -262,6 +279,11 @@ export class ClassicGame {
     /** ================================ PHYSICS RELATED ================================ */
 
     simulateTick() {
+
+        if (!this.ballsAreMoving) {
+            return;
+        }
+
         const n = 10;
         let dt = 1/n;
         for (let i = 0; i < n; i++) {
@@ -408,6 +430,7 @@ export class ClassicGame {
 
     // takes place right after ball is shot
     #startTurn() {
+        this.ballsAreMoving = true;
         this.ballInHand = false;
         this.firstBallHit = null;
         this.ballsPocketedThisTurn = [];

@@ -1,0 +1,121 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,100..900;1,100..900&display=swap'); */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  background-color: #151B29;
+  overflow: hidden;
+}
+
+.side {
+  width: 10vw;
+}
+
+.center {
+  width: 70vw;
+}
+
+canvas {
+  border-radius: 1vw;
+}
+
+/* ============================ Strength Bar ============================ */
+
+.strength-bar {
+  position: relative;
+  height: 90%;
+  width: 2vw;
+  border: 2px solid white;
+  border-radius: 0.75vw;
+}
+
+.strength-gradient {
+  position: absolute;
+  left: -2px;
+  bottom: -2px;
+  width: 2vw;
+  z-index: -1;
+  border-radius: 0.75vw;
+}
+
+.strength-line {
+  left: -2px;
+  width: calc(2vw - 2px);
+  height: 25%;
+  border-bottom: 2px solid white;
+}
+
+/* ============================ Player Info ============================ */
+
+.player-info-bar {
+  padding: 0 0 0 1em;
+}
+
+.player-info-tag {
+  color: white;
+  font-family: "Exo", sans-serif;
+  transform: skew(-18deg);
+}
+
+.player-info-left {
+  /* width: 10px; */
+  width: 0.8vw;
+  height: 100%;
+  margin-right: 4px;
+  position: relative;
+}
+
+.player-info-highlight {
+  background-color: white;
+  opacity: 0.5;
+  width: 100%;
+  height: 50%;
+  position: absolute;
+  bottom: 0;
+}
+
+.player-info-top {
+  height: 3vw;
+  /* height: 40px; */
+  /* margin-top: 15px; */
+  margin-top: 1vw;
+  margin-bottom: 4px;
+  text-shadow: 0 0 7px rgba(0,0,0,0.5), 0 0 7px black;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden; 
+}
+
+.player-info-top > div:nth-child(1) {
+  height: 100%;
+}
+
+.player-info-top > div:nth-child(2) {
+  position: relative;
+  width: 0.8vw;
+}
+
+.player-info-bottom {
+
+}
+
+.player-info-bottom > div {
+  /* width: 13px; */
+  width: 1vw;
+  /* height: 20px; */
+  height: 1.5vw;
+  margin-right: 4px;
+  position: relative;
+}
+
+.player-info-bottom > div > svg{
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}

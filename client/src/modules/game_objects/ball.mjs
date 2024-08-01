@@ -12,6 +12,7 @@ export class Ball {
     accel = null;
 
     colour = null;
+    glow = null;
     opacity = null;
 
     static state = {
@@ -22,11 +23,12 @@ export class Ball {
     state;
     isFading;
 
-    constructor(x, y, colour=null) {
+    constructor(x, y, colour=null, glow=null) {
         this.pos = new Vector2D(x, y);
         this.vel = new Vector2D(0, 0);
         this.accel = new Vector2D(0, 0);
         this.colour = colour;
+        this.glow = glow;
         this.resetState();
     }
 
@@ -79,10 +81,34 @@ export class Ball {
         let coord = this.pos.add(offset);
         CanvasUtil.drawCircle(ctx, coord, Ball.RADIUS, null, null, this.colour);
 
+        // clean up after ourselves
         if (this.isFading) {
             ctx.globalAlpha = 1;
         }
+    }
 
+    drawGlow(ctx, offset=null) {
+        if (!this.glow) {
+            return;
+        }
+        if (this.isFading) {
+            ctx.globalAlpha = this.opacity;
+            if (this.opacity > Consts.epsilon) {
+                this.opacity = Math.max(0, this.opacity - 0.05*Math.sqrt(1-this.opacity) - Consts.epsilon);
+            }
+        }
+        ctx.shadowColor = this.glow;
+        ctx.shadowBlur = 7 * Consts.scale;
+        
+        let coord = this.pos.add(offset);
+        CanvasUtil.drawCircle(ctx, coord, Ball.RADIUS, null, null, this.colour);
+
+        ctx.shadowColor = null;
+        ctx.shadowBlur = 0;
+
+        if (this.isFading) {
+            ctx.globalAlpha = 1;
+        }
     }
     
     drawVelocity(ctx, scale=1, offset=null) {

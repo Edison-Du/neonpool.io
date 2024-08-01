@@ -4,17 +4,20 @@ import { Consts } from "../consts.mjs";
 import { Player } from "./player.mjs";
 import { ClassicGame } from "./classicGame.mjs";
 
-export class FourPlayerGame extends ClassicGame {
+export class ThreePlayerGame extends ClassicGame {
+
+    static numBallsEach = 5;
 
     constructor(seed=0) {
         super(seed);
     }
 
     initializeBalls() {
-        /** Break Orientation of 21 balls **/
+        /** Break Orientation of 16 balls **/
         let breakOffset = new Vector2D(700, 250);
-        for (let i = 0; i < 6; i++) {
-            for (let j = i%2; j <= i; j += 2) {
+        for (let i = 0; i <= 6; i++) {
+            let k = Math.min(i, 6-i);
+            for (let j = k%2; j <= k; j += 2) {
                 let p1 = new Vector2D(i*Math.sqrt(3), j).scale(Ball.RADIUS).add(breakOffset);
                 let p2 = new Vector2D(i*Math.sqrt(3), -j).scale(Ball.RADIUS).add(breakOffset);
 
@@ -28,19 +31,19 @@ export class FourPlayerGame extends ClassicGame {
             }
         }
         // set middle ball to 8 ball, and bring to index 1
-        this.balls[11].colour = Consts.eightBallColour;
-        [this.balls[1], this.balls[11]] = [this.balls[11], this.balls[1]];
+        this.balls[4].colour = Consts.eightBallColour;
+        [this.balls[1], this.balls[4]] = [this.balls[4], this.balls[1]];
 
         // distribute ball colours
         for (let i = 2; i < this.balls.length; i++) {
-            this.balls[i].colour = Consts.playerColours[i%4];
+            this.balls[i].colour = Consts.playerColours[i%3];
         }
     }
 
     initializePlayers() {
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 3; i++) {
             this.players.push(new Player());
-            this.runningColourCount[Consts.playerColours[i]] = 5;
+            this.runningColourCount[Consts.playerColours[i]] = ThreePlayerGame.numBallsEach;
         }
     }
 }
