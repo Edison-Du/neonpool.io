@@ -10,6 +10,7 @@ import { Player } from "./player.mjs";
 import { CanvasUtil } from "../util/canvasUtil.mjs";
 import { TestUtil } from "../util/testUtil.mjs";
 import { Polygon } from "../game_objects/polygon.mjs";
+import { EffectsUtil } from "../util/effectsUtil.mjs";
 
 export class ClassicGame {
 
@@ -462,6 +463,8 @@ export class ClassicGame {
             else {
                 this.#proceedToNextTurn();
                 this.#respawnEightBall();
+                console.log("HERE");
+                EffectsUtil.respawnEightBall(this.balls[1].pos);
             }
         }
         else if (this.#checkCueBallPocketed() || this.#checkFoul()) {

@@ -7,6 +7,9 @@ export class Vector2D {
         this.x = x;
         this.y = y;
     }
+    equals(other) {
+        return other.x === this.x && other.y === this.y;
+    }
     // k(x, y) => (kx, ky)
     // does not mutate this or other
     scale(k) {

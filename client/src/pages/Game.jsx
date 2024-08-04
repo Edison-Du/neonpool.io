@@ -17,6 +17,7 @@ import { Ball } from "../modules/game_objects/ball.mjs";
 import { CanvasUtil } from "../modules/util/canvasUtil.mjs";
 import { Consts } from "../modules/consts.mjs";
 import { Player } from "../modules/game/player.mjs";
+import { EffectsUtil } from "../modules/util/effectsUtil.mjs";
 
 function Game({playerNames, gameSeed}) { // seed, # players, player names, current player (when sockets added) 
     
@@ -185,11 +186,20 @@ function Game({playerNames, gameSeed}) { // seed, # players, player names, curre
         CanvasUtil.setScale(Consts.scale);
     
         game.current.draw(ctx, null);
-    
+
         if (game.current.gameHasEnded) {
             return;
         }
-    
+
+        // effects
+        if (game.current.ballInHand && heldTimeRef.current === -1 && !isHoldingBall.current) {
+            EffectsUtil.startBallPickUpEffect(game.current.cueBall.pos);
+        }
+        else {
+            EffectsUtil.removeBallPickUpEffect();
+        }
+        EffectsUtil.draw(ctx);
+        
         // line for aim assist
         if (!game.current.ballsAreMoving && !mouseOnCueBall() && !isHoldingBall.current && game.current.ballIsPlaced) {
             if (mousePos.current != null) {

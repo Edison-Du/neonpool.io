@@ -35,6 +35,18 @@ export class Polygon {
         );
     }
 
+    /**
+     * Returns a polygon which is this polygon translated by an offset.
+     * @param {Vector2D} offset
+     */
+    getTranslatedPolygon(offset) {
+        return new Polygon(
+            this.vertices.map((vertex) => vertex.add(offset)),
+            this.colour,
+            this.glow
+        )
+    }
+
     draw(ctx, offset=null) {
         let vertices = this.vertices.map((point) => point.add(offset));
         CanvasUtil.drawPolygon(ctx, vertices, null, null, this.colour);
