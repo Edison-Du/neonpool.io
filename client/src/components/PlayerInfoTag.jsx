@@ -1,4 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+
+import ResizableTextBox from "./generic/ResizableTextBox";
+
 import { Consts } from "../modules/consts.mjs";
 import { Player } from "../modules/game/player.mjs";
 
@@ -17,35 +20,6 @@ function PlayerInfoTag({name, playerColour, playerState, isPlayerTurn, ballsPott
         }
         return graySecondary;
     })();
-
-    // resizing font size based on element width
-    const defaultSize = 1;
-    const defaultUnit = "vw";
-    const nameTagRef = useRef(null);
-    const canvasRef = useRef(null);
-    const [fontSize, setFontSize] = useState(defaultSize);
-
-    const checkLength = (text) => {
-        if (canvasRef.current === null) {
-            canvasRef.current = document.createElement("canvas");
-        }
-        let ctx = canvasRef.current.getContext("2d");
-        ctx.font = defaultSize + defaultUnit + " Exo";
-        return ctx.measureText(text).width;
-    }
-
-    useEffect(() => {
-        if (!nameTagRef.current) return;
-        const resizeObserver = new ResizeObserver(() => {
-            let length = checkLength(name);
-            if (length === 0) return;
-            let width = nameTagRef.current.offsetWidth;
-            let scale = Math.min((width-15)/checkLength(name), defaultSize);
-            setFontSize(scale);
-        });
-        resizeObserver.observe(nameTagRef.current);
-        return () => resizeObserver.disconnect();
-    }, [nameTagRef.current]);
 
     // bar containing information about the balls the player has potted
     const generateBallCountBar = () => {
@@ -81,18 +55,14 @@ function PlayerInfoTag({name, playerColour, playerState, isPlayerTurn, ballsPott
             </div>
             <div className="player-info-right">
                 <div className="player-info-top d-flex">
-                    <div 
-                        ref={nameTagRef}
-                        className="p-2 d-flex align-items-center" 
+                    <ResizableTextBox
+                        text={name}
                         style={{
                             backgroundColor: (isPlayerTurn ? secondary : grayBackground), 
-                            width: width,
-                            // fontSize: fontSize + "rem"
-                            fontSize: fontSize + defaultUnit
+                            width: width
                         }}
-                    >
-                        {name}
-                    </div>
+                        className={"p-2 d-flex align-items-center"}
+                    ></ResizableTextBox>
                     <div 
                         style={{backgroundColor: primary}}
                     >

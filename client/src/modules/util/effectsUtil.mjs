@@ -78,7 +78,6 @@ export class EffectsUtil {
         head = this.loopedEffects;
         while(head) {
             if (!head.val.draw(ctx)) {
-                console.log(head.val.counter);
                 head.val.counter = 0;
             }
             head = head.next;
@@ -93,7 +92,6 @@ export class EffectsUtil {
             }
             this.removeBallPickUpEffect();
         }
-        console.log(position);
         this.#pickUpBallEffect = this.loop(new PickUpBallIndicator(position));
     }
 

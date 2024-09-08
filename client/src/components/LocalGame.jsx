@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 
-import PoolTable from "../components/PoolTable";
-import StrengthBar from "../components/StrengthBar";
-import PlayerInfoBar from "../components/PlayerInfoBar";
+import PoolTable from "./PoolTable";
+import StrengthBar from "./StrengthBar";
+import PlayerInfoBar from "./PlayerInfoBar";
 
 import useWindowWidth from "../hooks/useWindowWidth";
 import useInterval from "../hooks/useInterval";
@@ -18,8 +18,9 @@ import { CanvasUtil } from "../modules/util/canvasUtil.mjs";
 import { Consts } from "../modules/consts.mjs";
 import { Player } from "../modules/game/player.mjs";
 import { EffectsUtil } from "../modules/util/effectsUtil.mjs";
+import GameOver from "./GameOver";
 
-function Game({playerNames, gameSeed}) { // seed, # players, player names, current player (when sockets added) 
+function LocalGame({playerNames, gameSeed, exitGame}) { // seed, # players, player names, current player (when sockets added) 
     
     const screenWidth = useWindowWidth();
 
@@ -38,6 +39,9 @@ function Game({playerNames, gameSeed}) { // seed, # players, player names, curre
     const [turn, setTurn] = useState(0);
     const [ballCounts, setBallCounts] = useState({});
     const [numBallsEach, setNumBallsEach] = useState(0);
+
+    // game over
+    const [gameResults, setGameResults] = useState(null);
 
     const createGame = () => {
         if (numPlayers == 2) {
@@ -61,6 +65,8 @@ function Game({playerNames, gameSeed}) { // seed, # players, player names, curre
         const players = game.current.players;
 
         // only change state when there are differences
+
+        // player colours
         for (let i = 0; i < numPlayers; i++) {
             if (playerColours[i] !== players[i].colour) {
                 setPlayerColours(players.map(a => a.colour));
@@ -68,6 +74,7 @@ function Game({playerNames, gameSeed}) { // seed, # players, player names, curre
             }
         }
 
+        // player states
         for (let i = 0; i < numPlayers; i++) {
             if (playerStates[i] !== players[i].state) {
                 setPlayerStates(players.map(a => a.state));
@@ -75,11 +82,20 @@ function Game({playerNames, gameSeed}) { // seed, # players, player names, curre
             }
         }
 
+        // remaining ball counts
         for (const colour in ballCounts) {
             if (ballCounts[colour] !== game.current.runningColourCount[colour]) {
                 setBallCounts({...game.current.runningColourCount});
                 break;
             }
+        }
+
+        // game results when game ends
+        if (gameResults === null && game.current.gameHasEnded) {
+            setTimeout(() => {setGameResults([...game.current.getLeaderboard()])}, 1000);
+        }
+        else if (!game.current.gameHasEnded) {
+            setGameResults(null);
         }
     }
 
@@ -118,6 +134,7 @@ function Game({playerNames, gameSeed}) { // seed, # players, player names, curre
         return Math.max(0, Math.min(heldTimeState/AimerUtil.framesToFullStrength, 1));
     }
 
+    // mouse related
     const mouseOnCueBall = () => {
         if (!mousePos.current) return false;
         if (game.current.cueBall.isFalling()) return false;
@@ -165,7 +182,6 @@ function Game({playerNames, gameSeed}) { // seed, # players, player names, curre
     
         mousePos.current = new Vector2D(e.offsetX, e.offsetY).scale(1/Consts.scale);
         game.current.shootCueBall(game.current.cueBall.pos.to(mousePos.current), strength);
-        console.log("Ball Shot!");
         heldTimeRef.current = -1;
     
         // debugging
@@ -175,6 +191,13 @@ function Game({playerNames, gameSeed}) { // seed, # players, player names, curre
 
     const mouseMove = (e) => {
         mousePos.current = new Vector2D(e.offsetX, e.offsetY).scale(1/Consts.scale);
+    }
+
+    // for pool table
+    const mouseHandler = {
+        "mousedown": mouseDown,
+        "mouseup": mouseUp,
+        "mousemove": mouseMove
     }
 
     const draw = (ctx) => {
@@ -192,7 +215,7 @@ function Game({playerNames, gameSeed}) { // seed, # players, player names, curre
         }
 
         // effects
-        if (game.current.ballInHand && heldTimeRef.current === -1 && !isHoldingBall.current) {
+        if (game.current.ballInHand && heldTimeRef.current === -1 && !isHoldingBall.current && !game.current.cueBall.isFading) {
             EffectsUtil.startBallPickUpEffect(game.current.cueBall.pos);
         }
         else {
@@ -219,15 +242,18 @@ function Game({playerNames, gameSeed}) { // seed, # players, player names, curre
         }
     }
 
-    const mouseHandler = {
-        "mousedown": mouseDown,
-        "mouseup": mouseUp,
-        "mousemove": mouseMove
+    // game results
+    const onRematch = () => {
+        createGame();
+    }
+
+    const onExit = () => {
+        exitGame();
     }
 
     return (
-        <div className="w-100 d-flex flex-column">
-            <div className="d-flex justify-content-center my-5">
+        <div className="w-100 d-flex flex-column h-100 justify-content-center">
+            <div className="d-flex justify-content-center mb-5">
                 <div className="side"></div>
                 <div className="center">
                     <PlayerInfoBar 
@@ -245,14 +271,21 @@ function Game({playerNames, gameSeed}) { // seed, # players, player names, curre
                 <div className="side"></div>
                 <div className="center">
                     <PoolTable draw={draw} mouseHandler={mouseHandler} width={getTableWidth()} ref={table}></PoolTable>
+                    {gameResults && 
+                        <GameOver 
+                            gameResults={gameResults} 
+                            playerNames={playerNames}
+                            playerColours={playerColours}
+                            onRematch={onRematch} 
+                            onExit={onExit}
+                        ></GameOver>}
                 </div>
                 <div className="side d-flex align-items-center justify-content-center">
                     <StrengthBar fractionFilled={getStrengthBarFraction()}></StrengthBar>
-                    {/* <StrengthBar fractionFilled={1}></StrengthBar> */}
                 </div>
             </div>
         </div>
     );
 }
 
-export default Game;
+export default LocalGame;

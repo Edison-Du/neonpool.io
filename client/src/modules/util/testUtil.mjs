@@ -484,4 +484,260 @@ export class TestUtil {
         game.cueBall = game.balls[0];
         game.cueBall.vel = new Vector2D(19.999634180172333, 0.12096552931555846)
     }
+
+    // make sure holes and polygons are set to state at 2024-08-06
+    static turnEndingTwiceTest(game) {
+        Ball.RADIUS = 13;
+        Ball.FRICTION = 0.03;
+        Consts.elasticity = 0.95;
+        RandomUtil.seed(314402);
+        let ball;
+        game.balls = [];
+        ball = new Ball(872.4134927172241, 122.52141871418493, "white");
+        ball.glow = "white";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(938.612455715914, 67.84044675735173, "#302352");
+        ball.glow = "#00FFF8";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(669.273007660892, 430.8655573622441, "#ffd587");
+        ball.glow = "#FFD400";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(772.9543130053672, 400.6265556454379, "#59ff88");
+        ball.glow = "#26FF00";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(238.6084910794436, 186.47919693087698, "#ec2b7f");
+        ball.glow = "#FF0068";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(878.3903768959175, 184.02493397415736, "#31bdff");
+        ball.glow = "#09C3FC";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(564.5293701768578, 350.7498488875035, "#ffd587");
+        ball.glow = "#FFD400";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(595.8872703669423, 369.1014126366689, "#59ff88");
+        ball.glow = "#26FF00";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(729.7648789777501, 137.6661684407571, "#ec2b7f");
+        ball.glow = "#FF0068";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(819.9171001882808, 202.771744119088, "#31bdff");
+        ball.glow = "#09C3FC";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(738.7267366611751, 168.22096460135563, "#ffd587");
+        ball.glow = "#FFD400";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(959.9999999999999, 460.0000000000001, "#59ff88");
+        ball.glow = "#26FF00";ball.opacity = 0;ball.state = 2;ball.isFading = true;
+        game.balls.push(ball);
+        ball = new Ball(672.6095293312303, 363.61124703023, "#ec2b7f");
+        ball.glow = "#FF0068";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(672.7628305533184, 293.7740942802089, "#31bdff");
+        ball.glow = "#09C3FC";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(707.4316004427355, 271.7846668256579, "#ffd587");
+        ball.glow = "#FFD400";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(657.709603706885, 208.14913353198776, "#59ff88");
+        ball.glow = "#26FF00";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(585.1371443878617, 315.77420673646975, "#ec2b7f");
+        ball.glow = "#FF0068";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(774.6365034419921, 168.92592939668617, "#31bdff");
+        ball.glow = "#09C3FC";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(469.15196439646996, 157.78161738672378, "#ffd587");
+        ball.glow = "#FFD400";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(500, 470, "#59ff88");
+        ball.glow = "#26FF00";ball.opacity = 0;ball.state = 2;ball.isFading = true;
+        game.balls.push(ball);
+        ball = new Ball(841.670029467872, 410.6283198812063, "#ec2b7f");
+        ball.glow = "#FF0068";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(809.0914862386611, 133.75305815771281, "#31bdff");
+        ball.glow = "#09C3FC";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        game.cueBall = game.balls[0];
+        game.shootCueBall(new Vector2D(72.95236094131258, -64.96044310442883), 2.166666666666667);
+
+        /**
+         * Notes on this test case. 2024-08-06
+         * 1. When debugging, printing out ball objects is inaccurate, 
+         *    it is better to print properties directly or call toString().
+         *       See: https://bambielli.com/til/2017-01-31-console-log-incorrect/
+         *            https://stackoverflow.com/questions/4057440/is-chrome-s-javascript-console-lazy-about-evaluating-objects
+         * 2. Explanation of bug: 
+         *      a. The turn ends when all the balls are either not moving, or have an opacity of 0.
+         *      b. The black ball was pocketed. It's opacity reached 0 but it still had velocity.
+         *      c. When the black ball respawned, it's velocity was not set to 0 and it kept moving.
+         *      d. Eventually, friction stopped the black ball, causing the turn to end again.
+         *      e. Two players were eliminated because the turn was never started, meaning the array of 
+         *         pocketed balls was not cleared from b).
+         *    This was fixed by setting the balls velocity to 0 upon resetState. If I wanted to be extra certain a bug of
+         *    this type never happens again, I could break out of the simulation loop once balls aren't moving anymore,
+         *    so endTurn isn't called again when a ball is magically moving after it stopped moving. 
+         *    However, I am confident that the movement logic is correct and that this won't be necessary.      
+         */
+    }
+
+    static ballSlightOverlapAimerPrecisionTest(game) {
+        Ball.RADIUS = 13;
+        Ball.FRICTION = 0.03;
+        Consts.elasticity = 0.95;
+        RandomUtil.seed(993776);
+        let ball;
+        game.balls = [];
+        ball = new Ball(275, 250, "white");
+        ball.glow = "white";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(790.0666419935816, 250, "#302352");
+        ball.glow = "#00FFF8";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(790.0666419935816, 302, "#ffd587");
+        ball.glow = "#FFD400";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(767.5499814951862, 263, "#59ff88");
+        ball.glow = "#26FF00";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(700, 250, "#ec2b7f");
+        ball.glow = "#FF0068";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(812.5833024919771, 211, "#31bdff");
+        ball.glow = "#09C3FC";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(767.5499814951862, 289, "#ffd587");
+        ball.glow = "#FFD400";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(745.0333209967908, 250, "#59ff88");
+        ball.glow = "#26FF00";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(812.5833024919771, 315, "#ec2b7f");
+        ball.glow = "#FF0068";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(767.5499814951862, 237, "#31bdff");
+        ball.glow = "#09C3FC";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(812.5833024919771, 185, "#ffd587");
+        ball.glow = "#FFD400";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(812.5833024919771, 263, "#59ff88");
+        ball.glow = "#26FF00";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(812.5833024919771, 289, "#ec2b7f");
+        ball.glow = "#FF0068";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(745.0333209967908, 224, "#31bdff");
+        ball.glow = "#09C3FC";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(790.0666419935816, 276, "#ffd587");
+        ball.glow = "#FFD400";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(790.0666419935816, 198, "#59ff88");
+        ball.glow = "#26FF00";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(745.0333209967908, 276, "#ec2b7f");
+        ball.glow = "#FF0068";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(722.5166604983954, 237, "#31bdff");
+        ball.glow = "#09C3FC";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(722.5166604983954, 263, "#ffd587");
+        ball.glow = "#FFD400";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(812.5833024919771, 237, "#59ff88");
+        ball.glow = "#26FF00";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(767.5499814951862, 211, "#ec2b7f");
+        ball.glow = "#FF0068";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(790.0666419935816, 224, "#31bdff");
+        ball.glow = "#09C3FC";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        game.cueBall = game.balls[0];
+        game.shootCueBall(new Vector2D(523.048780487805, -4.146341463414615), 5);
+        /**
+         * Fixed by accepting the negative value of t in AimerUtil.#targetCloserBall.
+         * The balls overlap very slightly, and the computed value for the cue ball before collision
+         * goes backwards.
+         */
+    }
+
+    static ballPocketedVerySlowlyTest(game) {
+        Ball.RADIUS = 13;
+        Ball.FRICTION = 0.03;
+        Consts.elasticity = 0.95;
+        RandomUtil.seed(240081);
+        let ball;
+        game.balls = [];
+        ball = new Ball(604.9997973889685, 307.2071381259317, "white");
+        ball.glow = "white";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(856.9902543205238, 229.65843753182725, "#302352");
+        ball.glow = "#00FFF8";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(960.0000000000043, 40.00000000000045, "#ffd587");
+        ball.glow = "#FFD400";ball.opacity = 0;ball.state = 2;ball.isFading = true;
+        game.balls.push(ball);
+        ball = new Ball(395.8070463237611, 63.39417205229697, "#59ff88");
+        ball.glow = "#26FF00";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(794.6342028523974, 59.564130132569815, "#ec2b7f");
+        ball.glow = "#FF0068";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(500.0000000000009, 29.999999999999954, "#31bdff");
+        ball.glow = "#09C3FC";ball.opacity = 0;ball.state = 2;ball.isFading = true;
+        game.balls.push(ball);
+        ball = new Ball(70.00760947565973, 80.21451178029385, "#ffd587");
+        ball.glow = "#FFD400";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(921.6279980725981, 347.3794370478176, "#59ff88");
+        ball.glow = "#26FF00";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(921.5798163150628, 400.5187589351589, "#ec2b7f");
+        ball.glow = "#FF0068";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(960.0000000000003, 39.999999999999126, "#31bdff");
+        ball.glow = "#09C3FC";ball.opacity = 0;ball.state = 2;ball.isFading = true;
+        game.balls.push(ball);
+        ball = new Ball(959.9999999999994, 460.0000000000003, "#ffd587");
+        ball.glow = "#FFD400";ball.opacity = 0;ball.state = 2;ball.isFading = true;
+        game.balls.push(ball);
+        ball = new Ball(584.3452145214834, 284.8833334097159, "#59ff88");
+        ball.glow = "#26FF00";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(902.5446107426337, 115.08658090285374, "#ec2b7f");
+        ball.glow = "#FF0068";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(912.0130151534197, 59.78394674122043, "#31bdff");
+        ball.glow = "#09C3FC";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(326.69314287460645, 149.78773042002706, "#ffd587");
+        ball.glow = "#FFD400";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(959.9999999999998, 40.00000000000002, "#59ff88");
+        ball.glow = "#26FF00";ball.opacity = 0;ball.state = 2;ball.isFading = true;
+        game.balls.push(ball);
+        ball = new Ball(39.99999999999989, 459.9999999999999, "#ec2b7f");
+        ball.glow = "#FF0068";ball.opacity = 0;ball.state = 2;ball.isFading = true;
+        game.balls.push(ball);
+        ball = new Ball(40.00000000000001, 40.00000000000001, "#31bdff");
+        ball.glow = "#09C3FC";ball.opacity = 0;ball.state = 2;ball.isFading = true;
+        game.balls.push(ball);
+        ball = new Ball(802.703792321998, 271.2912345989402, "#ffd587");
+        ball.glow = "#FFD400";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(763.1324521676883, 253.27119366601363, "#59ff88");
+        ball.glow = "#26FF00";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        ball = new Ball(500.00000000000006, 470, "#ec2b7f");
+        ball.glow = "#FF0068";ball.opacity = 0;ball.state = 2;ball.isFading = true;
+        game.balls.push(ball);
+        ball = new Ball(851.1238050680419, 265.7669404740154, "#31bdff");
+        ball.glow = "#09C3FC";ball.opacity = 1;ball.state = 1;ball.isFading = false;
+        game.balls.push(ball);
+        game.cueBall = game.balls[0];
+        game.shootCueBall(new Vector2D(222.00913118246, -192.25178098307453), 20);
+    }
 }

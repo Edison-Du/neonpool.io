@@ -214,7 +214,17 @@ export class CollisionUtil {
     // ball inside hole collides with edges of the hole, mutates the ball
     static computeBallToHoleCollision(ball, hole) {
         if (!this.checkBallInHole(ball, hole)) return false;
+
         let ball_to_hole = ball.pos.to(hole.pos);
+
+        // ball has no velocity
+        if (ball.vel.getMagnitude() < Consts.epsilon) {
+            // correct its position.
+            let diff = Hole.RADIUS - ball_to_hole.getMagnitude();
+            let correct = ball_to_hole.getUnitVector().scale(-diff);
+            ball.pos.add(correct);
+            return false;
+        }
 
         // correct position.
         // let dist = ball_to_hole.getMagnitude() + Ball.RADIUS - Hole.RADIUS;

@@ -28,11 +28,20 @@ function PlayerInfoBar({playerNames, playerColours, playerStates, playerTurn, ba
 
         const newBallCounts = [...ballCounts];
 
+        // reset states when game restarts
+        for (let i = 0; i < playerStates.length; i++) {
+            if (playerStates[i] === Player.state.IN_PLAY) {
+                previousPlayerStates.current[i] = Player.state.IN_PLAY;
+            }
+        }
+
+        // recompute ball counts, only for players in play.
         for (let i = 0; i < numPlayers; i++) {
             if (previousPlayerStates.current[i] !== Player.state.IN_PLAY) {
                 continue;
             }
             if (playerColours[i] === null) {
+                newBallCounts[i] = 0;
                 continue;
             }
             newBallCounts[i] = numBallsEach - ballColourCounts[playerColours[i]];
@@ -43,7 +52,9 @@ function PlayerInfoBar({playerNames, playerColours, playerStates, playerTurn, ba
         // update player states
         previousPlayerStates.current = [...playerStates];
 
-    }, [ballColourCounts, playerColours]);
+        console.log("changed", ballCounts, newBallCounts, ballColourCounts, playerColours, playerStates);
+
+    }, [ballColourCounts, playerColours, playerStates]);
 
     return (
         <div className="player-info-bar d-flex justify-content-between">

@@ -17,7 +17,7 @@ export class EightBallRespawn {
         this.ballPosition = ballPosition;
     }
 
-    #interpolateLinear(keys, values) {
+    #interpolate(keys, values, fn) {
         let frame;
         for (let i = 0; i < keys.length; i++) {
             if (keys[i] <= this.counter) {
@@ -28,15 +28,19 @@ export class EightBallRespawn {
             return values[frame];
         }
         let fraction = (this.counter - keys[frame])/(keys[frame+1] - keys[frame]);
-        return values[frame] + (values[frame+1] - values[frame]) * fraction;
+        return values[frame] + (values[frame+1] - values[frame]) * fn(fraction);
+    }
+
+    #quadraticEaseOut(x) {
+        return (1-x)*(x-1)+1;
     }
 
     #getRadius() {
-        return this.#interpolateLinear(this.keyFrames, this.radius);
+        return this.#interpolate(this.keyFrames, this.radius, this.#quadraticEaseOut);
     }
 
     #getOpacity() {
-        return this.#interpolateLinear(this.keyFrames, this.opacity);
+        return this.#interpolate(this.keyFrames, this.opacity, this.#quadraticEaseOut);
     }
 
     draw(ctx) {

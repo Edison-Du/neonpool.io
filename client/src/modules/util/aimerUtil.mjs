@@ -189,6 +189,8 @@ export class AimerUtil {
             if (cueBall.pos.to(cur.pos).dot(direction) < 0) {
                 continue;
             }
+
+            // console.log(i);
     
             // solve a quadratic for where the cueball would be right before collision
             let rb = cueBall.pos.to(balls[i].pos);
@@ -199,9 +201,9 @@ export class AimerUtil {
             // take the minimal value of t
             let discr = Math.sqrt(b*b - a*a*c);
             let t = (b - discr)/(a*a);
-            if (t < 0) {
-                t = (b + discr)/(a*a);
-            }
+            // if (t < 0) {
+            //     t = (b + discr)/(a*a);
+            // }
     
             if (closest == -1 || t < min) {
                 closest = i;

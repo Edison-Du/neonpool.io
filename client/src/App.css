@@ -4,6 +4,8 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: "Exo", sans-serif;
+  color: white;
 }
 
 body {
@@ -19,9 +21,10 @@ body {
 
 .center {
   width: 70vw;
+  position: relative;
 }
 
-canvas {
+canvas, .game-over {
   border-radius: 1vw;
 }
 
@@ -58,8 +61,6 @@ canvas {
 }
 
 .player-info-tag {
-  color: white;
-  font-family: "Exo", sans-serif;
   transform: skew(-18deg);
 }
 
@@ -96,7 +97,7 @@ canvas {
   height: 100%;
 }
 
-.player-info-top > div:nth-child(2) {
+.player-info-top > div:nth-child(2), .player-result-tag > div:nth-child(3) {
   position: relative;
   width: 0.8vw;
 }
@@ -118,4 +119,189 @@ canvas {
   height: 100%;
   width: 100%;
   position: absolute;
+}
+
+/* ============================ Game Over ============================ */
+
+.game-over {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+.game-over > div > h1 {
+  font-size: 2.5vw;
+  text-shadow: 0 0 7px white;
+}
+
+.player-result-tag {
+  font-size: 1.5vw;
+  margin-bottom: 0.8vw;
+}
+
+.player-result-tag > div:nth-child(1) {
+  color: black;
+  width: 3vw;
+  height: 3vw;
+  position: relative;
+}
+
+.player-result-tag > div:nth-child(2) {
+  background-color: #2E303C;
+  width: 15vw;
+  padding-left: 0.75vw;
+  padding-right: 0.75vw;
+}
+
+/* https://stackoverflow.com/questions/17212094/fill-background-color-left-to-right-css */
+/* rematch button */
+.game-over > div > div > button:nth-child(1) {
+  height: 3vw;
+  width: 14vw;
+  border-radius: 0.5vw;
+  background: linear-gradient(to left, #5A5D65 50%, #30D172 50%) 98% bottom;
+  background-size: 210% 100%;
+  border: none;
+  transition: 250ms ease-in;
+  font-size: 2vw;
+  text-shadow: 0 0 7px white;
+}
+
+/* exit button */
+.game-over > div > div > button:nth-child(2) {
+  width: 4vw;
+  height: 3vw;
+  border-radius: 0.5vw;
+  background: linear-gradient(to left, #5A5D65 50%, #E51F4C 50%) 98% bottom;
+  background-size: 210% 100%;
+  border: none;
+  transition: 250ms ease-in;
+}
+
+.game-over > div > div > button > svg {
+  filter: drop-shadow(0 0 7px white);
+}
+
+.game-over > div > div > button:hover {
+  background-position: 2% bottom;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+/* ============================ Lobby ============================ */
+
+.lobby {
+  width: 30vw;
+  margin-top: 5vw;
+}
+
+.lobby h1 {
+  text-align: center;
+  font-size: 4vw;
+  text-shadow: 0 0 7px white;
+  margin-bottom: 1vw;
+}
+
+.lobby button {
+  background-color: rgb(0,0,0,0);
+}
+
+.lobby input {
+  background-color: rgb(0,0,0,0);
+}
+
+.lobby > button {
+  height: 4vw;
+  width: 85%;
+  margin-bottom: 1vw;
+  border: none;
+  color: gray;
+  font-size: 2vw;
+  transition: 250ms ease-in;
+}
+
+.lobby > .add-player {
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 0.2vw solid #5A5D65;
+}
+
+.lobby > .add-player:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.lobby > button > svg {
+  width: 2vw;
+  height: 2vw;
+  filter: drop-shadow(0 0 7px white);
+}
+
+.lobby > .start-game {
+  border-radius: 0.5vw;
+  background: linear-gradient(to left, #2E303C 50%, #30D172 50%) 98% bottom;
+  background-size: 210% 100%;
+  /* background-color: #2E303C; */
+  margin-top: 1vw;
+}
+
+.can-start-game {
+  color: white !important;
+  text-shadow: 0 0 7px white;
+}
+
+.can-start-game:hover {
+  background-position: 2% bottom;
+  /* background-color: #30D172; */
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+
+.lobby > section, .lobby > button {
+  position: relative;
+  left: 7.5%;
+}
+
+.lobby-player-tag {
+  height: 4vw;
+  width: 100%;
+  margin-bottom: 1vw;
+}
+
+.lobby-player-tag .player-info-left {
+  width: 1vw;
+  background-color: #5d1dff;
+  margin: 0;
+}
+
+.lobby-player-tag > input {
+  width: 70%;
+  border: none;
+  padding-left: 1vw;
+  font-size: 1.5vw;
+  background-color: rgb(46, 48, 60);
+}
+
+.lobby-player-tag > input:focus {
+  outline: none;
+}
+
+.lobby-player-tag > button {
+  width: 15%;
+  border: none;
+}
+
+.lobby-player-tag > button:nth-child(3){
+  background-color: rgb(46, 48, 60);
+}
+
+.lobby-player-tag > button > svg {
+  width: 50%;
+  height: 50%;
+  transition: 100ms ease;
+}
+
+.lobby-player-tag > button > svg:hover {
+  transform: scale(1.2);
+  filter: brightness(200%);
 }

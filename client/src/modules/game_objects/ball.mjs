@@ -36,6 +36,8 @@ export class Ball {
         this.state = Ball.state.ACTIVE;
         this.opacity = 1;
         this.isFading = false;
+        this.vel = new Vector2D(0, 0);
+        this.accel = new Vector2D(0, 0);
     }
 
     isFalling() {

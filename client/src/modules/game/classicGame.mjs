@@ -11,6 +11,7 @@ import { CanvasUtil } from "../util/canvasUtil.mjs";
 import { TestUtil } from "../util/testUtil.mjs";
 import { Polygon } from "../game_objects/polygon.mjs";
 import { EffectsUtil } from "../util/effectsUtil.mjs";
+import { LogUtil } from "../util/logUtil.mjs";
 
 export class ClassicGame {
 
@@ -36,6 +37,10 @@ export class ClassicGame {
     ballsPocketedThisTurn = [];
     runningColourCount = {};
 
+    // debugging
+    gameLog;
+    turnEnded;
+
     constructor(seed=0) {
         RandomUtil.seed(seed);
 
@@ -50,7 +55,17 @@ export class ClassicGame {
         this.initializePlayers();        
         this.#initializeGameObjects();
 
-        // TestUtil.breakLagTestV2(this);
+        // debugging & testing
+        this.gameLog = LogUtil.createGameLog(seed);
+        window.getLastGameState = () => {
+            this.gameLog.constructGameState();
+            this.gameLog.printMoves();
+        }
+        window.getCurrentGameState = () => {
+            console.log(JSON.stringify(this.balls));
+        }
+        // TestUtil.breakLagTest(this);
+        // TestUtil.ballPocketedVerySlowlyTest(this);
     }
 
     // NOTE, we can create different functions for different test cases.
@@ -186,16 +201,6 @@ export class ClassicGame {
             this.balls[i].draw(ctx, offset);
         }
 
-        // velocity vectors on balls
-        // for (let i = 0; i < this.balls.length; i++) {
-        //     this.balls[i].drawVelocity(ctx, Ball.RADIUS/2, offset);
-        // }
-
-        // line segments
-        // for (let i = 0; i < this.lines.length; i++) {
-        //     this.lines[i].draw(ctx, offset);
-        // }
-
         // cushions
         for (let i = 0; i < this.polygons.length; i++) {
             this.polygons[i].draw(ctx, offset);
@@ -214,8 +219,10 @@ export class ClassicGame {
 
         // may choose to add velocity instead of set velocity in the future (explosives, cueball already moving)
         this.cueBall.vel = direction.getUnitVector().scale(strength); // max strength is 20?
-
         this.#startTurn();
+
+        // console.log("BALL SHOT: ", direction, strength);
+        this.gameLog.shootBall(direction, strength, this.balls);
     }
 
     // check if ball overlaps with any obstacles.
@@ -274,6 +281,9 @@ export class ClassicGame {
         this.cueBall.pos = position;
         this.cueBall.resetState();
         this.ballIsPlaced = true;
+
+        // console.log("Ball Placed: ", position);
+        this.gameLog.placeBall(position);
         return true;
     }
 
@@ -297,7 +307,6 @@ export class ClassicGame {
                 this.#computeCollisionBalls();
                 safe--;
             }
-            // console.log(safe);
             let isMoving = this.#move(dt);
             if (this.ballsAreMoving && !isMoving) {
                 this.#endTurn();
@@ -317,6 +326,7 @@ export class ClassicGame {
             if (balls[i].vel.x != 0 || balls[i].vel.y != 0) {
                 moving = true;
             }
+            // balls[i].move(dt); 
         }
         return moving;
     }
@@ -409,8 +419,7 @@ export class ClassicGame {
         let holes = this.holes;
         for (let i = 0; i < balls.length; i++) {
             for (let j = 0; j < holes.length; j++) {
-                if (CollisionUtil.checkBallInHole(balls[i], holes[j])) {
-                    CollisionUtil.computeBallToHoleCollision(balls[i], holes[j]);
+                if (CollisionUtil.computeBallToHoleCollision(balls[i], holes[j])) {
                     if (balls[i].isActive()) {
                         balls[i].setFalling();
                         this.#pocketBall(i);
@@ -435,10 +444,24 @@ export class ClassicGame {
         this.ballInHand = false;
         this.firstBallHit = null;
         this.ballsPocketedThisTurn = [];
+
+        // debug
+        this.turnEnded = false;
+        // console.log("START TURN");
     }
 
     // takes place after all balls have settled
     #endTurn() {
+
+        // debug
+        if (this.turnEnded) {
+            this.gameLog.constructGameState();
+            this.gameLog.printMoves();
+        }
+        this.turnEnded = true;
+        // console.log("TURN END");
+        // end debug
+
         let currentPlayer = this.#getCurrentPlayer();
 
         if (this.#checkEightBallPocketed()) {
@@ -457,13 +480,13 @@ export class ClassicGame {
             if (this.#checkGameEnded()) {
                 this.gameHasEnded = true;
 
-                console.log("GAME OVER!");
-                console.log(this.#getLeaderboard());
+                // console.log("GAME OVER!");
+                // console.log(this.#getLeaderboard());
             }
             else {
                 this.#proceedToNextTurn();
                 this.#respawnEightBall();
-                console.log("HERE");
+                // console.log("HERE");
                 EffectsUtil.respawnEightBall(this.balls[1].pos);
             }
         }
@@ -490,13 +513,13 @@ export class ClassicGame {
 
         this.turn++;
 
-        let msg = "Turn " + this.turn + "\nPlayer " + this.currentPlayerIndex + " to go";
-        for (let i = 0; i < this.players.length; i++) {
-            msg += "\nPlayer " + i + ": " + this.players[i].state + ", " + this.players[i].colour;
-        }
-        msg += "\nBall In Hand: " + this.ballInHand;
-        console.log(msg);
-        console.log(this.runningColourCount);
+        // let msg = "Turn " + this.turn + "\nPlayer " + this.currentPlayerIndex + " to go";
+        // for (let i = 0; i < this.players.length; i++) {
+        //     msg += "\nPlayer " + i + ": " + this.players[i].state + ", " + this.players[i].colour;
+        // }
+        // msg += "\nBall In Hand: " + this.ballInHand;
+        // console.log(msg);
+        // console.log(this.runningColourCount);
     }
 
     // Assume that there exists a player that is in play, otherwise an infinite loop will occur.
@@ -564,24 +587,29 @@ export class ClassicGame {
         return cnt <= 1;
     }
 
-    #getLeaderboard() {
+    // returns an array consisting a permutation of indices ordering the winners and losers
+    getLeaderboard() {
         let lastPlayer;
         let winners = [];
         let losers = [];
-        this.players.forEach((player) => {
+        this.players.forEach((player, index) => {
+            let obj = {
+                index: index,
+                endTurn: player.endTurn
+            }
             if (player.won()) {
-                winners.push(player);
+                winners.push(obj);
             }
             else if (player.lost()) {
-                losers.push(player);
+                losers.push(obj);
             }
             else {
-                lastPlayer = player;
+                lastPlayer = obj;
             }
         });
         winners.sort((a, b) => {return a.endTurn - b.endTurn}); // earliest -> latest winner
         losers.sort((a, b) => {return b.endTurn - a.endTurn}); // latest -> earliest loser
-        return [...winners, lastPlayer, ...losers]; 
+        return [...winners, lastPlayer, ...losers].map(obj => obj.index); 
     }
 
     // tries to determine a player's colour based on the last shot
