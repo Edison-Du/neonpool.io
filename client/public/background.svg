@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1980 1080">
+  <defs>
+    <style>
+      .cls-1 {
+        filter: url(#outer-glow-92);
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5, .cls-6, .cls-7, .cls-8, .cls-9, .cls-10, .cls-11, .cls-12, .cls-13, .cls-14, .cls-15, .cls-16, .cls-17, .cls-18, .cls-19, .cls-20 {
+        stroke-width: 0px;
+      }
+
+      .cls-1, .cls-7, .cls-14, .cls-20 {
+        fill: #ffd587;
+      }
+
+      .cls-2 {
+        fill: url(#linear-gradient);
+      }
+
+      .cls-3 {
+        filter: url(#outer-glow-100);
+      }
+
+      .cls-3, .cls-6, .cls-8 {
+        fill: #ec2b7f;
+      }
+
+      .cls-4 {
+        filter: url(#outer-glow-94);
+      }
+
+      .cls-4, .cls-5, .cls-15, .cls-18 {
+        fill: #31bdff;
+      }
+
+      .cls-21 {
+        opacity: .5;
+      }
+
+      .cls-5 {
+        filter: url(#outer-glow-87);
+      }
+
+      .cls-6 {
+        filter: url(#outer-glow-91);
+      }
+
+      .cls-7 {
+        filter: url(#outer-glow-89);
+      }
+
+      .cls-8 {
+        filter: url(#outer-glow-86);
+      }
+
+      .cls-9 {
+        filter: url(#outer-glow-95);
+      }
+
+      .cls-9, .cls-11, .cls-12, .cls-17 {
+        fill: #59ff88;
+      }
+
+      .cls-10 {
+        fill: url(#linear-gradient-2);
+      }
+
+      .cls-11 {
+        filter: url(#outer-glow-98);
+      }
+
+      .cls-12 {
+        filter: url(#outer-glow-88);
+      }
+
+      .cls-13 {
+        fill: url(#linear-gradient-3);
+      }
+
+      .cls-14 {
+        filter: url(#outer-glow-99);
+      }
+
+      .cls-15 {
+        filter: url(#outer-glow-93);
+      }
+
+      .cls-16 {
+        fill: #fff;
+      }
+
+      .cls-17 {
+        filter: url(#outer-glow-97);
+      }
+
+      .cls-18 {
+        filter: url(#outer-glow-90);
+      }
+
+      .cls-19 {
+        fill: #281947;
+      }
+
+      .cls-20 {
+        filter: url(#outer-glow-96);
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="990" y1="1079" x2="990" y2="-1" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#342863"/>
+      <stop offset="1" stop-color="#171128"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="1424.83" y1="700.17" x2="1426.89" y2="1071.59" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#603693"/>
+      <stop offset="1" stop-color="#361f57"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-3" x1="775.98" y1="762.93" x2="647.32" y2="1160.39" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#663695"/>
+      <stop offset="1" stop-color="#381d53"/>
+    </linearGradient>
+    <filter id="outer-glow-86" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="0"/>
+      <feGaussianBlur result="blur" stdDeviation="7"/>
+      <feFlood flood-color="#ff0068" flood-opacity="1"/>
+      <feComposite in2="blur" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="outer-glow-87" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="0"/>
+      <feGaussianBlur result="blur-2" stdDeviation="6"/>
+      <feFlood flood-color="#6ff" flood-opacity="1"/>
+      <feComposite in2="blur-2" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="outer-glow-88" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="0"/>
+      <feGaussianBlur result="blur-3" stdDeviation="5"/>
+      <feFlood flood-color="#9f9" flood-opacity="1"/>
+      <feComposite in2="blur-3" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="outer-glow-89" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="0"/>
+      <feGaussianBlur result="blur-4" stdDeviation="7"/>
+      <feFlood flood-color="#ffd400" flood-opacity="1"/>
+      <feComposite in2="blur-4" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="outer-glow-90" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="0"/>
+      <feGaussianBlur result="blur-5" stdDeviation="6"/>
+      <feFlood flood-color="#6ff" flood-opacity="1"/>
+      <feComposite in2="blur-5" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="outer-glow-91" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="0"/>
+      <feGaussianBlur result="blur-6" stdDeviation="7"/>
+      <feFlood flood-color="#ff0068" flood-opacity="1"/>
+      <feComposite in2="blur-6" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="outer-glow-92" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="0"/>
+      <feGaussianBlur result="blur-7" stdDeviation="7"/>
+      <feFlood flood-color="#ffd400" flood-opacity="1"/>
+      <feComposite in2="blur-7" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="outer-glow-93" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="0"/>
+      <feGaussianBlur result="blur-8" stdDeviation="6"/>
+      <feFlood flood-color="#6ff" flood-opacity="1"/>
+      <feComposite in2="blur-8" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="outer-glow-94" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="0"/>
+      <feGaussianBlur result="blur-9" stdDeviation="6"/>
+      <feFlood flood-color="#6ff" flood-opacity="1"/>
+      <feComposite in2="blur-9" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="outer-glow-95" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="0"/>
+      <feGaussianBlur result="blur-10" stdDeviation="5"/>
+      <feFlood flood-color="#9f9" flood-opacity="1"/>
+      <feComposite in2="blur-10" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="outer-glow-96" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="0"/>
+      <feGaussianBlur result="blur-11" stdDeviation="7"/>
+      <feFlood flood-color="#ffd400" flood-opacity="1"/>
+      <feComposite in2="blur-11" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="outer-glow-97" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="0"/>
+      <feGaussianBlur result="blur-12" stdDeviation="5"/>
+      <feFlood flood-color="#9f9" flood-opacity="1"/>
+      <feComposite in2="blur-12" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="outer-glow-98" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="0"/>
+      <feGaussianBlur result="blur-13" stdDeviation="5"/>
+      <feFlood flood-color="#9f9" flood-opacity="1"/>
+      <feComposite in2="blur-13" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="outer-glow-99" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="0"/>
+      <feGaussianBlur result="blur-14" stdDeviation="7"/>
+      <feFlood flood-color="#ffd400" flood-opacity="1"/>
+      <feComposite in2="blur-14" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="outer-glow-100" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="0"/>
+      <feGaussianBlur result="blur-15" stdDeviation="7"/>
+      <feFlood flood-color="#ff0068" flood-opacity="1"/>
+      <feComposite in2="blur-15" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Background">
+    <rect class="cls-2" y="-1" width="1980" height="1080"/>
+  </g>
+  <g id="Landscape">
+    <path class="cls-10" d="M1980,741c-128.61-30.32-311.84-58.77-531-45-248.45,15.61-446.66,79.44-577,133v251h1108v-339Z"/>
+    <path class="cls-13" d="M0,767c180.11-29.32,489.21-55.15,851,42,263.48,70.75,464.3,182.39,597,271H0v-313Z"/>
+    <circle class="cls-8" cx="344.5" cy="812.5" r="17.5"/>
+    <polygon class="cls-19" points="136 823 104 823 120 751 120 751 136 823"/>
+    <polygon class="cls-19" points="172.86 836 140.86 836 156.86 764 156.86 764 172.86 836"/>
+    <polygon class="cls-19" points="151.86 852 119.86 852 135.86 780 135.86 780 151.86 852"/>
+    <polygon class="cls-19" points="108 846 81.12 846 94.56 785.53 94.56 785.53 108 846"/>
+    <polygon class="cls-19" points="222.55 816 195.68 816 209.11 755.53 209.11 755.53 222.55 816"/>
+    <polygon class="cls-19" points="1811.32 791 1784.65 791 1797.99 730.99 1797.99 730.99 1811.32 791"/>
+    <polygon class="cls-19" points="1831.34 806 1804.67 806 1818.01 745.99 1818.01 745.99 1831.34 806"/>
+    <polygon class="cls-19" points="1849.04 779.33 1828.01 779.33 1838.53 732 1838.53 732 1849.04 779.33"/>
+    <polygon class="cls-19" points="1780.18 764.33 1759.15 764.33 1769.66 717 1769.66 717 1780.18 764.33"/>
+    <polygon class="cls-19" points="1376.1 771 1354.27 771 1365.19 721.88 1365.19 721.88 1376.1 771"/>
+    <polygon class="cls-19" points="1398 763.21 1371.47 763.21 1384.73 703.52 1384.73 703.52 1398 763.21"/>
+    <polygon class="cls-19" points="1240.33 987 1208.33 987 1224.33 915 1224.33 915 1240.33 987"/>
+    <polygon class="cls-19" points="1218.55 977 1186.55 977 1202.55 905 1202.55 905 1218.55 977"/>
+    <polygon class="cls-19" points="1179.55 1016 1147.55 1016 1163.55 944 1163.55 944 1179.55 1016"/>
+    <polygon class="cls-19" points="850.5 923 818.5 923 834.5 851 834.5 851 850.5 923"/>
+    <polygon class="cls-19" points="1622.15 915 1600.32 915 1611.24 865.88 1611.24 865.88 1622.15 915"/>
+    <circle class="cls-5" cx="898.5" cy="973.5" r="17.5"/>
+    <circle class="cls-12" cx="1284.5" cy="787.5" r="13.5"/>
+    <circle class="cls-7" cx="1929.22" cy="806.29" r="13.13"/>
+    <circle class="cls-18" cx="1721.87" cy="878.87" r="13.13"/>
+    <circle class="cls-6" cx="622.5" cy="892.5" r="17.5"/>
+    <circle class="cls-1" cx="594.5" cy="904.5" r="17.5"/>
+    <circle class="cls-15" cx="565.5" cy="915.5" r="17.5"/>
+    <circle class="cls-4" cx="623.5" cy="916.5" r="17.5"/>
+    <circle class="cls-9" cx="594.5" cy="926.5" r="17.5"/>
+    <circle class="cls-20" cx="624.5" cy="938.5" r="17.5"/>
+    <circle class="cls-17" cx="135.5" cy="916.5" r="17.5"/>
+    <circle class="cls-11" cx="1513" cy="884" r="13"/>
+    <circle class="cls-14" cx="1499.07" cy="896.3" r="13.13"/>
+    <circle class="cls-3" cx="1483.98" cy="909.55" r="13.13"/>
+  </g>
+  <g id="Layer_20" data-name="Layer 20">
+    <g class="cls-21">
+      <g>
+        <circle class="cls-16" cx="366.61" cy="86.97" r="2.62"/>
+        <circle class="cls-16" cx="324.12" cy="73.51" r="2.65"/>
+        <circle class="cls-16" cx="226.24" cy="47.41" r="2.99"/>
+        <circle class="cls-16" cx="114.27" cy="77.95" r="2.26"/>
+        <circle class="cls-16" cx="57.21" cy="64.46" r="2.86"/>
+      </g>
+    </g>
+    <g class="cls-21">
+      <g>
+        <circle class="cls-16" cx="677.83" cy="83.56" r="2.69"/>
+        <circle class="cls-16" cx="611.85" cy="52.43" r="2.38"/>
+        <circle class="cls-16" cx="521.57" cy="93.26" r="2.27"/>
+      </g>
+    </g>
+    <g class="cls-21">
+      <g>
+        <circle class="cls-16" cx="1278.29" cy="83.61" r="2.84"/>
+        <circle class="cls-16" cx="1179.11" cy="78.19" r="2.31"/>
+        <circle class="cls-16" cx="1095.37" cy="91.75" r="2.86"/>
+        <circle class="cls-16" cx="1051.81" cy="18.44" r="2.61"/>
+        <circle class="cls-16" cx="951.05" cy="118.44" r="2.59"/>
+        <circle class="cls-16" cx="894.29" cy="103.87" r="2.55"/>
+      </g>
+    </g>
+    <g class="cls-21">
+      <g>
+        <circle class="cls-16" cx="1772.92" cy="113.99" r="2.43"/>
+        <circle class="cls-16" cx="1696.33" cy="96.79" r="2.41"/>
+        <circle class="cls-16" cx="1626.88" cy="15.97" r="2.79"/>
+        <circle class="cls-16" cx="1530.28" cy="42.75" r="2.45"/>
+      </g>
+    </g>
+    <g class="cls-21">
+      <g>
+        <circle class="cls-16" cx="1779.66" cy="194.55" r="2.65"/>
+        <circle class="cls-16" cx="1872.78" cy="270.06" r="2.71"/>
+        <circle class="cls-16" cx="1928.33" cy="217.43" r="2.3"/>
+      </g>
+    </g>
+    <g class="cls-21">
+      <circle class="cls-16" cx="82.72" cy="178.32" r="2.73"/>
+    </g>
+    <g class="cls-21">
+      <g>
+        <circle class="cls-16" cx="190.55" cy="297.89" r="2.32"/>
+        <circle class="cls-16" cx="127.36" cy="345.03" r="2.64"/>
+        <circle class="cls-16" cx="62.76" cy="377.93" r="2.99"/>
+      </g>
+    </g>
+    <g class="cls-21">
+      <g>
+        <circle class="cls-16" cx="1647.51" cy="299.78" r="2.74"/>
+        <circle class="cls-16" cx="1765.58" cy="275.47" r="2.44"/>
+        <circle class="cls-16" cx="1800.64" cy="382.8" r="2.33"/>
+        <circle class="cls-16" cx="1838.18" cy="449.21" r="2.55"/>
+        <circle class="cls-16" cx="1941.49" cy="422.37" r="2.28"/>
+      </g>
+    </g>
+    <g class="cls-21">
+      <g>
+        <circle class="cls-16" cx="203.75" cy="413.99" r="2.67"/>
+        <circle class="cls-16" cx="315.43" cy="450.84" r="2.29"/>
+        <circle class="cls-16" cx="316.77" cy="323.08" r="2.61"/>
+        <circle class="cls-16" cx="304.19" cy="214.07" r="2.8"/>
+      </g>
+    </g>
+    <g class="cls-21">
+      <g>
+        <circle class="cls-16" cx="584.46" cy="406.2" r="2.45"/>
+        <circle class="cls-16" cx="504.15" cy="310.39" r="2.57"/>
+        <circle class="cls-16" cx="464.39" cy="244.25" r="2.39"/>
+      </g>
+    </g>
+    <g class="cls-21">
+      <g>
+        <circle class="cls-16" cx="1611.54" cy="407.89" r="2.72"/>
+        <circle class="cls-16" cx="1536.87" cy="344.04" r="2.93"/>
+        <circle class="cls-16" cx="1453.43" cy="290.34" r="2.64"/>
+        <circle class="cls-16" cx="1453.68" cy="175.87" r="2.95"/>
+      </g>
+    </g>
+    <g class="cls-21">
+      <g>
+        <circle class="cls-16" cx="787.63" cy="273.27" r="2.69"/>
+        <circle class="cls-16" cx="688.64" cy="232.86" r="2.3"/>
+      </g>
+    </g>
+    <g class="cls-21">
+      <g>
+        <circle class="cls-16" cx="1171.67" cy="305.32" r="2.69"/>
+        <circle class="cls-16" cx="1033.49" cy="315.37" r="2.68"/>
+      </g>
+    </g>
+  </g>
+</svg>

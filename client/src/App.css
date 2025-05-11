@@ -24,6 +24,83 @@ body {
   position: relative;
 }
 
+/* ============================= Main Menu ================================ */
+.main-menu {
+  background-image: url("../public/background.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  text-shadow: 0 0 7px white;
+}
+
+/* Title positioning */
+.main-menu section {
+  position: relative;
+}
+.main-menu section:nth-child(1) {
+  left: -2vw;
+}
+.main-menu section:nth-child(2) {
+  top: -4vw;
+}
+.main-menu h1 {
+  color: #ffe9ff;
+  position: relative;
+  font-size: 9vw;
+}
+
+.main-menu h1:nth-child(2) {
+  top: -5vw;
+  left: 5vw;
+}
+.main-menu p {
+  color: #ffe9ff;
+  position: relative;
+  font-size: 1.25vw;
+  top: -7vw;
+  left: 10vw;
+}
+
+/* Glow for each letter */
+.main-menu h1:nth-child(1) > span:nth-child(1) {
+  color: #59ff88;
+  text-shadow: 0 0 7px #66ff99;
+}
+.main-menu h1:nth-child(1) > span:nth-child(2) {
+  color: #ec2b7f;
+  text-shadow: 0 0 7px #ff3366;
+}
+.main-menu h1:nth-child(2) > span:nth-child(1) {
+  color: #31bdff;
+  text-shadow: 0 0 7px #33ccff;
+}
+.main-menu h1:nth-child(2) > span:nth-child(2) {
+  color: #ffd587;
+  text-shadow: 0 0 7px #ffcc99;
+}
+
+.main-menu a {
+  color: #ffe9ff;
+  width: 100%;
+  text-align: center;
+  text-decoration: none;
+  font-size: 2.4vw;
+  border: 0.3vw solid #ffe9ff;
+  border-radius: 2.5vw;
+  box-shadow: inset 0 0 5px #ffe9ff, 0 0 5px white;
+  padding-left: 3vw;
+  padding-right: 3vw;
+  margin-bottom: 1.5vw;
+  transition: 250ms ease-in;
+}
+
+.main-menu a:hover {
+  color: #151b29;
+  background-color: #ffe9ff;
+  box-shadow: 0 0 5px white;
+}
+
+/* Canvas */
 canvas, .game-over {
   border-radius: 1vw;
 }
@@ -156,14 +233,19 @@ canvas, .game-over {
   padding-right: 0.75vw;
 }
 
+.game-over > div > div:nth-child(3) {
+  margin-top: 0.5vw;
+}
+
 /* https://stackoverflow.com/questions/17212094/fill-background-color-left-to-right-css */
 /* rematch button */
 .game-over > div > div > button:nth-child(1) {
   height: 3vw;
   width: 14vw;
   border-radius: 0.5vw;
-  background: linear-gradient(to left, #5A5D65 50%, #30D172 50%) 98% bottom;
-  background-size: 210% 100%;
+  /* background: linear-gradient(to left, #5A5D65 50%, #30D172 50%) 98% bottom;
+  background-size: 210% 100%; */
+  background-color: #5A5D65;
   border: none;
   transition: 250ms ease-in;
   font-size: 2vw;
@@ -175,8 +257,9 @@ canvas, .game-over {
   width: 4vw;
   height: 3vw;
   border-radius: 0.5vw;
-  background: linear-gradient(to left, #5A5D65 50%, #E51F4C 50%) 98% bottom;
-  background-size: 210% 100%;
+  /* background: linear-gradient(to left, #5A5D65 50%, #E51F4C 50%) 98% bottom;
+  background-size: 210% 100%; */
+  background-color: #5A5D65;
   border: none;
   transition: 250ms ease-in;
 }
@@ -185,9 +268,18 @@ canvas, .game-over {
   filter: drop-shadow(0 0 7px white);
 }
 
-.game-over > div > div > button:hover {
+/* .game-over > div > div > button:hover {
   background-position: 2% bottom;
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+} */
+
+.game-over > div > div > button:nth-child(1):hover {
+  background-color: #30D172;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.game-over > div > div > button:nth-child(2):hover {
+  background-color: #E51F4C;
 }
 
 /* ============================ Lobby ============================ */
@@ -239,9 +331,9 @@ canvas, .game-over {
 
 .lobby > .start-game {
   border-radius: 0.5vw;
-  background: linear-gradient(to left, #2E303C 50%, #30D172 50%) 98% bottom;
-  background-size: 210% 100%;
-  /* background-color: #2E303C; */
+  /* background: linear-gradient(to left, #2E303C 50%, #30D172 50%) 98% bottom;
+  background-size: 210% 100%; */
+  background-color: #2E303C;
   margin-top: 1vw;
 }
 
@@ -251,17 +343,17 @@ canvas, .game-over {
 }
 
 .can-start-game:hover {
-  background-position: 2% bottom;
-  /* background-color: #30D172; */
+  /* background-position: 2% bottom; */
+  background-color: #30D172;
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
-
 
 .lobby > section, .lobby > button {
   position: relative;
   left: 7.5%;
 }
 
+/* Player Tag */
 .lobby-player-tag {
   height: 4vw;
   width: 100%;
@@ -286,6 +378,10 @@ canvas, .game-over {
   outline: none;
 }
 
+.player-current > input {
+  color: #37ff1c;
+}
+
 .lobby-player-tag > button {
   width: 15%;
   border: none;
@@ -304,4 +400,79 @@ canvas, .game-over {
 .lobby-player-tag > button > svg:hover {
   transform: scale(1.2);
   filter: brightness(200%);
+}
+
+/* Copy Link */
+.lobby .copy-link { /* Should be very similar to player tag */
+  width: 100%;
+  height: 4vw;  
+  margin-bottom: 2vw;
+  position: relative;
+}
+
+.lobby .copy-link > div {
+  background-color: rgb(46, 48, 60);
+  border-top-left-radius: 2vw;
+  border-bottom-left-radius: 2vw;
+  width: calc(100% - 2vw);
+  height: 100%;
+  display: inline-block;
+  padding: 1vw;
+  padding-left: 2vw;
+  padding-right: 4vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.lobby .copy-link > button {
+  border: none;
+  background-color: rgb(78, 81, 97);
+  border-radius: 2vw;
+  width: 4vw;
+  height: 100%;
+  display: inline-block;
+  padding: 1vw;
+  position: absolute;
+  right: 0;
+  top: 0;
+  box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.1);
+  transition: 250ms ease-in;
+}
+
+.lobby .copy-link > button:hover {
+  background-color: rgb(104, 106, 116);
+}
+
+.lobby .copy-link > button > svg {
+  width: 75%;
+  height: 75%;
+  filter: drop-shadow(0 0 7px white);
+}
+
+/* ============================ Error Page ============================ */
+.error h1 {
+  text-align: center;
+  font-size: 4vw;
+  text-shadow: 0 0 7px white;
+  margin-bottom: 1vw;
+}
+
+.error button {
+  font-size: 4vw;
+  padding-right: 1.5vw;
+  padding-left: 1.5vw;
+  padding-top: 0.5vw;
+  padding-bottom: 0.5vw;
+  border-radius: 0.5vw;
+  background-color: #5A5D65;
+  border: none;
+  transition: 250ms ease-in;
+  font-size: 2vw;
+  text-shadow: 0 0 7px white;
+}
+
+.error button:hover {
+  background-color: #30D172;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
