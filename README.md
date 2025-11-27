@@ -1,5 +1,9 @@
-# 8-Ball-Pool
+# neonpool.io
 
-Multiplayer browser pool game with game modes supporting up to 4 players.
+Multiplayer browser pool game.
 
-![screenshot-aug-1](https://github.com/user-attachments/assets/eb1ee565-f326-43d4-aecf-78a091504681)
+## Images
+
+![home-page](./docs/home.png)
+![lobby-page](./docs/lobby.png)
+![game-page](./docs/game.png)

@@ -36,6 +36,7 @@ body {
 /* Title positioning */
 .main-menu section {
   position: relative;
+  animation: fade-in 1s ease-in;
 }
 .main-menu section:nth-child(1) {
   left: -2vw;
@@ -94,10 +95,12 @@ body {
   transition: 250ms ease-in;
 }
 
-.main-menu a:hover {
-  color: #151b29;
-  background-color: #ffe9ff;
-  box-shadow: 0 0 5px white;
+.main-menu a:is(:hover, :focus) {
+  color: #30D172;
+  border-color: #30D172;
+  box-shadow: inset 0 0 5px #30D172, 0 0 5px #30D172;
+  text-shadow: 0 0 7px #30D172;
+  outline: none;
 }
 
 /* Canvas */
@@ -207,6 +210,7 @@ canvas, .game-over {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.75);
+  animation: fade-in 1s ease-in;
 }
 
 .game-over > div > h1 {
@@ -475,4 +479,17 @@ canvas, .game-over {
 .error button:hover {
   background-color: #30D172;
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+/* ============================ Animations ============================ */
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
