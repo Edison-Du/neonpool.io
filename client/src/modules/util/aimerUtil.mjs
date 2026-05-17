@@ -18,7 +18,7 @@ export class AimerUtil {
      * @param {twoPlayerGame} game 
      * @param {vector2D} mousePos 
      */
-    static drawAimAssist(ctx, game, mousePos) {
+    static drawAimAssist(ctx, game, mousePos, opacity=1) {
 
         let cueBall = game.cueBall;
         let balls = game.balls;
@@ -56,6 +56,7 @@ export class AimerUtil {
         let pos_target = targetPos.subtract(dir_rad);
     
         // draws pointer and projected ball location before collision
+        ctx.globalAlpha = opacity;
         CanvasUtil.drawLine(ctx, cueBall.pos, pos_target, 2, "white");
         CanvasUtil.drawCircle(ctx, targetPos, Ball.RADIUS - 1, 2, "white", null);
 
@@ -74,6 +75,7 @@ export class AimerUtil {
         ];
 
         drawFunctions[minIndex](minObjects[minIndex].index);
+        ctx.globalAlpha = 1;
     }
 
     static drawStrengthBar(ctx, timeElapsed) {
@@ -108,7 +110,7 @@ export class AimerUtil {
     }
 
     // Specific draw methods
-    static #drawAimAssistForHittableBall(ctx, velNorm, targetPos, ball) {
+    static #drawAimAssistForHittableBall(ctx, velNorm, targetPos, ball, opacity=1) {
         let ab = targetPos.to(ball.pos);
         let v_cueball = velNorm.perp(ab).scale(this.resultantVelocityLength);
         let v_other = velNorm.proj(ab).scale(this.resultantVelocityLength);

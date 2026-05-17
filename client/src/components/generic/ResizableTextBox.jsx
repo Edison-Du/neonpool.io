@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import useWindowWidth from "../../hooks/useWindowWidth";
 
 function ResizableTextBox({text, defaultFontSize=1, style=null, className}) {
@@ -34,15 +34,22 @@ function ResizableTextBox({text, defaultFontSize=1, style=null, className}) {
     }
 
     useEffect(() => {
-        resize();
-    })
+        if (document.fonts) {
+            document.fonts.ready.then(() => {
+                resize();
+            });
+        }
+    }, [text, screenWidth]);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (!textRef.current) return;
-        const resizeObserver = new ResizeObserver(resize);
+        resize();
+        const resizeObserver = new ResizeObserver(() => {
+            requestAnimationFrame(resize);
+        });
         resizeObserver.observe(textRef.current);
         return () => resizeObserver.disconnect();
-    }, []);
+    }, [text, screenWidth]);
 
     return (
         <div 

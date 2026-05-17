@@ -13,7 +13,9 @@ export class PickUpBallIndicator {
     keyFrames = [0, this.endFrame/2, this.endFrame];
     translation = [5, 0, 5];
 
-    constructor(ballPosition) {
+    opacity = 1;
+
+    constructor(ballPosition, opacity=1) {
         this.counter = 0;
         this.ballPosition = ballPosition;
         this.triangle = (new Polygon(
@@ -23,6 +25,7 @@ export class PickUpBallIndicator {
         ))
         .getTranslatedPolygon(new Vector2D(0, - (Ball.RADIUS + 7)))
         .getTranslatedPolygon(ballPosition); 
+        this.opacity = opacity;
     }
 
     #interpolateLinear(keys, values) {
@@ -46,7 +49,9 @@ export class PickUpBallIndicator {
     draw(ctx) {
         let height = this.#getTranslation();
         let newTriangle = this.triangle.getTranslatedPolygon(new Vector2D(0, -height));
+        ctx.globalAlpha = this.opacity;
         newTriangle.draw(ctx);
+        ctx.globalAlpha = 1;
         this.counter++;
         return this.counter !== this.endFrame;
     }

@@ -1,5 +1,6 @@
 const SocketEvents = require("./socketEvents");
 const User = require("./user");
+const Util = require("./util");
 
 class Lobby {
 
@@ -70,6 +71,14 @@ class Lobby {
     }
 
     /**
+     * canStartGame
+     * @returns {boolean} Whether or not all players in the lobby are ready to start a game
+     */
+    canStartGame() {
+        return this.players.length >= 2 && this.players.every(player => player.playingAgain);
+    }
+
+    /**
      * addPlayer
      * @param {User} user 
      * @returns {boolean} Whether or not the player could be added
@@ -82,7 +91,7 @@ class Lobby {
         this.players.push(user);
         // create socket.io room & broadcast message
         user.socket.join(this.code);
-        user.socket.to(this.code).emit(SocketEvents.playerJoin, { players: this.generatePlayerList() });
+        this.broadcastPlayerListExcludeUser(SocketEvents.playerJoin, user);
         return true;
     }
 
@@ -110,16 +119,67 @@ class Lobby {
     }
 
     /**
-     * broadcastPlayerList
+     * broadcastMessageExcludeUser
+     * @param {String} event  
+     * @param {User} user 
+     * @param {any} msg
+     * @returns {boolean} Whether or not the user given is able to broadcast messages
+     */
+    broadcastMessageExcludeUser(event, msg, user) {
+        if (!this.players.includes(user)) {
+            return false;
+        }
+        user.socket.to(this.code).emit(event, msg);
+        return true;
+    }
+
+    /**
+     * broadcastPlayerListExcludeUser
      * @param {String} event  
      * @param {User} user 
      * @returns {boolean} Whether or not the user given is able to broadcast messages
      */
-    broadcastPlayerList(event, user) {
-        if (!this.players.includes(user)) {
+    broadcastPlayerListExcludeUser(event, user) {
+        return this.broadcastMessageExcludeUser(event, { players: this.generatePlayerList() }, user);
+    }
+
+    /**
+     * broadcastMessage
+     * @param {String} event  
+     * @param {any} msg
+     * @returns {boolean} Whether there are players in the lobby
+     */
+    broadcastMessage(event, msg) {
+        if (this.players.length === 0) {
+            return;
+        }
+        this.players.forEach(player => player.socket.emit(event, msg));
+        return true;
+    }
+
+    /**
+     * broadcastPlayerList
+     * @param {String} event  
+     * @returns {boolean} Whether we could broadcast messages
+     */
+    broadcastPlayerList(event) {
+        return this.broadcastMessage(event, { players: this.generatePlayerList() });
+    }
+
+    /**
+     * startGame
+     * @returns {boolean} Whether or not the lobby could start a game
+     */
+    startGame() {
+        if (!this.canStartGame()) {
             return false;
         }
-        user.socket.to(this.code).emit(event, { players: this.generatePlayerList() });
+        this.inGame = true;
+        this.players.forEach(player => player.playAgain = false);
+        this.broadcastMessage(SocketEvents.startGame, { 
+            players: this.generatePlayerList(), 
+            seed: Util.getGameSeed()
+        });
         return true;
     }
 }

@@ -52,7 +52,7 @@ function PlayerInfoBar({playerNames, playerColours, playerStates, playerTurn, ba
         // update player states
         previousPlayerStates.current = [...playerStates];
 
-        console.log("changed", ballCounts, newBallCounts, ballColourCounts, playerColours, playerStates);
+        // console.log("changed", ballCounts, newBallCounts, ballColourCounts, playerColours, playerStates);
 
     }, [ballColourCounts, playerColours, playerStates]);
 

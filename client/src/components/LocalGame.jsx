@@ -24,10 +24,10 @@ function LocalGame({playerNames, gameSeed, exitGame}) { // seed, # players, play
     
     const screenWidth = useWindowWidth();
 
-    let game = useRef(null);
-    let mousePos = useRef(null);
-    let isHoldingBall = useRef(false);
-    let heldTimeRef= useRef(-1);
+    const game = useRef(null);
+    const mousePos = useRef(null);
+    const isHoldingBall = useRef(false);
+    const heldTimeRef= useRef(-1);
 
     const table = useRef();
     const [heldTimeState, setHeldTimeState] = useState(-1);
@@ -130,8 +130,8 @@ function LocalGame({playerNames, gameSeed, exitGame}) { // seed, # players, play
         return Math.round(screenWidth * 0.7);
     }
 
-    const getStrengthBarFraction = () => {
-        return Math.max(0, Math.min(heldTimeState/AimerUtil.framesToFullStrength, 1));
+    const getStrengthBarFraction = (heldTime) => {
+        return Math.max(0, Math.min(heldTime/AimerUtil.framesToFullStrength, 1));
     }
 
     // mouse related
@@ -143,21 +143,20 @@ function LocalGame({playerNames, gameSeed, exitGame}) { // seed, # players, play
 
     // user input
     const mouseDown = (e) => {
-
         if (game.current.ballsAreMoving || game.current.gameHasEnded) {
             return;
         }
 
         // pick up cue ball
-        if (mouseOnCueBall() && !isHoldingBall.current) {
-            isHoldingBall.current = game.current.ballInHand;
+        if (mouseOnCueBall() && !isHoldingBall.current && game.current.ballInHand) {
+            isHoldingBall.current = true
             return;
         }
 
         // place cue ball
         if (isHoldingBall.current || !game.current.ballIsPlaced) {
             mousePos.current = new Vector2D(e.offsetX, e.offsetY).scale(1/Consts.scale);
-            let position = new Vector2D(mousePos.current.x, mousePos.current.y);
+            const position = new Vector2D(mousePos.current.x, mousePos.current.y);
             game.current.placeCueBall(position);
             isHoldingBall.current = false; // will reset the ball position if invalid placement is made
             return;
@@ -169,7 +168,6 @@ function LocalGame({playerNames, gameSeed, exitGame}) { // seed, # players, play
     }
 
     const mouseUp = (e) => {
-
         if (game.current.ballsAreMoving || game.current.gameHasEnded) {
             return;
         }
@@ -178,7 +176,7 @@ function LocalGame({playerNames, gameSeed, exitGame}) { // seed, # players, play
             return;
         }
     
-        let strength = Math.min((heldTimeRef.current/AimerUtil.framesToFullStrength), 1) * 20;
+        const strength = Math.min((heldTimeRef.current/AimerUtil.framesToFullStrength), 1) * Consts.maxStrength;
     
         mousePos.current = new Vector2D(e.offsetX, e.offsetY).scale(1/Consts.scale);
         game.current.shootCueBall(game.current.cueBall.pos.to(mousePos.current), strength);
@@ -281,7 +279,7 @@ function LocalGame({playerNames, gameSeed, exitGame}) { // seed, # players, play
                         ></GameOver>}
                 </div>
                 <div className="side d-flex align-items-center justify-content-center">
-                    <StrengthBar fractionFilled={getStrengthBarFraction()}></StrengthBar>
+                    <StrengthBar fractionFilled={getStrengthBarFraction(heldTimeState)}></StrengthBar>
                 </div>
             </div>
         </div>

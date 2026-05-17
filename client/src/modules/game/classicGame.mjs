@@ -210,11 +210,11 @@ export class ClassicGame {
     /** ================================ USER INPUT ================================ */
     shootCueBall(direction, strength) {
         if (this.ballsAreMoving || !this.ballIsPlaced) {
-            return;
+            return false;
         }
         // invalid cases
-        if ((direction.x == 0  && direction.y == 0) || strength == 0) {
-            return;
+        if ((direction.x == 0  && direction.y == 0) || strength <= 0 || strength > Consts.maxStrength) {
+            return false;
         }
 
         // may choose to add velocity instead of set velocity in the future (explosives, cueball already moving)
@@ -223,6 +223,7 @@ export class ClassicGame {
 
         // console.log("BALL SHOT: ", direction, strength);
         this.gameLog.shootBall(direction, strength, this.balls);
+        return true;
     }
 
     // check if ball overlaps with any obstacles.
@@ -290,7 +291,6 @@ export class ClassicGame {
     /** ================================ PHYSICS RELATED ================================ */
 
     simulateTick() {
-
         if (!this.ballsAreMoving) {
             return;
         }
@@ -434,6 +434,23 @@ export class ClassicGame {
 
     /** ================================ GAME LOGIC ================================ */
 
+    forfeitPlayer(index) {
+        if (index < 0 || index >= this.players.length) {
+            return false;
+        }
+        const player = this.players[index];
+        if (this.gameHasEnded || !player.inPlay()) {
+            return false;
+        }
+        player.setLost();
+        player.endTurn = this.turn;
+        // Case where player forfeits during their turn before making a move, or if their forfeit ends the game
+        if (!this.ballsAreMoving && (this.currentPlayerIndex === index || this.#checkGameEnded())) {
+            this.#endTurn();
+        }
+        return true;
+    }
+
     #getCurrentPlayer() {
         return this.players[this.currentPlayerIndex];
     }
@@ -452,7 +469,6 @@ export class ClassicGame {
 
     // takes place after all balls have settled
     #endTurn() {
-
         // debug
         if (this.turnEnded) {
             this.gameLog.constructGameState();
@@ -464,13 +480,20 @@ export class ClassicGame {
 
         let currentPlayer = this.#getCurrentPlayer();
 
-        if (this.#checkEightBallPocketed()) {
+        if (this.#checkGameEnded()) {
+            this.gameHasEnded = true;
+        }
+        else if (!currentPlayer.inPlay) { // case where player forfeited before balls settled
+            this.ballInHand = true;
+            this.#proceedToNextTurn();
+        }
+        else if (this.#checkEightBallPocketed()) {
             if (this.#checkCueBallPocketed() || this.#checkFoul()) {
-                currentPlayer.setLoss();
+                currentPlayer.setLost();
                 this.ballInHand = true;
             }
             else if (this.firstBallHit.colour != Consts.eightBallColour) {
-                currentPlayer.setLoss();
+                currentPlayer.setLost();
             }
             else {
                 currentPlayer.setWin();

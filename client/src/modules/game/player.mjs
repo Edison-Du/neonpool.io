@@ -31,7 +31,7 @@ export class Player {
         return this.state == Player.state.WON;
     }
 
-    setLoss() {
+    setLost() {
         this.state = Player.state.LOST;
     }
 

@@ -14,6 +14,7 @@ class User {
     id;
     name;
     isHost;
+    playingAgain;
     
     /**
      * User
@@ -27,26 +28,36 @@ class User {
         // Use socket id for now
         this.id = socket.id;
         this.isHost = false;
+        this.playingAgain = true;
 
         socket.on("disconnect", this.disconnect.bind(this));
 
+        // Lobby events
         socket.on(SocketEvents.createGame, this.createGame.bind(this));
         socket.on(SocketEvents.playerJoin, this.joinGame.bind(this));
         socket.on(SocketEvents.playerNameChange, this.changeName.bind(this));
         socket.on(SocketEvents.playerLeave, this.removePlayer.bind(this));
-
+        socket.on(SocketEvents.playAgainChange, this.playAgain.bind(this));
         socket.on(SocketEvents.startGame, this.startGame.bind(this));
+
+        // Game events
+        socket.on(SocketEvents.shootCueBall, this.shootCueBall.bind(this));
+        socket.on(SocketEvents.placeCueBall, this.placeCueBall.bind(this));
+        socket.on(SocketEvents.pickUpCueBall, this.pickUpCueBall.bind(this));
+        socket.on(SocketEvents.moveMouse, this.moveMouse.bind(this));
+        socket.on(SocketEvents.changeStrength, this.changeStrength.bind(this));
     }
 
     /**
      * getGameInfo
-     * @returns {{id: String, isHost: boolean}} necessary information to send to other users in a game
+     * @returns {{id: String, name: String, isHost: boolean, playingAgain: boolean}} necessary information to send to other users in a game
      */
     getGameInfo() {
         return {
             id: this.id,
             name: this.name,
-            isHost: this.isHost
+            isHost: this.isHost,
+            playingAgain: this.playingAgain
         }
     }
 
@@ -57,6 +68,8 @@ class User {
         }
         console.log(`User ${this.id} has disconnected`);
     }
+
+    // Lobby Events
 
     createGame(_, callback) {
         const validation = Joi.object({
@@ -137,12 +150,43 @@ class User {
             if (!this.lobby) {
                 return { error: "Not in a lobby" };
             }
+            if (this.lobby.inGame) {
+                return { error: "Cannot change name in the middle of a game" };
+            }
             this.name = name;
-            this.lobby.broadcastPlayerList(SocketEvents.playerNameChange, this);
+            this.lobby.broadcastPlayerListExcludeUser(SocketEvents.playerNameChange, this);
             return { players: this.lobby.generatePlayerList() };
         }
         const msg = changeName();
         console.log(`User ${this.id} wants to change their name to ${name}, reply: ${JSON.stringify(msg)}`);
+        callback(msg);
+    }
+
+    playAgain(_, callback) {
+        const validation = Joi.object({
+            _: Joi.any().valid(null).required(), // must be null
+            callback: Joi.function().required()
+        }).validate({ _, callback });
+        if (validation.error) {
+            console.log(`User ${this.id} requested to play again with invalid arguments: ${validation.error}`);
+            return;
+        }
+        const playAgain = () => {
+            if (!this.lobby) {
+                return { error: "Not in a lobby" };
+            }
+            if (!this.lobby.inGame) {
+                return { error: "Game is not in progress" };
+            }
+            if (this.playingAgain) {
+                return { error: "Already playing again" };
+            }
+            this.playingAgain = true;
+            this.lobby.broadcastPlayerListExcludeUser(SocketEvents.playAgainChange, this);
+            return { players: this.lobby.generatePlayerList() };
+        }
+        const msg = playAgain();
+        console.log(`User ${this.id} wants to play again, reply: ${JSON.stringify(msg)}`);
         callback(msg);
     }
 
@@ -181,8 +225,174 @@ class User {
         callback(msg);
     }
 
-    startGame(data, callback) {
+    startGame(_, callback) {
+        const validation = Joi.object({
+            _: Joi.any().valid(null).required(), // must be null
+            callback: Joi.function().required()
+        }).validate({ _, callback });
+        if (validation.error) {
+            console.log(`User ${this.id} requested to start a game with invalid arguments: ${validation.error}`);
+            return;
+        }
+        const startGame = () => {
+            if (!this.lobby) {
+                return { error: "Not in a lobby" };
+            }
+            if (!this.isHost) {
+                return { error: "Only host can start a game" };
+            }
+            if (!this.lobby.startGame()) {
+                return { error: "Unable to start game" };
+            }
+            return { players: this.lobby.generatePlayerList() };
+        }
+        const msg = startGame();
+        console.log(`User ${this.id} wants to start a game, reply: ${JSON.stringify(msg)}`);
+        callback(msg);
+    }
 
+    // Game Events
+
+    shootCueBall(data, callback) {
+        const validation = Joi.object({
+            data: Joi.object({
+                direction: Joi.object({
+                    x: Joi.number().required(),
+                    y: Joi.number().required()
+                }).required(),
+                strength: Joi.number().positive().required()
+            }),
+            callback: Joi.function().required()
+        }).validate({ data, callback });
+        // More complex validation (eg. upper bound on strength) should be done by clients
+        if (validation.error) {
+            console.log(`User ${this.id} requested to shoot the cue ball with invalid arguments: ${validation.error}`);
+            return;
+        }
+        const shootCueBall = () => {
+            if (!this.lobby) {
+                return { error: "Not in a lobby" };
+            }
+            if (!this.lobby.inGame) {
+                return { error: "Game is not in progress" };
+            }
+            this.lobby.broadcastMessageExcludeUser(SocketEvents.shootCueBall, { id: this.id, ...data }, this);
+            return { success: true };
+        };
+        const msg = shootCueBall();
+        console.log(`User ${this.id} wants to shoot the cue ball, reply: ${JSON.stringify(msg)}`);
+        callback(msg);
+    }
+
+    placeCueBall(data, callback) {
+        const validation = Joi.object({
+            data: Joi.alternatives().try(
+                Joi.object({
+                    position: Joi.object({
+                        x: Joi.number().required(),
+                        y: Joi.number().required()
+                    }).required()
+                }),
+                Joi.any().valid(null)
+            ),
+            callback: Joi.function().required()
+        }).validate({ data, callback });
+        if (validation.error) {
+            console.log(`User ${this.id} requested to place the cue ball with invalid arguments: ${validation.error}`);
+            return;
+        }
+        const placeCueBall = () => {
+            if (!this.lobby) {
+                return { error: "Not in a lobby" };
+            }
+            if (!this.lobby.inGame) {
+                return { error: "Game is not in progress" };
+            }
+            this.lobby.broadcastMessageExcludeUser(SocketEvents.placeCueBall, { id: this.id, ...data }, this);
+            return { success: true };
+        };
+        const msg = placeCueBall();
+        console.log(`User ${this.id} wants to place the cue ball, reply: ${JSON.stringify(msg)}`);
+        callback(msg);
+    }
+
+    pickUpCueBall(_, callback) {
+        const validation = Joi.object({
+            _: Joi.any().valid(null).required(), // must be null
+            callback: Joi.function().required()
+        }).validate({ _, callback });
+        if (validation.error) {
+            console.log(`User ${this.id} requested to pick up the cue ball with invalid arguments: ${validation.error}`);
+            return;
+        }
+        const pickUpCueBall = () => {
+            if (!this.lobby) {
+                return { error: "Not in a lobby" };
+            }
+            if (!this.lobby.inGame) {
+                return { error: "Game is not in progress" };
+            }
+            this.lobby.broadcastMessageExcludeUser(SocketEvents.pickUpCueBall, { id: this.id }, this);
+            return { success: true };
+        };
+        const msg = pickUpCueBall();
+        console.log(`User ${this.id} wants to pick up the cue ball, reply: ${JSON.stringify(msg)}`);
+        callback(msg);
+    }
+
+    moveMouse(data, callback) {
+        const validation = Joi.object({
+            data: Joi.object({
+                position: Joi.object({
+                    x: Joi.number().required(),
+                    y: Joi.number().required()
+                }).required()
+            }),
+            callback: Joi.function().required()
+        }).validate({ data, callback });
+        if (validation.error) {
+            console.log(`User ${this.id} requested to move the mouse with invalid arguments: ${validation.error}`);
+            return;
+        }
+        const moveMouse = () => {
+            if (!this.lobby) {
+                return { error: "Not in a lobby" };
+            }
+            if (!this.lobby.inGame) {
+                return { error: "Game is not in progress" };
+            }
+            this.lobby.broadcastMessageExcludeUser(SocketEvents.moveMouse, { id: this.id, ...data }, this);
+            return { success: true };
+        };
+        const msg = moveMouse();
+        console.log(`User ${this.id} wants to move the mouse, reply: ${JSON.stringify(msg)}`);
+        callback(msg);
+    }
+
+    changeStrength(data, callback) {
+        const validation = Joi.object({
+            data: Joi.object({
+                fraction: Joi.number().min(0).max(1).required()
+            }),
+            callback: Joi.function().required()
+        }).validate({ data, callback });
+        if (validation.error) {
+            console.log(`User ${this.id} requested to change the strength with invalid arguments: ${validation.error}`);
+            return;
+        }
+        const changeStrength = () => {
+            if (!this.lobby) {
+                return { error: "Not in a lobby" };
+            }
+            if (!this.lobby.inGame) {
+                return { error: "Game is not in progress" };
+            }
+            this.lobby.broadcastMessageExcludeUser(SocketEvents.changeStrength, { id: this.id, ...data }, this);
+            return { success: true };
+        };
+        const msg = changeStrength();
+        console.log(`User ${this.id} wants to change the strength, reply: ${JSON.stringify(msg)}`);
+        callback(msg);
     }
 }
 

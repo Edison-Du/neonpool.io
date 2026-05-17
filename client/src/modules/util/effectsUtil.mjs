@@ -85,14 +85,14 @@ export class EffectsUtil {
     }
 
     // specific effects, only one per universe.
-    static startBallPickUpEffect(position) {
+    static startBallPickUpEffect(position, opacity=1) {
         if (this.#pickUpBallEffect !== null) {
             if (position.equals(this.#pickUpBallEffect.ballPosition)) {
                 return;
             }
             this.removeBallPickUpEffect();
         }
-        this.#pickUpBallEffect = this.loop(new PickUpBallIndicator(position));
+        this.#pickUpBallEffect = this.loop(new PickUpBallIndicator(position, opacity));
     }
 
     static removeBallPickUpEffect() {
