@@ -221,7 +221,6 @@ export class ClassicGame {
         this.cueBall.vel = direction.getUnitVector().scale(strength); // max strength is 20?
         this.#startTurn();
 
-        // console.log("BALL SHOT: ", direction, strength);
         this.gameLog.shootBall(direction, strength, this.balls);
         return true;
     }
@@ -283,7 +282,6 @@ export class ClassicGame {
         this.cueBall.resetState();
         this.ballIsPlaced = true;
 
-        // console.log("Ball Placed: ", position);
         this.gameLog.placeBall(position);
         return true;
     }
@@ -464,7 +462,6 @@ export class ClassicGame {
 
         // debug
         this.turnEnded = false;
-        // console.log("START TURN");
     }
 
     // takes place after all balls have settled
@@ -475,7 +472,6 @@ export class ClassicGame {
             this.gameLog.printMoves();
         }
         this.turnEnded = true;
-        // console.log("TURN END");
         // end debug
 
         let currentPlayer = this.#getCurrentPlayer();
@@ -502,14 +498,10 @@ export class ClassicGame {
             currentPlayer.endTurn = this.turn;
             if (this.#checkGameEnded()) {
                 this.gameHasEnded = true;
-
-                // console.log("GAME OVER!");
-                // console.log(this.#getLeaderboard());
             }
             else {
                 this.#proceedToNextTurn();
                 this.#respawnEightBall();
-                // console.log("HERE");
                 EffectsUtil.respawnEightBall(this.balls[1].pos);
             }
         }
@@ -535,14 +527,6 @@ export class ClassicGame {
         });
 
         this.turn++;
-
-        // let msg = "Turn " + this.turn + "\nPlayer " + this.currentPlayerIndex + " to go";
-        // for (let i = 0; i < this.players.length; i++) {
-        //     msg += "\nPlayer " + i + ": " + this.players[i].state + ", " + this.players[i].colour;
-        // }
-        // msg += "\nBall In Hand: " + this.ballInHand;
-        // console.log(msg);
-        // console.log(this.runningColourCount);
     }
 
     // Assume that there exists a player that is in play, otherwise an infinite loop will occur.

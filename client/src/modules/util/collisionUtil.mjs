@@ -228,7 +228,6 @@ export class CollisionUtil {
 
         // correct position.
         // let dist = ball_to_hole.getMagnitude() + Ball.RADIUS - Hole.RADIUS;
-        // console.log(dist);
         // if (dist > 0) {
         //     ball.pos = ball.pos.add(ball_to_hole.getUnitVector().scale(dist));
         // }

@@ -48,6 +48,10 @@ export class LogUtil {
     
     // creates a test case that simulates the last shot exactly.
     constructGameState() {
+        if (this.moves.length == 0 || this.ballStates.length == 0) {
+            console.log("No moves or ball states recorded");
+            return;
+        }
         let msg = `Ball.RADIUS = ${Ball.RADIUS};\n`;
         msg += `Ball.FRICTION = ${Ball.FRICTION};\n`;
         msg += `Consts.elasticity = ${Consts.elasticity};\n`;

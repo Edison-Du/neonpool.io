@@ -103,7 +103,7 @@ function OnlineLobby({code, players, onPlayersChange, startGame, onError}) {
                 return;
             }
             onPlayersChange(players);
-            // console.log("Remove player", res);
+            console.log("Remove player", res);
         });
     }
     

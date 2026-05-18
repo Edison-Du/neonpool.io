@@ -181,10 +181,6 @@ function LocalGame({playerNames, gameSeed, exitGame}) { // seed, # players, play
         mousePos.current = new Vector2D(e.offsetX, e.offsetY).scale(1/Consts.scale);
         game.current.shootCueBall(game.current.cueBall.pos.to(mousePos.current), strength);
         heldTimeRef.current = -1;
-    
-        // debugging
-        // console.log(`balls[0].vel = new Vector2D(${game.current.cueBall.vel.x}, ${game.current.cueBall.vel.y})\n`);
-        // printBalls();
     }
 
     const mouseMove = (e) => {

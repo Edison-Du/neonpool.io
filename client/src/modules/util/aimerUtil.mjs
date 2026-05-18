@@ -192,8 +192,6 @@ export class AimerUtil {
                 continue;
             }
 
-            // console.log(i);
-    
             // solve a quadratic for where the cueball would be right before collision
             let rb = cueBall.pos.to(balls[i].pos);
             let a = direction.getMagnitude();
