@@ -46,7 +46,7 @@ function OnlineGame ({players, gameSeed, exitGame, onError, onPlayAgain}) {
     const [gameResults, setGameResults] = useState(null);
 
     // derived state
-    const playerNames = players.map(p => p.name);
+    const playerNames = players.map(p => p.id === ConnectionManager.getId() ? p.name + " (you)" : p.name);
 
     // multiplayer logic
     const actionQueue = useRef([]);

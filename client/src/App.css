@@ -33,6 +33,24 @@ body {
   text-shadow: 0 0 7px white;
 }
 
+/* Footer */
+.main-menu footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: right;
+  padding: 1.5vw;
+}
+
+.main-menu footer a:is(:hover, :focus) {
+  outline: none;
+}
+
+.main-menu footer a:is(:hover, :focus) svg {
+  fill: #30D172;
+  transition: 250ms ease-in;
+}
+
 /* Title positioning */
 .main-menu section {
   position: relative;
@@ -80,7 +98,7 @@ body {
   text-shadow: 0 0 7px #ffcc99;
 }
 
-.main-menu a {
+.main-menu a.option {
   color: #ffe9ff;
   width: 100%;
   text-align: center;
@@ -95,7 +113,7 @@ body {
   transition: 250ms ease-in;
 }
 
-.main-menu a:is(:hover, :focus) {
+.main-menu a.option:is(:hover, :focus) {
   color: #30D172;
   border-color: #30D172;
   box-shadow: inset 0 0 5px #30D172, 0 0 5px #30D172;

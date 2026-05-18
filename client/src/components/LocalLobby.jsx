@@ -95,7 +95,7 @@ function LocalLobby({startGame}) {
                         // We need to use "callback refs" for storing many refs.
                         const ref = (element) => inputElements.current[index] = element;
                         return (
-                            <div key={index} className="lobby-player-tag d-flex">
+                            <div key={index} className="lobby-player-tag d-flex player-ready">
                                 <div 
                                     className="player-info-left" 
                                 >
