@@ -23,7 +23,7 @@ import { Player } from "../modules/game/player.mjs";
 import { EffectsUtil } from "../modules/util/effectsUtil.mjs";
 import GameOver from "./GameOver";
 
-function OnlineGame ({players, gameSeed, exitGame}) {
+function OnlineGame ({players, gameSeed, exitGame, onError, onPlayAgain}) {
     const screenWidth = useWindowWidth();
 
     const game = useRef(null);
@@ -358,7 +358,14 @@ function OnlineGame ({players, gameSeed, exitGame}) {
 
     // game results
     const onRematch = () => {
-        createGame();
+        ConnectionManager.sendEvent(SocketEvents.playAgainChange, null, (res) => {
+            const { error, players } = res;
+            if (error) {
+                onError(error);
+                return;
+            }
+            onPlayAgain(players);
+        });
     }
 
     const onExit = () => {

@@ -8,7 +8,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/">
+        <Route path="/">  
           <Route index element={<Home/>}></Route>
           <Route path="local" element={<Local/>}></Route>
           <Route path="online/:lobbyCode?" element={<Online/>}></Route>

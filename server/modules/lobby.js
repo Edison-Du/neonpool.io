@@ -84,10 +84,11 @@ class Lobby {
      * @returns {boolean} Whether or not the player could be added
      */
     addPlayer(user) {
-        if (this.isFull() || this.players.includes(user) || this.inGame) {
+        if (this.isFull() || this.players.includes(user)) {
             return false;
         }
         user.name = `PLAYER ${++this.playerCounter}`;
+        user.playingAgain = true;
         this.players.push(user);
         // create socket.io room & broadcast message
         user.socket.join(this.code);
@@ -175,7 +176,7 @@ class Lobby {
             return false;
         }
         this.inGame = true;
-        this.players.forEach(player => player.playAgain = false);
+        this.players.forEach(player => player.playingAgain = false);
         this.broadcastMessage(SocketEvents.startGame, { 
             players: this.generatePlayerList(), 
             seed: Util.getGameSeed()

@@ -120,9 +120,6 @@ class User {
             if (this.lobbyManager.getLobby(code).isFull()) {
                 return { error: "Lobby is full" };
             }
-            if (this.lobbyManager.getLobby(code).inGame) {
-                return { error: "Game is in progress" };
-            }
             this.lobby = this.lobbyManager.joinLobby(this, code);
             if (!this.lobby) {
                 return { error: "Unable to join lobby" };

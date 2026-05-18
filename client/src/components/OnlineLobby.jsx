@@ -1,25 +1,16 @@
 import { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
 import { ConnectionManager } from "../network/connectionManager.mjs";
 import { SocketEvents } from "../network/socketEvents.mjs";
 import Loading from "./Loading";
 import ResizableTextBox from "./generic/ResizableTextBox";
 
-function OnlineLobby({startGame, onError}) {
-
-    const { lobbyCode } = useParams();
-
-    const [code, setCode] = useState("");
-    const [players, setPlayers] = useState([]);
-
+function OnlineLobby({code, players, onPlayersChange, startGame, onError}) {
     // Name related
     const [currentName, setCurrentName] = useState("");
     const [nameBeingEdited, setNameBeingEdited] = useState(false);
 
     const defaultName = useRef(""); // Original name of user given by the server upon game join/creation
     const playerNameInputElement = useRef({});
-
-    const requestedLobby = useRef(false); // Used to prevent sending two messages to server on initial render (strict mode)
 
     // Copying link related
     const [linkCopied, setLinkCopied] = useState(false);
@@ -33,7 +24,7 @@ function OnlineLobby({startGame, onError}) {
                 onError("Kicked from lobby");
                 return;
             }
-            setPlayers(players);
+            onPlayersChange(players);
         }
         const handleStartGame = (data) => {
             const { players, seed } = data;
@@ -43,6 +34,7 @@ function OnlineLobby({startGame, onError}) {
             [SocketEvents.playerJoin]: updatePlayerList,
             [SocketEvents.playerLeave]: updatePlayerList,
             [SocketEvents.playerNameChange]: updatePlayerList,
+            [SocketEvents.playAgainChange]: updatePlayerList,
             [SocketEvents.startGame]: handleStartGame
         }
         ConnectionManager.addListeners(eventListeners);
@@ -50,38 +42,6 @@ function OnlineLobby({startGame, onError}) {
             ConnectionManager.removeListeners(Object.keys(eventListeners));
         }
     }, [onError]);
-
-    useEffect(() => {
-        if (requestedLobby.current) {
-            return;
-        }
-        requestedLobby.current = true;
-        // Join Game
-        if (lobbyCode) {
-            ConnectionManager.sendEvent(SocketEvents.playerJoin, { code: lobbyCode }, (res) => {
-                const { players, error } = res;
-                if (error) {
-                    onError(error);
-                    return;
-                }
-                setCode(lobbyCode);
-                setPlayers(players); 
-                console.log("Join Game", res);
-            });
-        // Create Game
-        } else {
-            ConnectionManager.sendEvent(SocketEvents.createGame, null, (res) => {
-                const { code, players, error } = res;
-                if (error) {
-                    onError(error);
-                    return;
-                }
-                setCode(code);
-                setPlayers(players);
-                console.log("Create Game", res);
-            });
-        }
-    }, [lobbyCode]);
 
     // Mainly used to sync default name of the user to initial player list
     useEffect(() => {
@@ -142,7 +102,7 @@ function OnlineLobby({startGame, onError}) {
                 onError(error);
                 return;
             }
-            setPlayers(players);
+            onPlayersChange(players);
             // console.log("Remove player", res);
         });
     }
@@ -176,7 +136,7 @@ function OnlineLobby({startGame, onError}) {
                 console.log(error);
                 return;
             }
-            setPlayers(players); 
+            onPlayersChange(players);
             console.log("Name Changed", res);
         })
     }
@@ -202,7 +162,7 @@ function OnlineLobby({startGame, onError}) {
     }
 
     const canStartGame = () => {
-        return players.length > 1 && getCurrentPlayer()?.isHost;
+        return players.length > 1 && getCurrentPlayer()?.isHost && players.every(player => player.playingAgain);
     }
 
     // We want an intermediate page to render while we wait for a response from the server, as it may respond with an error on lobby create/join
@@ -231,14 +191,15 @@ function OnlineLobby({startGame, onError}) {
                 </div>
                 {/* Player List */}
                 <section className="d-flex flex-column justify-content-center">
-                    {players.map(({id, isHost, name}, index) => {
+                    {players.map(({id, isHost, name, playingAgain}, index) => {
                         return (
                             <div 
                                 key={index} 
                                 className={[
                                     'lobby-player-tag', 
                                     'd-flex', 
-                                    checkIndexIsCurrentPlayer(index) ? 'player-current' : ''
+                                    checkIndexIsCurrentPlayer(index) ? 'player-current' : '',
+                                    playingAgain ? 'player-ready' : ''
                                 ].join(' ')}
                             >
                                 <div 

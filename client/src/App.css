@@ -366,8 +366,12 @@ canvas, .game-over {
 
 .lobby-player-tag .player-info-left {
   width: 1vw;
-  background-color: #5d1dff;
+  background-color: #747474;
   margin: 0;
+}
+
+.lobby-player-tag.player-ready .player-info-left {
+  background-color: #30D172;
 }
 
 .lobby-player-tag > input {
@@ -376,6 +380,10 @@ canvas, .game-over {
   padding-left: 1vw;
   font-size: 1.5vw;
   background-color: rgb(46, 48, 60);
+}
+
+.lobby-player-tag:not(.player-ready) > input {
+  opacity: 0.5;
 }
 
 .lobby-player-tag > input:focus {
@@ -393,6 +401,10 @@ canvas, .game-over {
 
 .lobby-player-tag > button:nth-child(3){
   background-color: rgb(46, 48, 60);
+}
+
+.lobby-player-tag:not(.player-ready) > button:nth-child(3) {
+  opacity: 0.5;
 }
 
 .lobby-player-tag > button > svg {
