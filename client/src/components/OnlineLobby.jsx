@@ -130,6 +130,7 @@ function OnlineLobby({code, players, onPlayersChange, startGame, onError}) {
         if (currentName === "") {
             newName = defaultName.current;
         }
+        setCurrentName(newName);
         ConnectionManager.sendEvent(SocketEvents.playerNameChange, { name: newName }, (res) => {
             const { players, error } = res;
             if (error) {

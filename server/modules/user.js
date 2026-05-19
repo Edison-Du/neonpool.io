@@ -134,7 +134,7 @@ class User {
     changeName(data, callback) {
         const validation = Joi.object({
             data: Joi.object({
-                name: Joi.string().max(User.MAX_NAME_LENGTH).min(1).case('upper').required()
+                name: Joi.string().max(User.MAX_NAME_LENGTH).min(1).max(15).case('upper').required()
             }),
             callback: Joi.function().required()
         }).validate({ data, callback });
