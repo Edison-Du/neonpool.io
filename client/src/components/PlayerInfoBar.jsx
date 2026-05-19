@@ -54,7 +54,7 @@ function PlayerInfoBar({playerNames, playerColours, playerStates, playerTurn, ba
 
         // console.log("changed", ballCounts, newBallCounts, ballColourCounts, playerColours, playerStates);
 
-    }, [ballColourCounts, playerColours, playerStates, ballCounts, numPlayers, numBallsEach]);
+    }, [ballColourCounts, playerColours, playerStates]);
 
     return (
         <div className="player-info-bar d-flex justify-content-between">

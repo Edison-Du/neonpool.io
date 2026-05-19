@@ -44,7 +44,7 @@ const PoolTable = forwardRef(({draw, width, mouseHandler}, ref) => {
                 canvas.removeEventListener(key, mouseHandler[key]);
             }
         }
-    }, [width, draw, mouseHandler]);
+    }, [width]);
 
     useImperativeHandle(ref, () => {
         return {

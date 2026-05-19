@@ -55,7 +55,7 @@ function OnlineLobby({code, players, onPlayersChange, startGame, onError}) {
         if (!nameBeingEdited) {
             setCurrentName(name);
         }
-    }, [players, currentName, nameBeingEdited]);
+    }, [players]);
 
     // Focuses name input element when user tries to edit their name
     useEffect(() => {
@@ -130,14 +130,16 @@ function OnlineLobby({code, players, onPlayersChange, startGame, onError}) {
         if (currentName === "") {
             newName = defaultName.current;
         }
-        setCurrentName(newName);
         ConnectionManager.sendEvent(SocketEvents.playerNameChange, { name: newName }, (res) => {
             const { players, error } = res;
             if (error) {
                 console.log(error);
                 return;
             }
-            onPlayersChange(players);
+            setTimeout(() => {
+                onPlayersChange(players);
+            }, 5000);
+            // onPlayersChange(players);
             console.log("Name Changed", res);
         })
     }
