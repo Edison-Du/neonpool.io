@@ -136,10 +136,7 @@ function OnlineLobby({code, players, onPlayersChange, startGame, onError}) {
                 console.log(error);
                 return;
             }
-            setTimeout(() => {
-                onPlayersChange(players);
-            }, 5000);
-            // onPlayersChange(players);
+            onPlayersChange(players);
             console.log("Name Changed", res);
         })
     }
