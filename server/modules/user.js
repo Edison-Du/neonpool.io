@@ -147,9 +147,6 @@ class User {
             if (!this.lobby) {
                 return { error: "Not in a lobby" };
             }
-            if (this.lobby.inGame) {
-                return { error: "Cannot change name in the middle of a game" };
-            }
             this.name = name;
             this.lobby.broadcastPlayerListExcludeUser(SocketEvents.playerNameChange, this);
             return { players: this.lobby.generatePlayerList() };
