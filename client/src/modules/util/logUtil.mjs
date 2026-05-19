@@ -48,7 +48,7 @@ export class LogUtil {
     
     // creates a test case that simulates the last shot exactly.
     constructGameState() {
-        if (this.moves.length == 0 || this.ballStates.length == 0) {
+        if (this.moves.length === 0 || this.ballStates.length === 0) {
             console.log("No moves or ball states recorded");
             return;
         }
@@ -62,10 +62,10 @@ export class LogUtil {
         msg += "game.balls = [];\n";
         let n = this.ballStates.length;
         this.ballStates[n-1].forEach((ball) => {
-            msg += `ball = new Ball(${ball.pos.x}, ${ball.pos.y}, \"${ball.colour}\");\n`;
+            msg += `ball = new Ball(${ball.pos.x}, ${ball.pos.y}, "${ball.colour}");\n`;
             // msg += `ball.vel = new Vector2D(${ball.vel.x}, ${ball.vel.y});\n`;
             // msg += `ball.accel = new Vector2D(${ball.accel.x}, ${ball.accel.y});\n`;
-            msg += `ball.glow = \"${ball.glow}\";`;
+            msg += `ball.glow = "${ball.glow}";`;
             msg += `ball.opacity = ${ball.opacity};`;
             msg += `ball.state = ${ball.state};`;
             msg += `ball.isFading = ${ball.isFading};\n`;

@@ -11,10 +11,10 @@ function PlayerInfoBar({playerNames, playerColours, playerStates, playerTurn, ba
     const [tagWidth, setTagWidth] = useState((
         () => {
             let w = 70;
-            if (numPlayers == 2) {
+            if (numPlayers === 2) {
                 return `${0.30*w}vw`;
             }
-            else if (numPlayers == 3) {
+            else if (numPlayers === 3) {
                 return `${0.25*w}vw`;
             }
             else {
@@ -54,7 +54,7 @@ function PlayerInfoBar({playerNames, playerColours, playerStates, playerTurn, ba
 
         // console.log("changed", ballCounts, newBallCounts, ballColourCounts, playerColours, playerStates);
 
-    }, [ballColourCounts, playerColours, playerStates]);
+    }, [ballColourCounts, playerColours, playerStates, ballCounts, numPlayers, numBallsEach]);
 
     return (
         <div className="player-info-bar d-flex justify-content-between">

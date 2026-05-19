@@ -3,7 +3,6 @@
  * there is no support for collision detection, for the sake of minimal
  * disruption to the existing code and also for simulation efficiency.
  */
-import { Vector2D } from "../util/vector2D.mjs";
 import { CanvasUtil } from "../util/canvasUtil.mjs";
 import { Consts } from "../consts.mjs";
 

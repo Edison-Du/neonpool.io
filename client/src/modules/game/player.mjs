@@ -20,15 +20,15 @@ export class Player {
     }
 
     inPlay() {
-        return this.state == Player.state.IN_PLAY;
+        return this.state === Player.state.IN_PLAY;
     }
 
     lost() {
-        return this.state == Player.state.LOST;
+        return this.state === Player.state.LOST;
     }
 
     won() {
-        return this.state == Player.state.WON;
+        return this.state === Player.state.WON;
     }
 
     setLost() {

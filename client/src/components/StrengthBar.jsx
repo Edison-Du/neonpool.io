@@ -24,7 +24,7 @@ function StrengthBar({fractionFilled}) {
         let startColour = `rgb(`;
         for (let i = 0; i < 3; i++) {
             startColour += bot[i] + (top[i] - bot[i]) * fractionFilled;
-            if (i != 2) startColour += ",";
+            if (i !== 2) startColour += ",";
         }
         startColour += ")";
         gradientRef.current.style.height = height*fractionFilled + "px";

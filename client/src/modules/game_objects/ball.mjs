@@ -41,11 +41,11 @@ export class Ball {
     }
 
     isFalling() {
-        return this.state == Ball.state.FALLING;
+        return this.state === Ball.state.FALLING;
     }
 
     isActive() {
-        return this.state == Ball.state.ACTIVE;
+        return this.state === Ball.state.ACTIVE;
     }
 
     setFalling() {
@@ -64,7 +64,7 @@ export class Ball {
     }
     // Acceleration should act opposite to the velocity at all times. (ONLY FRICTION)
     applyFriction() {
-        if (this.state == Ball.state.ACTIVE) {
+        if (this.state === Ball.state.ACTIVE) {
             this.accel = this.vel.getUnitVector().scale(-Ball.FRICTION);
         }
         else {

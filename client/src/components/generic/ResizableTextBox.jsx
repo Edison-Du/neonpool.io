@@ -18,7 +18,7 @@ function ResizableTextBox({text, defaultFontSize=1, style=null, className}) {
             canvasRef.current = document.createElement("canvas");
         }
         let ctx = canvasRef.current.getContext("2d");
-        ctx.font = convertVWtoPixel(defaultFontSize) + "px" + " Exo";
+        ctx.font = convertVWtoPixel(defaultFontSize) + "px Exo";
         return ctx.measureText(text).width;
     }
 

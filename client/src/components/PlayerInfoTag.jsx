@@ -1,5 +1,3 @@
-import { useEffect, useRef, useState } from "react";
-
 import ResizableTextBox from "./generic/ResizableTextBox";
 
 import { Consts } from "../modules/consts.mjs";

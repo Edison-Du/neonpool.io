@@ -20,7 +20,7 @@ export class TwoPlayerGame extends ClassicGame {
                 let p1 = new Vector2D(i*Math.sqrt(3), j).scale(Ball.RADIUS).add(breakOffset);
                 let p2 = new Vector2D(i*Math.sqrt(3), -j).scale(Ball.RADIUS).add(breakOffset);
 
-                if (j != 0) {
+                if (j !== 0) {
                     this.balls.push(new Ball(p2.x, p2.y, Consts.playerColours[0]));
                     this.balls.push(new Ball(p1.x, p1.y, Consts.playerColours[1]));
                 }

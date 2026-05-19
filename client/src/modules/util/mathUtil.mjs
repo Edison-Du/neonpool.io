@@ -5,7 +5,7 @@ export class MathUtil {
     static solveQuadratic(a, b, c) {
         let discr = b*b - 4*a*c;
         // conditions
-        if (a == 0 || discr < 0) {
+        if (a === 0 || discr < 0) {
             return {x1: NaN, x2: NaN};
         }
         discr = Math.sqrt(discr);

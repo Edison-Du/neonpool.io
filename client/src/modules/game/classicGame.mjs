@@ -6,9 +6,8 @@ import { CollisionUtil } from "../util/collisionUtil.mjs";
 import { Consts } from "../consts.mjs";
 import { MathUtil } from "../util/mathUtil.mjs";
 import { RandomUtil } from "../util/randomUtil.mjs";
-import { Player } from "./player.mjs";
 import { CanvasUtil } from "../util/canvasUtil.mjs";
-import { TestUtil } from "../util/testUtil.mjs";
+// import { TestUtil } from "../util/testUtil.mjs";
 import { Polygon } from "../game_objects/polygon.mjs";
 import { EffectsUtil } from "../util/effectsUtil.mjs";
 import { LogUtil } from "../util/logUtil.mjs";
@@ -213,7 +212,7 @@ export class ClassicGame {
             return false;
         }
         // invalid cases
-        if ((direction.x == 0  && direction.y == 0) || strength <= 0 || strength > Consts.maxStrength) {
+        if ((direction.x === 0  && direction.y === 0) || strength <= 0 || strength > Consts.maxStrength) {
             return false;
         }
 
@@ -267,7 +266,7 @@ export class ClassicGame {
         }
 
         // break area
-        if (this.turn == 1 && position.x > Consts.breakLine) { 
+        if (this.turn === 1 && position.x > Consts.breakLine) { 
             return false;
         }
 
@@ -321,7 +320,7 @@ export class ClassicGame {
             if (balls[i].isFading && balls[i].opacity < Consts.epsilon) {
                 continue;
             }
-            if (balls[i].vel.x != 0 || balls[i].vel.y != 0) {
+            if (balls[i].vel.x !== 0 || balls[i].vel.y !== 0) {
                 moving = true;
             }
             // balls[i].move(dt); 
@@ -405,7 +404,7 @@ export class ClassicGame {
                 let collided = CollisionUtil.computeBallCollision(a, b);
 
                 // store the first ball that the cue ball hit
-                if (i == 0 && collided && this.firstBallHit == null) {
+                if (i === 0 && collided && this.firstBallHit === null) {
                     this.firstBallHit = b;
                 }
             }   
@@ -479,7 +478,7 @@ export class ClassicGame {
         if (this.#checkGameEnded()) {
             this.gameHasEnded = true;
         }
-        else if (!currentPlayer.inPlay) { // case where player forfeited before balls settled
+        else if (!currentPlayer.inPlay()) { // case where player forfeited before balls settled
             this.ballInHand = true;
             this.#proceedToNextTurn();
         }
@@ -488,7 +487,7 @@ export class ClassicGame {
                 currentPlayer.setLost();
                 this.ballInHand = true;
             }
-            else if (this.firstBallHit.colour != Consts.eightBallColour) {
+            else if (this.firstBallHit.colour !== Consts.eightBallColour) {
                 currentPlayer.setLost();
             }
             else {
@@ -539,7 +538,6 @@ export class ClassicGame {
 
     #pocketBall(index) {
         let ball = this.balls[index];
-        let colour = ball.colour;
         this.ballsPocketedThisTurn.push(ball);
     }
 
@@ -559,12 +557,12 @@ export class ClassicGame {
     // checks if the player is able to hit ball without incurring a foul
     checkBallInPlayerSet(ball) {
         let player = this.#getCurrentPlayer();
-        if (player.colour != null) {
+        if (player.colour !== null) {
             if (this.runningColourCount[player.colour] > 0) {
-                return ball.colour == player.colour;
+                return ball.colour === player.colour;
             }
             else {
-                return ball.colour == Consts.eightBallColour;
+                return ball.colour === Consts.eightBallColour;
             }
         }
         else {
@@ -573,14 +571,14 @@ export class ClassicGame {
                 if (this.#checkColourIsChosen(colour)) {
                     continue;
                 }
-                if (this.runningColourCount[colour] > 0 && colour == ball.colour) {
+                if (this.runningColourCount[colour] > 0 && colour === ball.colour) {
                     return true;
                 }
                 count += this.runningColourCount[colour];
             }
             // is used for the very rare case that the player has eliminated all balls without having their colour chosen.
-            if (count == 0) {
-                return ball.colour == Consts.eightBallColour;
+            if (count === 0) {
+                return ball.colour === Consts.eightBallColour;
             }
             return false;
         }
@@ -627,13 +625,13 @@ export class ClassicGame {
         let playerColour = null;
         for (let i = 0; i < this.ballsPocketedThisTurn.length; i++) {
             let colour = this.ballsPocketedThisTurn[i].colour;
-            if (colour == Consts.cueBallColour || 
-                colour == Consts.eightBallColour || 
+            if (colour === Consts.cueBallColour || 
+                colour === Consts.eightBallColour || 
                 this.#checkColourIsChosen(colour)) {
                 continue;
             }
             // ensure a unique unchosen colour is pocketed this turn.
-            if (playerColour != null && colour != playerColour) {
+            if (playerColour !== null && colour !== playerColour) {
                 return;
             }
             playerColour = colour;
@@ -660,7 +658,7 @@ export class ClassicGame {
     // check if a player has chosen this colour
     #checkColourIsChosen(colour) {
         for (let i = 0; i < this.players.length; i++) {
-            if (colour == this.players[i].colour) {
+            if (colour === this.players[i].colour) {
                 return true;
             }
         }
@@ -669,7 +667,7 @@ export class ClassicGame {
 
     // Check if an invalid shot was made (e.g. hitting opponents ball)
     #checkFoul() {
-        if (this.firstBallHit == null) {
+        if (this.firstBallHit === null) {
             return true;
         }
         return !this.checkBallInPlayerSet(this.firstBallHit);
@@ -677,7 +675,7 @@ export class ClassicGame {
 
     #checkCueBallPocketed() {
         for (let i = 0; i < this.ballsPocketedThisTurn.length; i++) {
-            if (this.ballsPocketedThisTurn[i] == this.cueBall) {
+            if (this.ballsPocketedThisTurn[i] === this.cueBall) {
                 this.ballIsPlaced = false;
                 return true;
             }
@@ -687,7 +685,7 @@ export class ClassicGame {
 
     #checkEightBallPocketed() {
         for (let i = 0; i < this.ballsPocketedThisTurn.length; i++) {
-            if (this.ballsPocketedThisTurn[i].colour == Consts.eightBallColour) {
+            if (this.ballsPocketedThisTurn[i].colour === Consts.eightBallColour) {
                 return true;
             }
         }

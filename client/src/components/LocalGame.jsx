@@ -44,15 +44,15 @@ function LocalGame({playerNames, gameSeed, exitGame}) { // seed, # players, play
     const [gameResults, setGameResults] = useState(null);
 
     const createGame = () => {
-        if (numPlayers == 2) {
+        if (numPlayers === 2) {
             game.current = new TwoPlayerGame(gameSeed);
             setNumBallsEach(TwoPlayerGame.numBallsEach);
         }
-        else if (numPlayers == 3) {
+        else if (numPlayers === 3) {
             game.current = new ThreePlayerGame(gameSeed);
             setNumBallsEach(ThreePlayerGame.numBallsEach);
         }
-        else if (numPlayers == 4) {
+        else if (numPlayers === 4) {
             game.current = new FourPlayerGame(gameSeed);
             setNumBallsEach(FourPlayerGame.numBallsEach);
         }
@@ -162,7 +162,7 @@ function LocalGame({playerNames, gameSeed, exitGame}) { // seed, # players, play
             return;
         }
 
-        if (heldTimeRef.current == -1) {
+        if (heldTimeRef.current === -1) {
             heldTimeRef.current = 0;
         }
     }
@@ -172,7 +172,7 @@ function LocalGame({playerNames, gameSeed, exitGame}) { // seed, # players, play
             return;
         }
     
-        if (heldTimeRef.current == -1) {
+        if (heldTimeRef.current === -1) {
             return;
         }
     
@@ -219,13 +219,13 @@ function LocalGame({playerNames, gameSeed, exitGame}) { // seed, # players, play
         
         // line for aim assist
         if (!game.current.ballsAreMoving && !mouseOnCueBall() && !isHoldingBall.current && game.current.ballIsPlaced) {
-            if (mousePos.current != null) {
+            if (mousePos.current !== null) {
                 AimerUtil.drawAimAssist(ctx, game.current, mousePos.current);
             }
         }
         else if (isHoldingBall.current || !game.current.ballIsPlaced) {
             isHoldingBall.current = true;
-            if (mousePos.current != null) {
+            if (mousePos.current !== null) {
                 if (game.current.isValidCueBallPlacement(mousePos.current)) {
                     AimerUtil.drawPlaceBall(ctx, mousePos.current);
                 }

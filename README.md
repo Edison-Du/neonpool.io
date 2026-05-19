@@ -2,6 +2,8 @@
 
 Multiplayer browser pool game.
 
+Hosted at: https://neonpool.pages.dev/
+
 ## Images
 
 ![home-page](./docs/home.png)

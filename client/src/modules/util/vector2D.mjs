@@ -34,7 +34,7 @@ export class Vector2D {
         return Math.sqrt(this.x * this.x + this.y * this.y);
     }
     getUnitVector() {
-        if (this.getMagnitude() == 0) {
+        if (this.getMagnitude() === 0) {
             return this;
         }
         return this.scale(1/this.getMagnitude());

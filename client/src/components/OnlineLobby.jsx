@@ -41,7 +41,7 @@ function OnlineLobby({code, players, onPlayersChange, startGame, onError}) {
         return () => {
             ConnectionManager.removeListeners(Object.keys(eventListeners));
         }
-    }, [onError]);
+    }, [onError, onPlayersChange, startGame]);
 
     // Mainly used to sync default name of the user to initial player list
     useEffect(() => {
@@ -55,7 +55,7 @@ function OnlineLobby({code, players, onPlayersChange, startGame, onError}) {
         if (!nameBeingEdited) {
             setCurrentName(name);
         }
-    }, [players]);
+    }, [players, currentName, nameBeingEdited]);
 
     // Focuses name input element when user tries to edit their name
     useEffect(() => {

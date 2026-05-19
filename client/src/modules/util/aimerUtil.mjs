@@ -39,15 +39,15 @@ export class AimerUtil {
         let minIndex = -1;
         for (let i = 0; i < minObjects.length; i++) {
             let dist = minObjects[i].minDist;
-            if (dist == -1) continue;
-            if (dist <= minDist || minDist == -1) {
+            if (dist === -1) continue;
+            if (dist <= minDist || minDist === -1) {
                 minDist = dist;
                 minIndex = i;
             }
         }
 
         // no object in path of cue ball
-        if (minDist == -1) return;
+        if (minDist === -1) return;
 
         // important vectors
         let targetPos = cueBall.pos.add(direction.scale(minDist)); // projected location of ball before collision
@@ -174,7 +174,7 @@ export class AimerUtil {
             let cur = balls[i];
             
             // check ball isn't cue ball
-            if (cur == cueBall) {
+            if (cur === cueBall) {
                 continue;
             }
     
@@ -205,7 +205,7 @@ export class AimerUtil {
             //     t = (b + discr)/(a*a);
             // }
     
-            if (closest == -1 || t < min) {
+            if (closest === -1 || t < min) {
                 closest = i;
                 min = t;
             }
@@ -236,7 +236,7 @@ export class AimerUtil {
             }
     
             // parallel lines, assumes cue ball is not on the line segment
-            if (Math.abs(d_1.dot(d_2)) == d_1.getMagnitude() * d_2.getMagnitude()) {
+            if (Math.abs(d_1.dot(d_2)) === d_1.getMagnitude() * d_2.getMagnitude()) {
     
                 // deal with case where line.p1 or line.p2 distance to line is smaller than ball.radius
                 if (p1.distToLine(cueBall.pos, d_1) >= Ball.RADIUS) {
@@ -330,15 +330,15 @@ export class AimerUtil {
                 if (t1 != null && t2 != null) {
                     t = Math.min(t1, t2);
                 }
-                else if (t1 == null) {
+                else if (t1 === null) {
                     t = t2;
                 }
-                if (t == null) {
+                if (t === null) {
                     continue;
                 }
             }
     
-            if (closest == -1) {
+            if (closest === -1) {
                 closest = i;
                 min = t;
             }
@@ -380,7 +380,7 @@ export class AimerUtil {
 
             let t = MathUtil.solveQuadratic(a, b, c).x1;
 
-            if (closest == -1 || t < min) {
+            if (closest === -1 || t < min) {
                 closest = i;
                 min = t;
             }

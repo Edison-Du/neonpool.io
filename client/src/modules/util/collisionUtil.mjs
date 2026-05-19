@@ -1,9 +1,7 @@
 // Methods for handling collisions between objects
 import { Ball } from "../game_objects/ball.mjs";
-import { LineSegment } from "../game_objects/lineSegment.mjs";
 import { Hole } from "../game_objects/hole.mjs";
 import { Consts } from "../consts.mjs";
-import { Vector2D } from "./vector2D.mjs"
 import { MathUtil } from "./mathUtil.mjs";
 
 

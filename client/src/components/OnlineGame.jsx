@@ -90,18 +90,18 @@ function OnlineGame ({players, gameSeed, exitGame, onError, onPlayAgain}) {
         return () => {
             ConnectionManager.removeListeners(Object.keys(eventListeners));
         }
-    }, []);
+    }, [players]);
 
     const createGame = () => {
-        if (numPlayers == 2) {
+        if (numPlayers === 2) {
             game.current = new TwoPlayerGame(gameSeed);
             setNumBallsEach(TwoPlayerGame.numBallsEach);
         }
-        else if (numPlayers == 3) {
+        else if (numPlayers === 3) {
             game.current = new ThreePlayerGame(gameSeed);
             setNumBallsEach(ThreePlayerGame.numBallsEach);
         }
-        else if (numPlayers == 4) {
+        else if (numPlayers === 4) {
             game.current = new FourPlayerGame(gameSeed);
             setNumBallsEach(FourPlayerGame.numBallsEach);
         }
@@ -189,6 +189,8 @@ function OnlineGame ({players, gameSeed, exitGame, onError, onPlayAgain}) {
                     const { fraction } = event;
                     setOpponentHeldFraction(fraction);
                     break;
+                default:
+                    break;
             }
         }
     };
@@ -216,7 +218,7 @@ function OnlineGame ({players, gameSeed, exitGame, onError, onPlayAgain}) {
         if (heldTimeRef.current >= AimerUtil.framesToFullStrength * 3) {
             heldTimeRef.current = -1;
         }
-        if (isOurTurn() && heldTimeRef.current != heldTimeState) {
+        if (isOurTurn() && heldTimeRef.current !== heldTimeState) {
             ConnectionManager.sendEvent(SocketEvents.changeStrength, { fraction: getStrengthBarFraction(heldTimeRef.current) }, () => {});
         }
         setHeldTimeState(heldTimeRef.current);
@@ -267,7 +269,7 @@ function OnlineGame ({players, gameSeed, exitGame, onError, onPlayAgain}) {
             return;
         }
 
-        if (heldTimeRef.current == -1) {
+        if (heldTimeRef.current === -1) {
             heldTimeRef.current = 0;
         }
     }
@@ -277,7 +279,7 @@ function OnlineGame ({players, gameSeed, exitGame, onError, onPlayAgain}) {
             return;
         }
     
-        if (heldTimeRef.current == -1) {
+        if (heldTimeRef.current === -1) {
             return;
         }
     
@@ -335,13 +337,13 @@ function OnlineGame ({players, gameSeed, exitGame, onError, onPlayAgain}) {
         
         // line for aim assist
         if (!game.current.ballsAreMoving && !mouseOnCueBall() && !isHoldingBall.current && game.current.ballIsPlaced) {
-            if (mousePos.current != null) {
+            if (mousePos.current !== null) {
                 AimerUtil.drawAimAssist(ctx, game.current, mousePos.current, opacity);
             }
         }
         else if (isHoldingBall.current || !game.current.ballIsPlaced) {
             isHoldingBall.current = true;
-            if (mousePos.current != null) {
+            if (mousePos.current !== null) {
                 if (game.current.isValidCueBallPlacement(mousePos.current)) {
                     AimerUtil.drawPlaceBall(ctx, mousePos.current);
                 }
