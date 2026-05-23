@@ -9,7 +9,8 @@ export class LogUtil {
 
     static moveTypes = {
         SHOOT_BALL: "SHOOT_BALL",
-        PLACE_BALL: "PLACE_BALL"
+        PLACE_BALL: "PLACE_BALL",
+        FORFEIT: "FORFEIT"
     }
 
     seed;
@@ -25,27 +26,36 @@ export class LogUtil {
         this.ballStates = [];
     }
 
-    placeBall(position) {
-        this.moves.push({
+    placeBall(position, game) {
+        this.moves.push(new Move({
             moveType: LogUtil.moveTypes.PLACE_BALL,
-            position: position
-        });
+            gameTick: game.gameTick,
+            data: { position }
+        }));
     }
 
-    shootBall(direction, strength, balls) {
-        this.moves.push({
+    shootBall(direction, strength, game) {
+        this.moves.push(new Move({
             moveType: LogUtil.moveTypes.SHOOT_BALL,
-            direction: direction,
-            strength: strength
-        });
+            gameTick: game.gameTick,
+            data: { direction, strength }
+        }));
 
         let newBallState = [];
-        balls.forEach((ball) => {
+        game.balls.forEach((ball) => {
             newBallState.push({...ball});
         });
         this.ballStates.push(newBallState);
     }
-    
+
+    forfeit(player, game) {
+        this.moves.push(new Move({
+            moveType: LogUtil.moveTypes.FORFEIT,
+            gameTick: game.gameTick,
+            data: { player }
+        }));
+    }
+
     // creates a test case that simulates the last shot exactly.
     constructGameState() {
         if (this.moves.length === 0 || this.ballStates.length === 0) {
@@ -73,13 +83,104 @@ export class LogUtil {
         });
         msg += "game.cueBall = game.balls[0];\n";
         let m = this.moves.length;
-        let d = this.moves[m-1].direction;
-        let s = this.moves[m-1].strength;
-        msg += `game.shootCueBall(new Vector2D(${d.x}, ${d.y}), ${s});\n`;
+        if (this.moves[m-1].moveType == LogUtil.moveTypes.SHOOT_BALL) {
+            let d = this.moves[m-1].direction;
+            let s = this.moves[m-1].strength;
+            msg += `game.shootCueBall(new Vector2D(${d.x}, ${d.y}), ${s});\n`;
+        }
+        else if (this.moves[m-1].moveType == LogUtil.moveTypes.FORFEIT) {
+            let player = this.moves[m-1].player;
+            msg += `game.forfeitPlayer("${player}");\n`;
+        }
+        else {
+            let p = this.moves[m-1].position;
+            msg += `game.placeCueBall(new Vector2D(${p.x}, ${p.y}));\n`;
+        }
         console.log(msg);   
     }
 
     printMoves() {
         console.log(this.moves);
+    }
+
+    getGameReplay(game) {
+        return {
+            seed: this.seed,
+            moves: this.moves,
+            numPlayers: game.players.length,
+        }
+    }
+    
+    getGameEndState(game) {
+        return {
+            turn: game.turn,
+            gameTick: game.gameTick,
+            currentPlayerIndex: game.currentPlayerIndex,
+            players: game.players,
+            gameHasEnded: game.gameHasEnded,
+            balls: game.balls,
+            ballInHand: game.ballInHand,
+            ballIsPlaced: game.ballIsPlaced,
+            runningColourCount: game.runningColourCount,
+            ballsPocketedThisTurn: game.ballsPocketedThisTurn,
+        }
+    }
+}
+
+export class Move {
+    moveType;
+    gameTick;
+    data;
+    constructor({moveType, gameTick, data}) {
+        this.moveType = moveType;
+        this.gameTick = gameTick;
+        this.data = data;
+    }
+}
+
+export class GameReplay {
+    seed;
+    moves;
+    numPlayers;
+    constructor({seed, moves, numPlayers}) {
+        this.seed = seed;
+        this.moves = moves;
+        this.numPlayers = numPlayers;
+    }
+}
+
+export class GameState {
+    turn;
+    gameTick;
+    currentPlayerIndex;
+    players;
+    gameHasEnded;
+    balls;
+    ballInHand;
+    ballIsPlaced;
+    runningColourCount;
+    ballsPocketedThisTurn;
+    constructor({
+        turn, 
+        gameTick, 
+        currentPlayerIndex, 
+        players, 
+        gameHasEnded, 
+        balls, 
+        ballInHand, 
+        ballIsPlaced, 
+        runningColourCount, 
+        ballsPocketedThisTurn
+    }) {
+        this.turn = turn;
+        this.gameTick = gameTick;
+        this.currentPlayerIndex = currentPlayerIndex;
+        this.players = players;
+        this.gameHasEnded = gameHasEnded;
+        this.balls = balls;
+        this.ballInHand = ballInHand;
+        this.ballIsPlaced = ballIsPlaced;
+        this.runningColourCount = runningColourCount;
+        this.ballsPocketedThisTurn = ballsPocketedThisTurn;
     }
 }

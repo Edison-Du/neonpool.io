@@ -61,6 +61,13 @@ export class Ball {
             this.accel = new Vector2D(0, 0);
         }
         this.pos = this.pos.add(this.vel.scale(dt));
+
+        // opacity
+        if (this.isFading) {
+            if (this.opacity > Consts.epsilon) {
+                this.opacity = Math.max(0, this.opacity - 0.01*Math.sqrt(1-this.opacity) - Consts.epsilon);
+            }
+        }
     }
     // Acceleration should act opposite to the velocity at all times. (ONLY FRICTION)
     applyFriction() {
@@ -75,9 +82,6 @@ export class Ball {
     draw(ctx, offset=null) {
         if (this.isFading) {
             ctx.globalAlpha = this.opacity;
-            if (this.opacity > Consts.epsilon) {
-                this.opacity = Math.max(0, this.opacity - 0.05*Math.sqrt(1-this.opacity) - Consts.epsilon);
-            }
         }
 
         let coord = this.pos.add(offset);
@@ -95,9 +99,6 @@ export class Ball {
         }
         if (this.isFading) {
             ctx.globalAlpha = this.opacity;
-            if (this.opacity > Consts.epsilon) {
-                this.opacity = Math.max(0, this.opacity - 0.05*Math.sqrt(1-this.opacity) - Consts.epsilon);
-            }
         }
         ctx.shadowColor = this.glow;
         ctx.shadowBlur = 7 * Consts.scale;

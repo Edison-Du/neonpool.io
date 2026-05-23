@@ -5,6 +5,7 @@ import { CollisionUtil } from "./collisionUtil.mjs";
 import { Consts } from "../consts.mjs";
 import { CanvasUtil } from "./canvasUtil.mjs";
 import { MathUtil } from "./mathUtil.mjs";
+import { ClassicGame } from "../game/classicGame.mjs";
 
 export class AimerUtil {
 
@@ -14,9 +15,9 @@ export class AimerUtil {
     /**
      * May want another param later on for whether or not to lower opacity, depending on who's aiming
      * May want "offset" param
-     * @param {context} ctx HTML Canvas Context 
-     * @param {twoPlayerGame} game 
-     * @param {vector2D} mousePos 
+     * @param {CanvasRenderingContext2D} ctx HTML Canvas Context 
+     * @param {ClassicGame} game 
+     * @param {Vector2D} mousePos 
      */
     static drawAimAssist(ctx, game, mousePos, opacity=1) {
 

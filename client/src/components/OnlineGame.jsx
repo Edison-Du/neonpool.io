@@ -62,23 +62,13 @@ function OnlineGame ({players, gameSeed, exitGame, onError, onPlayAgain}) {
 
     // Attach socket listeners
     useEffect(() => {
-        const handlePlayerLeave = (data) => {
-            const { players: newPlayers } = data;
-            if (!game.current || game.current.gameHasEnded) return;
-            const playerIds = newPlayers.map(p => p.id);
-            for (let i = 0; i < players.length; i++) {
-                if (!playerIds.includes(players[i].id)) {
-                    game.current.forfeitPlayer(i);
-                }
-            }
-        }
         const addGameEventToQueue = (eventName) => {
             return (data) => {
                 actionQueue.current.push({ event: eventName, ...data });
             }
         }
         const eventListeners = {
-            [SocketEvents.playerLeave]: handlePlayerLeave,
+            [SocketEvents.playerLeave]: addGameEventToQueue(SocketEvents.playerLeave),
             // Game events
             [SocketEvents.shootCueBall]: addGameEventToQueue(SocketEvents.shootCueBall),
             [SocketEvents.placeCueBall]: addGameEventToQueue(SocketEvents.placeCueBall),
@@ -145,20 +135,39 @@ function OnlineGame ({players, gameSeed, exitGame, onError, onPlayAgain}) {
 
     // Handle inbound game events from server
     const processGameEvents = () => {
-        const stopProcessingCondition = () => {
-            return isOurTurn() || game.current.ballsAreMoving || game.current.gameHasEnded;
-        }
-        if (stopProcessingCondition()) {
-            return;
-        }
-        while (actionQueue.current.length > 0) {
-            const event = actionQueue.current.shift();
+        const handlePlayerLeave = (data) => {
+            const { players: newPlayers } = data;
+            if (!game.current || game.current.gameHasEnded) return;
+            const playerIds = newPlayers.map(p => p.id);
+            for (let i = 0; i < players.length; i++) {
+                if (!playerIds.includes(players[i].id)) {
+                    game.current.forfeitPlayer(i);
+                }
+            }
+        };
+        // Only process events on turn ends (when balls aren't moving) for sync.
+        // While loop means transient events (mouse movements, strength changes) are processed
+        // in batches to "catch up" faster.
+        while (actionQueue.current.length > 0 && game.current &&
+            !game.current.ballsAreMoving && !game.current.gameHasEnded
+        ) {
+            const event = actionQueue.current[0];
+            // Handle player leave on all end turns
+            if (event.event === SocketEvents.playerLeave) {
+                actionQueue.current.shift();
+                handlePlayerLeave(event);
+                continue;
+            }
+            // Only handle game events if it isn't our turn
+            if (isOurTurn()) {
+                break;
+            }
+            actionQueue.current.shift();
+            // We only expect game events from the current player, and if it isn't our turn,
+            // a valid event can only come from the current player. 
             if (event.id !== getTurnPlayerId()) {
                 console.log(`Received event ${event.event} from player ${event.id} when it is not their turn`);
                 continue;
-            }
-            if (stopProcessingCondition()) {
-                break;
             }
             switch (event.event) {
                 case SocketEvents.shootCueBall:
@@ -218,7 +227,8 @@ function OnlineGame ({players, gameSeed, exitGame, onError, onPlayAgain}) {
         if (heldTimeRef.current >= AimerUtil.framesToFullStrength * 3) {
             heldTimeRef.current = -1;
         }
-        if (isOurTurn() && heldTimeRef.current !== heldTimeState) {
+        if (isOurTurn() && heldTimeRef.current !== heldTimeState && 
+            !game.current.ballsAreMoving && !game.current.gameHasEnded) {
             ConnectionManager.sendEvent(SocketEvents.changeStrength, { fraction: getStrengthBarFraction(heldTimeRef.current) }, () => {});
         }
         setHeldTimeState(heldTimeRef.current);

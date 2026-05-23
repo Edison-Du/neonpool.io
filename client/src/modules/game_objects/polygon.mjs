@@ -5,6 +5,8 @@
  */
 import { CanvasUtil } from "../util/canvasUtil.mjs";
 import { Consts } from "../consts.mjs";
+import { Vector2D } from "../util/vector2D.mjs";
+import { LineSegment } from "./lineSegment.mjs";
 
 export class Polygon {
 

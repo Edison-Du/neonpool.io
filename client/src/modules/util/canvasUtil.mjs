@@ -1,3 +1,5 @@
+import { Vector2D } from "./vector2D.mjs";
+
 export class CanvasUtil {
 
     static scale = 1;

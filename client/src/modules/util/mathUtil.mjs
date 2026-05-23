@@ -1,3 +1,5 @@
+import { Vector2D } from "./vector2D.mjs";
+
 export class MathUtil {
     // solves for the roots of ax^2 + bx + c = 0
     // post: returns {x1, x2}, the roots, with x1 <= x2

@@ -37,12 +37,14 @@ export class ClassicGame {
     runningColourCount = {};
 
     // debugging
+    gameTick;
     gameLog;
     turnEnded;
 
     constructor(seed=0) {
         RandomUtil.seed(seed);
 
+        this.gameTick = 0;
         this.currentPlayerIndex = 0;
         this.turn = 1;
 
@@ -62,6 +64,13 @@ export class ClassicGame {
         }
         window.getCurrentGameState = () => {
             console.log(JSON.stringify(this.balls));
+        }
+        window.getGameAsTest = () => {
+            console.log(this.gameLog.getGameReplay(this));
+            console.log(this.gameLog.getGameEndState(this));
+        }
+        window.forfeitPlayer = (index) => {
+            this.forfeitPlayer(index);
         }
         // TestUtil.breakLagTest(this);
         // TestUtil.ballPocketedVerySlowlyTest(this);
@@ -208,6 +217,7 @@ export class ClassicGame {
 
     /** ================================ USER INPUT ================================ */
     shootCueBall(direction, strength) {
+        this.gameLog.shootBall(direction, strength, this);
         if (this.ballsAreMoving || !this.ballIsPlaced) {
             return false;
         }
@@ -219,8 +229,6 @@ export class ClassicGame {
         // may choose to add velocity instead of set velocity in the future (explosives, cueball already moving)
         this.cueBall.vel = direction.getUnitVector().scale(strength); // max strength is 20?
         this.#startTurn();
-
-        this.gameLog.shootBall(direction, strength, this.balls);
         return true;
     }
 
@@ -274,6 +282,7 @@ export class ClassicGame {
     }
 
     placeCueBall(position) {
+        this.gameLog.placeBall(position, this);
         if (!this.isValidCueBallPlacement(position)) {
             return false;
         }
@@ -281,7 +290,6 @@ export class ClassicGame {
         this.cueBall.resetState();
         this.ballIsPlaced = true;
 
-        this.gameLog.placeBall(position);
         return true;
     }
 
@@ -291,6 +299,7 @@ export class ClassicGame {
         if (!this.ballsAreMoving) {
             return;
         }
+        this.gameTick++;
 
         const n = 10;
         let dt = 1/n;
@@ -432,6 +441,7 @@ export class ClassicGame {
     /** ================================ GAME LOGIC ================================ */
 
     forfeitPlayer(index) {
+        this.gameLog.forfeit(index, this);
         if (index < 0 || index >= this.players.length) {
             return false;
         }
@@ -466,10 +476,10 @@ export class ClassicGame {
     // takes place after all balls have settled
     #endTurn() {
         // debug
-        if (this.turnEnded) {
-            this.gameLog.constructGameState();
-            this.gameLog.printMoves();
-        }
+        // if (this.turnEnded) {
+        //     this.gameLog.constructGameState();
+        //     this.gameLog.printMoves();
+        // }
         this.turnEnded = true;
         // end debug
 
