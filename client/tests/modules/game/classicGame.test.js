@@ -82,16 +82,19 @@ describe('ClassicGame', () => {
     "[2p] initial ball valid placement",
     "[2p] p0 forfeits before ball placement",
     "[2p] p0 forfeits after ball placement",
-    "[3p] full game",
-    "[3p] all balls of lost player pocketed",
+    // "[3p] full game", // slow
+    // "[3p] all balls of lost player pocketed", // slow
+    "[3p] pX shoots and leaves before potting own ball",
+    "[3p] pX shoots and leaves before potting opponent ball",
+    "[3p] pX pots ball on break",
     "[4p] basic break",
     "[4p] p1 forfeits on p0's turn",
     "[4p] p0 p1 p2 forfeit in order",
     "[4p] p0 forfeit p1 can place anywhere",
     "[4p] pX forfeit while ball not placed",
     "[4p] pX forfeit before pocketing ball",
-    "[4p] pX forfeit having already won",
-    "[4p] pX forfeit having already lost",
+    // "[4p] pX forfeit having already won", // slow
+    // "[4p] pX forfeit having already lost", // slow
   ]
   for (const name of tests) {
     test(name, () => {

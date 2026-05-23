@@ -2511,6 +2511,1231 @@
             ]
         }
     },
+    "[3p] pX shoots and leaves before potting own ball": {
+        "replay": {
+            "seed": 419055,
+            "moves": [
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 0,
+                    "data": {
+                        "direction": {
+                            "x": 477.53256150506525,
+                            "y": 1.80897250361798
+                        },
+                        "strength": 20
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 195,
+                    "data": {
+                        "direction": {
+                            "x": -80.85416340183929,
+                            "y": 146.11758860735702
+                        },
+                        "strength": 6.166666666666667
+                    }
+                },
+                {
+                    "moveType": "FORFEIT",
+                    "gameTick": 273,
+                    "data": {
+                        "player": 1
+                    }
+                }
+            ],
+            "numPlayers": 3
+        },
+        "expected": {
+            "turn": 4,
+            "gameTick": 273,
+            "currentPlayerIndex": 2,
+            "players": [
+                {
+                    "colour": null,
+                    "state": 0,
+                    "endTurn": -1
+                },
+                {
+                    "colour": "#ec2b7f",
+                    "state": 2,
+                    "endTurn": 3
+                },
+                {
+                    "colour": null,
+                    "state": 0,
+                    "endTurn": -1
+                }
+            ],
+            "gameHasEnded": false,
+            "balls": [
+                {
+                    "pos": {
+                        "x": 566.1441490980405,
+                        "y": 286.60169164381404
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "white",
+                    "glow": "white",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 746.5575482206866,
+                        "y": 253.02252132840317
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#302352",
+                    "glow": "#00FFF8",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 682.3633694258787,
+                        "y": 122.21044025375197
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ffd587",
+                    "glow": "#FFD400",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 844.2557848538532,
+                        "y": 244.48483492116048
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ec2b7f",
+                    "glow": "#FF0068",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 710.3935872294564,
+                        "y": 344.01153352879317
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#31bdff",
+                    "glow": "#09C3FC",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 724.3969641832107,
+                        "y": 269.79588565895307
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ffd587",
+                    "glow": "#FFD400",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 614.1243920927166,
+                        "y": 99.66719103789184
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ec2b7f",
+                    "glow": "#FF0068",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 681.9552567342732,
+                        "y": 153.61450873222515
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#31bdff",
+                    "glow": "#09C3FC",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 920.9485062676848,
+                        "y": 383.2084739822329
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ffd587",
+                    "glow": "#FFD400",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 499.93084015186264,
+                        "y": 470.0776201432692
+                    },
+                    "vel": {
+                        "x": 0.003942858868961786,
+                        "y": -0.004490993730198123
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ec2b7f",
+                    "glow": "#FF0068",
+                    "opacity": 0,
+                    "state": 2,
+                    "isFading": true
+                },
+                {
+                    "pos": {
+                        "x": 832.5984089944296,
+                        "y": 170.22208841847652
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#31bdff",
+                    "glow": "#09C3FC",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 640.198206073259,
+                        "y": 73.69044531384918
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ffd587",
+                    "glow": "#FFD400",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 908.0848889118939,
+                        "y": 64.18310039012118
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ec2b7f",
+                    "glow": "#FF0068",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 805.8065289619549,
+                        "y": 178.69804938098375
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#31bdff",
+                    "glow": "#09C3FC",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 815.9220426280614,
+                        "y": 368.92168308735086
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ffd587",
+                    "glow": "#FFD400",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 784.4464916445507,
+                        "y": 238.88056129029425
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ec2b7f",
+                    "glow": "#FF0068",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 785.7611683595774,
+                        "y": 115.75156906903648
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#31bdff",
+                    "glow": "#09C3FC",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                }
+            ],
+            "ballInHand": true,
+            "ballIsPlaced": true,
+            "runningColourCount": {
+                "#ec2b7f": 4,
+                "#31bdff": 5,
+                "#ffd587": 5
+            },
+            "ballsPocketedThisTurn": []
+        }
+    },
+    "[3p] pX shoots and leaves before potting opponent ball": {
+        "replay": {
+            "seed": 633758,
+            "moves": [
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 0,
+                    "data": {
+                        "direction": {
+                            "x": 526.3392857142858,
+                            "y": 1.1160714285714448
+                        },
+                        "strength": 20
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 234,
+                    "data": {
+                        "direction": {
+                            "x": 119.93197788993643,
+                            "y": -128.44329682405095
+                        },
+                        "strength": 8
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 390,
+                    "data": {
+                        "direction": {
+                            "x": -144.6732507267095,
+                            "y": -17.931089767573326
+                        },
+                        "strength": 11.666666666666668
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 696,
+                    "data": {
+                        "direction": {
+                            "x": 211.27025673854962,
+                            "y": 19.41479047684561
+                        },
+                        "strength": 6.666666666666666
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 874,
+                    "data": {
+                        "direction": {
+                            "x": 238.73469676175785,
+                            "y": 67.4061739738957
+                        },
+                        "strength": 7.666666666666667
+                    }
+                },
+                {
+                    "moveType": "FORFEIT",
+                    "gameTick": 944,
+                    "data": {
+                        "player": 0
+                    }
+                }
+            ],
+            "numPlayers": 3
+        },
+        "expected": {
+            "turn": 6,
+            "gameTick": 944,
+            "currentPlayerIndex": 1,
+            "players": [
+                {
+                    "colour": null,
+                    "state": 2,
+                    "endTurn": 6
+                },
+                {
+                    "colour": null,
+                    "state": 0,
+                    "endTurn": -1
+                },
+                {
+                    "colour": "#ec2b7f",
+                    "state": 0,
+                    "endTurn": -1
+                }
+            ],
+            "gameHasEnded": false,
+            "balls": [
+                {
+                    "pos": {
+                        "x": 908.338192012698,
+                        "y": 425.129508631506
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "white",
+                    "glow": "white",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 767.7208915246564,
+                        "y": 207.49003358959195
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#302352",
+                    "glow": "#00FFF8",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 873.1546057694734,
+                        "y": 263.2412912956582
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ffd587",
+                    "glow": "#FFD400",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 500.00000167595897,
+                        "y": 30.000003490102955
+                    },
+                    "vel": {
+                        "x": 3.941093338994104e-9,
+                        "y": 8.240217629640283e-9
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ec2b7f",
+                    "glow": "#FF0068",
+                    "opacity": 0,
+                    "state": 2,
+                    "isFading": true
+                },
+                {
+                    "pos": {
+                        "x": 932.2475826828397,
+                        "y": 408.59183080029965
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#31bdff",
+                    "glow": "#09C3FC",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 788.7851733877559,
+                        "y": 261.4215925569379
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ffd587",
+                    "glow": "#FFD400",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 818.7627794497065,
+                        "y": 155.94757038309606
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ec2b7f",
+                    "glow": "#FF0068",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 928.5352858268174,
+                        "y": 266.11171904259584
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#31bdff",
+                    "glow": "#09C3FC",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 727.9132286453693,
+                        "y": 267.6027665041254
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ffd587",
+                    "glow": "#FFD400",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 838.0635602028001,
+                        "y": 278.24964981579615
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ec2b7f",
+                    "glow": "#FF0068",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 824.2685854610593,
+                        "y": 227.65418468595203
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#31bdff",
+                    "glow": "#09C3FC",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 642.4547048143752,
+                        "y": 104.32142258006914
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ffd587",
+                    "glow": "#FFD400",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 749.6496946399213,
+                        "y": 282.4205463122701
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ec2b7f",
+                    "glow": "#FF0068",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 854.0379367407677,
+                        "y": 148.75391086034372
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#31bdff",
+                    "glow": "#09C3FC",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 669.7736894071569,
+                        "y": 71.96807393121966
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ffd587",
+                    "glow": "#FFD400",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 959.9986434591352,
+                        "y": 459.99921842471315
+                    },
+                    "vel": {
+                        "x": 0.0006687818785139528,
+                        "y": 0.00035424101191050127
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ec2b7f",
+                    "glow": "#FF0068",
+                    "opacity": 0,
+                    "state": 2,
+                    "isFading": true
+                },
+                {
+                    "pos": {
+                        "x": 821.3569821226251,
+                        "y": 363.45199386833946
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#31bdff",
+                    "glow": "#09C3FC",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                }
+            ],
+            "ballInHand": true,
+            "ballIsPlaced": true,
+            "runningColourCount": {
+                "#ec2b7f": 3,
+                "#31bdff": 5,
+                "#ffd587": 5
+            },
+            "ballsPocketedThisTurn": [
+                {
+                    "pos": {
+                        "x": 959.9986434591352,
+                        "y": 459.99921842471315
+                    },
+                    "vel": {
+                        "x": 0.0006687818785139528,
+                        "y": 0.00035424101191050127
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ec2b7f",
+                    "glow": "#FF0068",
+                    "opacity": 0,
+                    "state": 2,
+                    "isFading": true
+                }
+            ]
+        }
+    },
+    "[3p] pX pots ball on break": {
+        "replay": {
+            "seed": 1382586,
+            "moves": [
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 0,
+                    "data": {
+                        "direction": {
+                            "x": 536.3839285714286,
+                            "y": 2.232142857142861
+                        },
+                        "strength": 20
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 210,
+                    "data": {
+                        "direction": {
+                            "x": 127.06605412691499,
+                            "y": 47.317932614115705
+                        },
+                        "strength": 6.333333333333333
+                    }
+                }
+            ],
+            "numPlayers": 3
+        },
+        "expected":{
+            "turn": 3,
+            "gameTick": 364,
+            "currentPlayerIndex": 1,
+            "players": [
+                {
+                    "colour": null,
+                    "state": 0,
+                    "endTurn": -1
+                },
+                {
+                    "colour": null,
+                    "state": 0,
+                    "endTurn": -1
+                },
+                {
+                    "colour": null,
+                    "state": 0,
+                    "endTurn": -1
+                }
+            ],
+            "gameHasEnded": false,
+            "balls": [
+                {
+                    "pos": {
+                        "x": 740.3891328682364,
+                        "y": 210.3399615909349
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "white",
+                    "glow": "white",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 746.8433610107834,
+                        "y": 250.93338083367405
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#302352",
+                    "glow": "#00FFF8",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 821.5758142133919,
+                        "y": 208.1042695088479
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ffd587",
+                    "glow": "#FFD400",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 812.7956671634062,
+                        "y": 137.8711228512247
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ec2b7f",
+                    "glow": "#FF0068",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 890.7582884993743,
+                        "y": 79.275073186866
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#31bdff",
+                    "glow": "#09C3FC",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 589.3919497528511,
+                        "y": 94.31978278209814
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ffd587",
+                    "glow": "#FFD400",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 935.4515992238394,
+                        "y": 392.66091613598127
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ec2b7f",
+                    "glow": "#FF0068",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 898.434025615697,
+                        "y": 274.9765967622953
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#31bdff",
+                    "glow": "#09C3FC",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 566.1980304744403,
+                        "y": 315.3380884149467
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ffd587",
+                    "glow": "#FFD400",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 873.2633333887654,
+                        "y": 146.1854498374907
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ec2b7f",
+                    "glow": "#FF0068",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 960.0000000637564,
+                        "y": 460.0000000157324
+                    },
+                    "vel": {
+                        "x": 9.376056912406352e-9,
+                        "y": 2.313306197295893e-9
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#31bdff",
+                    "glow": "#09C3FC",
+                    "opacity": 0,
+                    "state": 2,
+                    "isFading": true
+                },
+                {
+                    "pos": {
+                        "x": 893.018159601811,
+                        "y": 323.87551820274314
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ffd587",
+                    "glow": "#FFD400",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 820.0768119047235,
+                        "y": 263.988068685223
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ec2b7f",
+                    "glow": "#FF0068",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 772.7977637619497,
+                        "y": 248.91541704894271
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#31bdff",
+                    "glow": "#09C3FC",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 936.4382302581597,
+                        "y": 77.29229140162309
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ffd587",
+                    "glow": "#FFD400",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 633.478837886561,
+                        "y": 157.1861903328926
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ec2b7f",
+                    "glow": "#FF0068",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 628.0934356497397,
+                        "y": 66.64236037046514
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#31bdff",
+                    "glow": "#09C3FC",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                }
+            ],
+            "ballInHand": false,
+            "ballIsPlaced": true,
+            "runningColourCount": {
+                "#ec2b7f": 5,
+                "#31bdff": 4,
+                "#ffd587": 5
+            },
+            "ballsPocketedThisTurn": []
+        }
+    },
     "[4p] basic break": {
         "replay": {
             "seed": 1740017,
@@ -4970,27 +6195,7 @@
                 "#ffd587": 5,
                 "#59ff88": 5
             },
-            "ballsPocketedThisTurn": [
-                {
-                    "pos": {
-                        "x": 587.0445344129555,
-                        "y": 163.96761133603238
-                    },
-                    "vel": {
-                        "x": 0,
-                        "y": 0
-                    },
-                    "accel": {
-                        "x": 0,
-                        "y": 0
-                    },
-                    "colour": "white",
-                    "glow": "white",
-                    "opacity": 1,
-                    "state": 1,
-                    "isFading": false
-                }
-            ]
+            "ballsPocketedThisTurn": []
         }
     },
     "[4p] pX forfeit before pocketing ball": {

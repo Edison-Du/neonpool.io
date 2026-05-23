@@ -453,6 +453,7 @@ export class ClassicGame {
         player.endTurn = this.turn;
         // Case where player forfeits during their turn before making a move, or if their forfeit ends the game
         if (!this.ballsAreMoving && (this.currentPlayerIndex === index || this.#checkGameEnded())) {
+            this.ballsPocketedThisTurn = [];
             this.#endTurn();
         }
         return true;
