@@ -87,6 +87,7 @@ describe('ClassicGame', () => {
     "[3p] pX shoots and leaves before potting own ball",
     "[3p] pX shoots and leaves before potting opponent ball",
     "[3p] pX pots ball on break",
+    // "[4p] full game", // slow
     "[4p] basic break",
     "[4p] p1 forfeits on p0's turn",
     "[4p] p0 p1 p2 forfeit in order",

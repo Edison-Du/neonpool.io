@@ -3736,6 +3736,832 @@
             "ballsPocketedThisTurn": []
         }
     },
+    "[4p] full game": {
+        "replay": {
+            "seed": 1337769,
+            "moves": [
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 0,
+                    "data": {
+                        "direction": {
+                            "x": 463.8392857142858,
+                            "y": -2.232142857142861
+                        },
+                        "strength": 20
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 265,
+                    "data": {
+                        "direction": {
+                            "x": 205.62531826266627,
+                            "y": 107.37262541025922
+                        },
+                        "strength": 16.5
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 439,
+                    "data": {
+                        "direction": {
+                            "x": 197.30240205844518,
+                            "y": -106.67618160006572
+                        },
+                        "strength": 20
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 653,
+                    "data": {
+                        "direction": {
+                            "x": -491.35021736526716,
+                            "y": -202.98698619040516
+                        },
+                        "strength": 20
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 987,
+                    "data": {
+                        "direction": {
+                            "x": 21.157558253572688,
+                            "y": -119.50080866179076
+                        },
+                        "strength": 20
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 1276,
+                    "data": {
+                        "direction": {
+                            "x": -40.44796769394429,
+                            "y": 87.7182464500637
+                        },
+                        "strength": 20
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 1495,
+                    "data": {
+                        "direction": {
+                            "x": 222.20742259800295,
+                            "y": 75.32499430293251
+                        },
+                        "strength": 6.5
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 1696,
+                    "data": {
+                        "direction": {
+                            "x": 235.63980321228837,
+                            "y": -117.1714147426083
+                        },
+                        "strength": 6.666666666666666
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 1878,
+                    "data": {
+                        "direction": {
+                            "x": -479.3860805383459,
+                            "y": 65.43835125734296
+                        },
+                        "strength": 7.833333333333333
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 2046,
+                    "data": {
+                        "direction": {
+                            "x": 389.09297892158855,
+                            "y": -332.0109410379163
+                        },
+                        "strength": 7.5
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 2242,
+                    "data": {
+                        "direction": {
+                            "x": 156.35425501572377,
+                            "y": 114.17045608568395
+                        },
+                        "strength": 16.333333333333332
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 2505,
+                    "data": {
+                        "direction": {
+                            "x": 336.27374856805886,
+                            "y": 105.9981955060849
+                        },
+                        "strength": 7.666666666666667
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 2668,
+                    "data": {
+                        "direction": {
+                            "x": 75.52997851196244,
+                            "y": 81.94501992300764
+                        },
+                        "strength": 20
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 2758,
+                    "data": {
+                        "direction": {
+                            "x": -148.45418278176692,
+                            "y": -55.649870112158055
+                        },
+                        "strength": 8.666666666666668
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 2910,
+                    "data": {
+                        "direction": {
+                            "x": 124.75182864057962,
+                            "y": -18.16837905521797
+                        },
+                        "strength": 9.833333333333332
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 3148,
+                    "data": {
+                        "direction": {
+                            "x": -73.56486321994328,
+                            "y": 74.35386601010943
+                        },
+                        "strength": 20
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 3421,
+                    "data": {
+                        "direction": {
+                            "x": 418.2685306877061,
+                            "y": 174.28365410213604
+                        },
+                        "strength": 13.666666666666668
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 3689,
+                    "data": {
+                        "direction": {
+                            "x": 633.9057666644799,
+                            "y": -152.36361489954052
+                        },
+                        "strength": 8.833333333333332
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 3872,
+                    "data": {
+                        "direction": {
+                            "x": -595.6461437399154,
+                            "y": -110.54512614227252
+                        },
+                        "strength": 9.833333333333332
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 4006,
+                    "data": {
+                        "direction": {
+                            "x": 60.73013659485434,
+                            "y": -81.44435306151428
+                        },
+                        "strength": 14.666666666666666
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 4302,
+                    "data": {
+                        "direction": {
+                            "x": -340.3139031151983,
+                            "y": 45.581220906136025
+                        },
+                        "strength": 11
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 4417,
+                    "data": {
+                        "direction": {
+                            "x": -186.64409117637916,
+                            "y": -66.97025909413782
+                        },
+                        "strength": 7.166666666666667
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 4627,
+                    "data": {
+                        "direction": {
+                            "x": -266.88701544017636,
+                            "y": -54.802679912672374
+                        },
+                        "strength": 20
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 5020,
+                    "data": {
+                        "direction": {
+                            "x": 337.25910638896426,
+                            "y": 175.67408768711482
+                        },
+                        "strength": 6.666666666666666
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 5160,
+                    "data": {
+                        "direction": {
+                            "x": -588.4250732495708,
+                            "y": -107.7979561174455
+                        },
+                        "strength": 14.5
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 5473,
+                    "data": {
+                        "direction": {
+                            "x": -672.2128722831885,
+                            "y": -25.875298045863644
+                        },
+                        "strength": 20
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 5889,
+                    "data": {
+                        "direction": {
+                            "x": 499.3380936342776,
+                            "y": 217.77137123319886
+                        },
+                        "strength": 8.333333333333334
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 5999,
+                    "data": {
+                        "direction": {
+                            "x": -391.73832132989935,
+                            "y": -200.96683914280143
+                        },
+                        "strength": 19.666666666666664
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 6289,
+                    "data": {
+                        "direction": {
+                            "x": -68.29235189935628,
+                            "y": 171.05682955021797
+                        },
+                        "strength": 20
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 6656,
+                    "data": {
+                        "direction": {
+                            "x": -452.1826605191184,
+                            "y": -73.83171727094008
+                        },
+                        "strength": 12.833333333333334
+                    }
+                },
+                {
+                    "moveType": "SHOOT_BALL",
+                    "gameTick": 6739,
+                    "data": {
+                        "direction": {
+                            "x": -145.14989347683695,
+                            "y": 222.01586395972765
+                        },
+                        "strength": 17.666666666666664
+                    }
+                }
+            ],
+            "numPlayers": 4
+        },
+        "expected": {
+            "turn": 32,
+            "gameTick": 7027,
+            "currentPlayerIndex": 0,
+            "players": [
+                {
+                    "colour": "#ffd587",
+                    "state": 1,
+                    "endTurn": 31
+                },
+                {
+                    "colour": "#ec2b7f",
+                    "state": 1,
+                    "endTurn": 27
+                },
+                {
+                    "colour": "#59ff88",
+                    "state": 2,
+                    "endTurn": 28
+                },
+                {
+                    "colour": "#31bdff",
+                    "state": 0,
+                    "endTurn": -1
+                }
+            ],
+            "gameHasEnded": true,
+            "balls": [
+                {
+                    "pos": {
+                        "x": 686.2968891855613,
+                        "y": 422.16645889751504
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "white",
+                    "glow": "white",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 39.99999989510546,
+                        "y": 459.9999980442359
+                    },
+                    "vel": {
+                        "x": -3.1018497661121113e-10,
+                        "y": -9.658909417356042e-9
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#302352",
+                    "glow": "#00FFF8",
+                    "opacity": 0,
+                    "state": 2,
+                    "isFading": true
+                },
+                {
+                    "pos": {
+                        "x": 40.000002778042685,
+                        "y": 39.99999972169522
+                    },
+                    "vel": {
+                        "x": 8.499190471783167e-9,
+                        "y": 3.7334591821657935e-9
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ffd587",
+                    "glow": "#FFD400",
+                    "opacity": 0,
+                    "state": 2,
+                    "isFading": true
+                },
+                {
+                    "pos": {
+                        "x": 732.4170972034203,
+                        "y": 317.1023512637275
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#59ff88",
+                    "glow": "#26FF00",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 39.99996408998338,
+                        "y": 39.999984483439775
+                    },
+                    "vel": {
+                        "x": -8.871291419829648e-9,
+                        "y": -3.833232367059612e-9
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ec2b7f",
+                    "glow": "#FF0068",
+                    "opacity": 0,
+                    "state": 2,
+                    "isFading": true
+                },
+                {
+                    "pos": {
+                        "x": 960.0000425458641,
+                        "y": 460.00000285316884
+                    },
+                    "vel": {
+                        "x": 9.129602359351357e-9,
+                        "y": 6.12453611926273e-10
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#31bdff",
+                    "glow": "#09C3FC",
+                    "opacity": 0,
+                    "state": 2,
+                    "isFading": true
+                },
+                {
+                    "pos": {
+                        "x": 40.00000743750673,
+                        "y": 40.00001422615409
+                    },
+                    "vel": {
+                        "x": 4.2827746928830955e-9,
+                        "y": 8.190762858395761e-9
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ffd587",
+                    "glow": "#FFD400",
+                    "opacity": 0,
+                    "state": 2,
+                    "isFading": true
+                },
+                {
+                    "pos": {
+                        "x": 39.99997524556202,
+                        "y": 459.99999977240185
+                    },
+                    "vel": {
+                        "x": -9.620921542312487e-9,
+                        "y": -6.679806004322998e-11
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#59ff88",
+                    "glow": "#26FF00",
+                    "opacity": 0,
+                    "state": 2,
+                    "isFading": true
+                },
+                {
+                    "pos": {
+                        "x": 960.0000240056119,
+                        "y": 39.99998319860862
+                    },
+                    "vel": {
+                        "x": 7.571683728981034e-9,
+                        "y": -5.299314755060703e-9
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ec2b7f",
+                    "glow": "#FF0068",
+                    "opacity": 0,
+                    "state": 2,
+                    "isFading": true
+                },
+                {
+                    "pos": {
+                        "x": 500.0000216915695,
+                        "y": 470.00002951110025
+                    },
+                    "vel": {
+                        "x": 5.414952034302083e-9,
+                        "y": 7.366711487034907e-9
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#31bdff",
+                    "glow": "#09C3FC",
+                    "opacity": 0,
+                    "state": 2,
+                    "isFading": true
+                },
+                {
+                    "pos": {
+                        "x": 959.9999912721095,
+                        "y": 39.99996263705842
+                    },
+                    "vel": {
+                        "x": -2.052967621781527e-9,
+                        "y": -8.797027829885658e-9
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ffd587",
+                    "glow": "#FFD400",
+                    "opacity": 0,
+                    "state": 2,
+                    "isFading": true
+                },
+                {
+                    "pos": {
+                        "x": 500.00000649301046,
+                        "y": 29.999945916758065
+                    },
+                    "vel": {
+                        "x": 1.1640046192722341e-9,
+                        "y": -9.691663784674302e-9
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#59ff88",
+                    "glow": "#26FF00",
+                    "opacity": 0,
+                    "state": 2,
+                    "isFading": true
+                },
+                {
+                    "pos": {
+                        "x": 960.0000352588377,
+                        "y": 460.0000018422758
+                    },
+                    "vel": {
+                        "x": 9.333066325141557e-9,
+                        "y": 4.87776522778489e-10
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ec2b7f",
+                    "glow": "#FF0068",
+                    "opacity": 0,
+                    "state": 2,
+                    "isFading": true
+                },
+                {
+                    "pos": {
+                        "x": 374.94526262641864,
+                        "y": 66.46104363657562
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#31bdff",
+                    "glow": "#09C3FC",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                },
+                {
+                    "pos": {
+                        "x": 499.9999481463106,
+                        "y": 469.99999716471336
+                    },
+                    "vel": {
+                        "x": -9.470642998929633e-9,
+                        "y": -5.177757783329209e-10
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ffd587",
+                    "glow": "#FFD400",
+                    "opacity": 0,
+                    "state": 2,
+                    "isFading": true
+                },
+                {
+                    "pos": {
+                        "x": 959.9999712258397,
+                        "y": 459.9999494302789
+                    },
+                    "vel": {
+                        "x": -4.45292536799303e-9,
+                        "y": -7.826465240868904e-9
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#59ff88",
+                    "glow": "#26FF00",
+                    "opacity": 0,
+                    "state": 2,
+                    "isFading": true
+                },
+                {
+                    "pos": {
+                        "x": 959.9999869780823,
+                        "y": 459.99996812497915
+                    },
+                    "vel": {
+                        "x": -3.748125949497423e-9,
+                        "y": -9.186881126085347e-9
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ec2b7f",
+                    "glow": "#FF0068",
+                    "opacity": 0,
+                    "state": 2,
+                    "isFading": true
+                },
+                {
+                    "pos": {
+                        "x": 960.000003622757,
+                        "y": 459.9999581016996
+                    },
+                    "vel": {
+                        "x": 8.635765230086729e-10,
+                        "y": -9.87174732019461e-9
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#31bdff",
+                    "glow": "#09C3FC",
+                    "opacity": 0,
+                    "state": 2,
+                    "isFading": true
+                },
+                {
+                    "pos": {
+                        "x": 959.999987890324,
+                        "y": 459.99998791192394
+                    },
+                    "vel": {
+                        "x": -6.6439754041304414e-9,
+                        "y": -6.632189126600565e-9
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ffd587",
+                    "glow": "#FFD400",
+                    "opacity": 0,
+                    "state": 2,
+                    "isFading": true
+                },
+                {
+                    "pos": {
+                        "x": 40.000017065889416,
+                        "y": 460.0000428122299
+                    },
+                    "vel": {
+                        "x": 3.45493262367188e-9,
+                        "y": 8.658910148786932e-9
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#59ff88",
+                    "glow": "#26FF00",
+                    "opacity": 0,
+                    "state": 2,
+                    "isFading": true
+                },
+                {
+                    "pos": {
+                        "x": 39.9999792202942,
+                        "y": 40.000020348337806
+                    },
+                    "vel": {
+                        "x": -6.9750749334887184e-9,
+                        "y": 6.828130794078194e-9
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#ec2b7f",
+                    "glow": "#FF0068",
+                    "opacity": 0,
+                    "state": 2,
+                    "isFading": true
+                },
+                {
+                    "pos": {
+                        "x": 527.2752581985201,
+                        "y": 92.90031140099939
+                    },
+                    "vel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#31bdff",
+                    "glow": "#09C3FC",
+                    "opacity": 1,
+                    "state": 1,
+                    "isFading": false
+                }
+            ],
+            "ballInHand": false,
+            "ballIsPlaced": true,
+            "runningColourCount": {
+                "#ec2b7f": 0,
+                "#31bdff": 2,
+                "#ffd587": 0,
+                "#59ff88": 1
+            },
+            "ballsPocketedThisTurn": [
+                {
+                    "pos": {
+                        "x": 39.99999989510546,
+                        "y": 459.9999980442359
+                    },
+                    "vel": {
+                        "x": -3.1018497661121113e-10,
+                        "y": -9.658909417356042e-9
+                    },
+                    "accel": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colour": "#302352",
+                    "glow": "#00FFF8",
+                    "opacity": 0,
+                    "state": 2,
+                    "isFading": true
+                }
+            ]
+        }
+    },
     "[4p] basic break": {
         "replay": {
             "seed": 1740017,

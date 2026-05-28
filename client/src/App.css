@@ -24,7 +24,22 @@ body {
   position: relative;
 }
 
-/* ============================= Main Menu ================================ */
+/* #region ============================= Header/Footer ================================ */
+header, footer {
+  padding: 1.5vw;
+ }
+
+:is(header, footer) a:is(:hover, :focus) {
+  outline: none;
+}
+
+:is(header, footer) a:is(:hover, :focus) svg {
+  fill: #30D172;
+  transition: 250ms ease-in;
+}
+
+/* #endregion */
+/* #region ============================= Main Menu ================================ */
 .main-menu {
   background-image: url("../public/background.svg");
   background-repeat: no-repeat;
@@ -33,28 +48,9 @@ body {
   text-shadow: 0 0 7px white;
 }
 
-/* Footer */
-.main-menu footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  text-align: right;
-  padding: 1.5vw;
-}
-
-.main-menu footer a:is(:hover, :focus) {
-  outline: none;
-}
-
-.main-menu footer a:is(:hover, :focus) svg {
-  fill: #30D172;
-  transition: 250ms ease-in;
-}
-
 /* Title positioning */
 .main-menu section {
   position: relative;
-  animation: fade-in 1s ease-in;
 }
 .main-menu section:nth-child(1) {
   left: -2vw;
@@ -126,8 +122,8 @@ canvas, .game-over {
   border-radius: 1vw;
 }
 
-/* ============================ Strength Bar ============================ */
-
+/* #endregion */
+/* #region ============================ Strength Bar ============================ */
 .strength-bar {
   position: relative;
   height: 90%;
@@ -152,7 +148,8 @@ canvas, .game-over {
   border-bottom: 2px solid white;
 }
 
-/* ============================ Player Info ============================ */
+/* #endregion */
+/* #region ============================ Player Info ============================ */
 
 .player-info-bar {
   padding: 0 0 0 1em;
@@ -219,7 +216,8 @@ canvas, .game-over {
   position: absolute;
 }
 
-/* ============================ Game Over ============================ */
+/* #endregion */
+/* #region ============================ Game Over ============================ */
 
 .game-over {
   position: absolute;
@@ -304,7 +302,8 @@ canvas, .game-over {
   background-color: #E51F4C;
 }
 
-/* ============================ Lobby ============================ */
+/* #endregion */
+/* #region ============================ Lobby ============================ */
 
 .lobby {
   width: 30vw;
@@ -484,7 +483,8 @@ canvas, .game-over {
   filter: drop-shadow(0 0 7px white);
 }
 
-/* ============================ Error Page ============================ */
+/* #endregion */
+/* #region ============================ Error Page ============================ */
 .error h1 {
   text-align: center;
   font-size: 4vw;
@@ -511,7 +511,8 @@ canvas, .game-over {
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
-/* ============================ Animations ============================ */
+/* #endregion */
+/* #region ============================ Animations ============================ */
 @keyframes fade-in {
   0% {
     opacity: 0;
@@ -522,4 +523,8 @@ canvas, .game-over {
   100% {
     opacity: 1;
   }
+}
+
+.fade-in {
+  animation: fade-in 1s ease-in;
 }
