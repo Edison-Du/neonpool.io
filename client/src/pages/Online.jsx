@@ -5,6 +5,7 @@ import { SocketEvents } from "../network/socketEvents.mjs";
 import OnlineLobby from "../components/OnlineLobby";
 import OnlineGame from "../components/OnlineGame";
 import Error from "../components/Error";
+import Loading from "../components/Loading";
 import { useNavigate } from "react-router-dom";
 
 function Online() {
@@ -17,6 +18,7 @@ function Online() {
     const [players, setPlayers] = useState([]);
     const [inGame, setInGame] = useState(false);
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const navigate = useNavigate();
 
@@ -80,13 +82,29 @@ function Online() {
     }
 
     useEffect(() => {
-        ConnectionManager.init();
+        let cancelled = false;
+
+        const finishConnection = (connected) => {
+            if (!cancelled) {
+                setLoading(false);
+                if (!connected) {
+                    onError("Failed to connect to server");
+                }
+            }
+        };
+
+        ConnectionManager.init()
+            .then((connected) => finishConnection(connected))
+            .catch(() => finishConnection(false));
+
         return () => {
+            cancelled = true;
             ConnectionManager.destroy();
         }
     }, []);
 
-    return (error && <Error errorMessage={error}></Error>) || (
+    return (error && <Error errorMessage={error}></Error>) || 
+        (loading && <Loading />) || (
         inGame ? 
             <OnlineGame 
                 players={players} 

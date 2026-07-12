@@ -2,8 +2,24 @@ import { socket } from "./socket.mjs";
 
 export class ConnectionManager {
     static init() {
-        socket.connect();
-    } 
+        return new Promise((resolve) => {
+            if (socket.connected) {
+                resolve(true);
+                return;
+            }
+            const handleConnect = () => {
+                socket.off("connect_error", handleConnectError);
+                resolve(true);
+            };
+            const handleConnectError = () => {
+                socket.off("connect", handleConnect);
+                resolve(false);
+            };
+            socket.once("connect", handleConnect);
+            socket.once("connect_error", handleConnectError);
+            socket.connect();
+        });
+    }
 
     static destroy() {
         socket.disconnect();
